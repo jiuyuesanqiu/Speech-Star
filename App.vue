@@ -16,9 +16,12 @@
 	/*每个页面公共css */
 	@import "common/main.css";
 	@import "common/icon.css";
+	@import "common/animation.css";
 	@import "common/bootstrap.wxss";
 	page {
 		background-color: #f7f7f7;
+		height: 100Vh;
+		width: 100vw;
 	}
 	
 	.text-primary {

@@ -1,8 +1,40 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view>
-			<text class="title">{{title}}</text>
+	<view>
+		<view class="nx-list">
+			<view class="nx-item border-bottom">
+				<view class="nx-title">
+					罗胖精选 | 从高考到贫血补铁，化学如何看世界？
+				</view>
+				<view class="nx-secondary flex justify-between">
+					<view>
+						6月9日|461573人学过
+					</view>
+					<view class="nx-icon">
+						<text class="cuIcon-video nx-pr"></text>
+						<view class="d-inline-flex align-items-center" style="margin-left: 42upx;">
+							<text class="cuIcon-video"></text>
+							<text style="font-size: 22upx;">播放</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="nx-item">
+				<view class="nx-title">
+					罗胖精选 | 从高考到贫血补铁，化学如何看世界？
+				</view>
+				<view class="nx-secondary flex justify-between">
+					<view>
+						6月9日|461573人学过
+					</view>
+					<view class="nx-icon">
+						<text class="cuIcon-video nx-pr"></text>
+						<view class="d-inline-flex align-items-center" style="margin-left: 40upx;">
+							<text class="cuIcon-video"></text>
+							<text style="font-size: 22upx;">播放</text>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -24,19 +56,29 @@
 </script>
 
 <style>
-	.content {
-		text-align: center;
-		height: 400upx;
+	.nx-list {
+		padding: 20upx;
 	}
 
-	.logo {
-		height: 200upx;
-		width: 200upx;
-		margin-top: 200upx;
+	.nx-item {
+		background-color: #FFFFFF;
+		padding: 30upx 32upx;
+		line-height: 46upx;
 	}
 
-	.title {
-		font-size: 36upx;
-		color: #8f8f94;
+	.nx-title {
+		font-size: 30upx;
+		padding: 6upx 46upx 6upx 0;
+	}
+
+	.nx-secondary {
+		font-size: 24upx;
+		line-height: 38upx;
+		color: #888888;
+		margin-top: 12upx;
+	}
+
+	.nx-icon {
+		font-size: 38upx;
 	}
 </style>
