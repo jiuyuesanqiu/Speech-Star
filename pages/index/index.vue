@@ -7,11 +7,10 @@
 				</view>
 				<view class="nx-secondary flex justify-between">
 					<view>
-						6月9日|461573人学过
+						{{formatDate(item.createTime)}} | {{formatDuration(item.duration)}}
 					</view>
 					<view class="nx-icon">
-						<text class="cuIcon-video nx-pr"></text>
-						<view class="d-inline-flex align-items-center" style="margin-left: 42upx;">
+						<view class="d-inline-flex align-items-center" style="margin-left: 42upx;" @tap="play(item.fileID)">
 							<text class="cuIcon-video"></text>
 							<text style="font-size: 22upx;">播放</text>
 						</view>
@@ -50,22 +49,36 @@
 					text: '上传',
 					active: true
 				}],
-				speeches:[]
+				speeches: [],
+				long: 0
 			}
 		},
 		onShow() {
 			//获取演讲数据
 			db.collection('speeches').where({}).get().then(res => {
 				this.speeches = res.data;
-				console.log(res.data)
 			})
 		},
 		methods: {
+			formatDate(date){
+				return `${date.getMonth()+1}月${date.getDate()}日`
+			},
+			formatDuration(duration){
+				let m = Math.trunc(duration/60)+'';
+				let s = Math.trunc(duration%60)+'';
+				return `${m.padStart(2,'0')}分${s.padStart(2,'0')}秒`;
+			},
 			trigger(e) {
 				uni.navigateTo({
 					url: '../upload/upload'
 				})
 				e.open();
+			},
+			/**
+			 * 播放音频
+			 */
+			play(fileID) {
+				
 			}
 		}
 	}
@@ -95,6 +108,6 @@
 	}
 
 	.nx-icon {
-		font-size: 38upx;
+		font-size: 42upx;
 	}
 </style>

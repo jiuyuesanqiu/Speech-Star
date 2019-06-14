@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view v-if="!uploadShow">
-			<view class="padding bg-white ">
+			<view class="padding bg-white">
 				<view class="flex">
 					<view class="cu-progress round">
 						<view class="bg-green" :style="[{ width:progress+'%'}]"></view>
@@ -49,7 +49,8 @@
 				title: '',
 				author: '刘良',
 				authorNumber: 522,
-				progress:0
+				progress: 0,
+				duration: 0
 			}
 		},
 		methods: {
@@ -59,7 +60,7 @@
 				wx.chooseMessageFile({
 					count: 1,
 					type: 'file',
-					tempFiles:['mp3','m4a','wav','aac'],
+					tempFiles: ['mp3', 'm4a', 'wav', 'aac'],
 					success(res) {
 						file = res.tempFiles[0];
 						//隐藏上传按钮
@@ -80,28 +81,42 @@
 					cloudPath: cloudPath,
 					filePath: file.path,
 					success: res => {
-						//上传成功后，保存文件id到数据库
-						db.collection('speeches').add({
-								data: {
-									title: self.title, //演讲标题
-									author: self.author,
-									authorNumber: self.authorNumber,
-									fileID: res.fileID,
-									createTime: new Date(),
-									listener: 0, //听众人数
-									comment: 0 //评论人数
-								}
-							}).then(res => {
-								uni.showToast({
-									title: '上传成功',
-								})
-								return;
-							})
+						//获取音频时长--这里这么复杂获取音频时长，是因为小程序的api有bug
+						const innerAudioContext = uni.createInnerAudioContext();
+						//设置播放地址
+						innerAudioContext.src = res.fileID;
+						innerAudioContext.onCanplay(() => {
+							innerAudioContext.duration; //类似初始化-必须触发-不触发此函数延时也获取不到
+							setTimeout(function() {
+								//插入数据库
+								self.insert(innerAudioContext.duration,res.fileID)
+							}, 500)
+						})
 					}
 				})
 				//监听文件上传进度，并展示给用户看
 				uploadTask.onProgressUpdate((res) => {
 					this.progress = res.progress;
+				})
+			},
+			insert(duration,fileID) {
+				//上传成功后，保存文件id到数据库
+				db.collection('speeches').add({
+					data: {
+						title: this.title, //演讲标题
+						author: this.author,
+						authorNumber: this.authorNumber,
+						fileID: fileID,
+						createTime: new Date(),
+						listener: 0, //听众人数
+						comment: 0, //评论人数
+						duration: duration//音频时长
+					}
+				}).then(res => {
+					uni.showToast({
+						title: '上传成功',
+					})
+					return;
 				})
 			}
 		}
