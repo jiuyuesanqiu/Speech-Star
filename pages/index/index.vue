@@ -36,21 +36,46 @@
 				</view>
 			</view>
 		</view>
+		<uni-fab :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
+		 @trigger="trigger"></uni-fab>
 	</view>
 </template>
 
 <script>
+	import uniFab from '../../components/uni-fab/uni-fab.vue';
 	export default {
+		components: {
+			uniFab
+		},
 		data() {
 			return {
-				title: 'Hello'
+				horizontal: 'right',
+				vertical: 'bottom',
+				direction: 'horizontal',
+				pattern: {
+					color: '#353535',
+					backgroundColor: '#fff',
+					selectedColor: '#09bb07',
+					buttonColor: "#09bb07"
+				},
+				content: [{
+					iconPath: '/static/uploadInactive.png',
+					selectedIconPath: '/static/upload.png',
+					text: '上传',
+					active: true
+				}]
 			}
 		},
 		onLoad() {
-
+			
 		},
 		methods: {
-
+			trigger(e) {
+				uni.navigateTo({
+					url:'../upload/upload'
+				})
+				e.open();
+			}
 		}
 	}
 </script>

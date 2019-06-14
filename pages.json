@@ -6,7 +6,11 @@
 				"navigationBarTitleText": "超级演讲家"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/upload/upload",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTitleText": "超级演讲家",
 		"navigationBarTextStyle": "black",
