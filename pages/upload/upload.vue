@@ -28,6 +28,7 @@
 			</view>
 			<view class="padding mt-5">
 				<button class="weui-btn" type="primary" @tap="uploadFile">确认上传</button>
+				<button class="weui-btn" type="primary" @tap="chooseFile">再传一个</button>
 			</view>
 		</view>
 		<view v-if="uploadShow" class="upload round d-flex justify-center align-items-center white bg-green" @tap="chooseFile">
@@ -56,8 +57,9 @@
 			chooseFile() {
 				const self = this;
 				wx.chooseMessageFile({
-					count: 10,
-					type: 'all',
+					count: 1,
+					type: 'file',
+					tempFiles:['mp3','m4a','wav','aac'],
 					success(res) {
 						file = res.tempFiles[0];
 						//隐藏上传按钮
@@ -81,7 +83,7 @@
 						//上传成功后，保存文件id到数据库
 						db.collection('speeches').add({
 								data: {
-									titile: self.title, //演讲标题
+									title: self.title, //演讲标题
 									author: self.author,
 									authorNumber: self.authorNumber,
 									fileID: res.fileID,

@@ -1,9 +1,9 @@
 <template>
 	<view>
 		<view class="nx-list">
-			<view class="nx-item border-bottom">
+			<view v-for="item in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
-					罗胖精选 | 从高考到贫血补铁，化学如何看世界？
+					{{item.title}}
 				</view>
 				<view class="nx-secondary flex justify-between">
 					<view>
@@ -18,23 +18,6 @@
 					</view>
 				</view>
 			</view>
-			<view class="nx-item">
-				<view class="nx-title">
-					罗胖精选 | 从高考到贫血补铁，化学如何看世界？
-				</view>
-				<view class="nx-secondary flex justify-between">
-					<view>
-						6月9日|461573人学过
-					</view>
-					<view class="nx-icon">
-						<text class="cuIcon-video nx-pr"></text>
-						<view class="d-inline-flex align-items-center" style="margin-left: 40upx;">
-							<text class="cuIcon-video"></text>
-							<text style="font-size: 22upx;">播放</text>
-						</view>
-					</view>
-				</view>
-			</view>
 		</view>
 		<uni-fab :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
 		 @trigger="trigger"></uni-fab>
@@ -42,6 +25,9 @@
 </template>
 
 <script>
+	wx.cloud.init()
+	const db = wx.cloud.database();
+	const _ = db.command;
 	import uniFab from '../../components/uni-fab/uni-fab.vue';
 	export default {
 		components: {
@@ -63,16 +49,21 @@
 					selectedIconPath: '/static/upload.png',
 					text: '上传',
 					active: true
-				}]
+				}],
+				speeches:[]
 			}
 		},
-		onLoad() {
-			
+		onShow() {
+			//获取演讲数据
+			db.collection('speeches').where({}).get().then(res => {
+				this.speeches = res.data;
+				console.log(res.data)
+			})
 		},
 		methods: {
 			trigger(e) {
 				uni.navigateTo({
-					url:'../upload/upload'
+					url: '../upload/upload'
 				})
 				e.open();
 			}
