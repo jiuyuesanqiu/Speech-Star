@@ -50,7 +50,7 @@
 				author: '刘良',
 				authorNumber: 522,
 				progress: 0,
-				duration: 0
+				duration: 0,
 			}
 		},
 		methods: {
@@ -75,22 +75,25 @@
 				//获取文件后缀
 				let suffix = file.name.substring(file.name.lastIndexOf('.'));
 				//生成文件名
-				let cloudPath = this.title + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
+				let cloudPath = this.authorNumber + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
+				console.lo
 				//上传到云存储
 				const uploadTask = wx.cloud.uploadFile({
 					cloudPath: cloudPath,
 					filePath: file.path,
 					success: res => {
+						//#ifdef MP-WEIXIN
+						//设置不会终止其他应用或微信内的音乐
+						wx.setInnerAudioOption();
+						//#endif
 						//获取音频时长--这里这么复杂获取音频时长，是因为小程序的api有bug
-						const innerAudioContext = uni.createInnerAudioContext();
-						//设置播放地址
+						const innerAudioContext = uni.createInnerAudioContext()
+						innerAudioContext.autoplay = true;
+						innerAudioContext.volume = 0;//设置音量为0
 						innerAudioContext.src = res.fileID;
-						innerAudioContext.onCanplay(() => {
-							innerAudioContext.duration; //类似初始化-必须触发-不触发此函数延时也获取不到
-							setTimeout(function() {
-								//插入数据库
-								self.insert(innerAudioContext.duration,res.fileID)
-							}, 500)
+						innerAudioContext.onTimeUpdate(() => {
+							self.insert(innerAudioContext.duration,res.fileID)
+							innerAudioContext.stop();
 						})
 					}
 				})
@@ -99,7 +102,7 @@
 					this.progress = res.progress;
 				})
 			},
-			insert(duration,fileID) {
+			insert(duration, fileID) {
 				//上传成功后，保存文件id到数据库
 				db.collection('speeches').add({
 					data: {
@@ -110,9 +113,10 @@
 						createTime: new Date(),
 						listener: 0, //听众人数
 						comment: 0, //评论人数
-						duration: duration//音频时长
+						duration: duration //音频时长
 					}
 				}).then(res => {
+					console.log('插入数据成功')
 					uni.showToast({
 						title: '上传成功',
 					})
