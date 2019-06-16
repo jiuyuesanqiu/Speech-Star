@@ -34,7 +34,6 @@
 </template>
 
 <script>
-	wx.cloud.init()
 	const db = wx.cloud.database();
 	const _ = db.command;
 	let file = {};

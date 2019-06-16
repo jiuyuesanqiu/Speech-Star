@@ -1,4 +1,7 @@
 <script>
+	wx.cloud.init({
+		env:'product-super-speech'
+	})
 	export default {
 		onLaunch: function() {
 		},

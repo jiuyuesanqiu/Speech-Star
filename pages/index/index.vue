@@ -3,7 +3,7 @@
 		<view class="nx-list">
 			<view v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
-					{{item.title}}
+					{{item.author}} | {{item.title}}
 				</view>
 				<view class="nx-secondary flex justify-between">
 					<view>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-	wx.cloud.init()
 	const db = wx.cloud.database();
 	const _ = db.command;
 	//#ifdef MP-WEIXIN
