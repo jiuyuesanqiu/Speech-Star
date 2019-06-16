@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="nx-list">
-			<view v-for="item in speeches" :key="item._id" class="nx-item border-bottom">
+			<view v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
 					{{item.title}}
 				</view>
@@ -10,9 +10,9 @@
 						{{formatDate(item.createTime)}} | {{formatDuration(item.duration)}}
 					</view>
 					<view class="nx-icon">
-						<view class="d-inline-flex align-items-center" style="margin-left: 42upx;" @tap="play(item.fileID)">
-							<text class="cuIcon-video"></text>
-							<text style="font-size: 22upx;">播放</text>
+						<view class="d-inline-flex align-items-center" style="margin-left: 42upx;" @tap="play(item.fileID,index)">
+							<text :class="active==index?'cuIcon-stop':'cuIcon-video'"></text>
+							<text style="font-size: 22upx;">{{active==index?'暂停':'播放'}}</text>
 						</view>
 					</view>
 				</view>
@@ -27,6 +27,13 @@
 	wx.cloud.init()
 	const db = wx.cloud.database();
 	const _ = db.command;
+	//#ifdef MP-WEIXIN
+	//设置会终止其他应用或微信内的音乐
+	wx.setInnerAudioOption({
+		mixWithOther: false
+	});
+	//#endif
+	const innerAudioContext = uni.createInnerAudioContext()
 	import uniFab from '../../components/uni-fab/uni-fab.vue';
 	export default {
 		components: {
@@ -50,22 +57,23 @@
 					active: true
 				}],
 				speeches: [],
-				long: 0
+				long: 0,
+				active: -1, //当前被点击播放的按钮
 			}
 		},
 		onShow() {
-			//获取演讲数据
-			db.collection('speeches').where({}).get().then(res => {
+			//获取演讲数据,倒序排列
+			db.collection('speeches').orderBy('createTime', 'desc').get().then(res => {
 				this.speeches = res.data;
 			})
 		},
 		methods: {
-			formatDate(date){
+			formatDate(date) {
 				return `${date.getMonth()+1}月${date.getDate()}日`
 			},
-			formatDuration(duration){
-				let m = Math.trunc(duration/60)+'';
-				let s = Math.trunc(duration%60)+'';
+			formatDuration(duration) {
+				let m = Math.trunc(duration / 60) + '';
+				let s = Math.trunc(duration % 60) + '';
 				return `${m.padStart(2,'0')}分${s.padStart(2,'0')}秒`;
 			},
 			trigger(e) {
@@ -77,9 +85,16 @@
 			/**
 			 * 播放音频
 			 */
-			play(fileID) {
-				
-			}
+			play(fileID, index) {
+				if (index == this.active) {
+					innerAudioContext.stop();
+					this.active = -1;
+					return;
+				}
+				innerAudioContext.autoplay = true;
+				innerAudioContext.src = fileID;
+				this.active = index;
+			},
 		}
 	}
 </script>

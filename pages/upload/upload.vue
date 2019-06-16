@@ -24,11 +24,10 @@
 				<view class="title">
 					编号
 				</view>
-				<input placeholder="请输入演讲者编号" v-model="authorNumber"></input>
+				<input placeholder="请输入演讲者编号(选填)" v-model="authorNumber"></input>
 			</view>
 			<view class="padding mt-5">
-				<button class="weui-btn" type="primary" @tap="uploadFile">确认上传</button>
-				<button class="weui-btn" type="primary" @tap="chooseFile">再传一个</button>
+				<button class="weui-btn" type="primary" :loading="loading" @tap="again?chooseFile():uploadFile()">{{uploadBtn}}</button>
 			</view>
 		</view>
 		<view v-if="uploadShow" class="upload round d-flex justify-center align-items-center white bg-green" @tap="chooseFile">
@@ -47,10 +46,13 @@
 			return {
 				uploadShow: true, //上传按钮是否显示
 				title: '',
-				author: '刘良',
-				authorNumber: 522,
+				author: '',
+				authorNumber: '',
 				progress: 0,
 				duration: 0,
+				loading:false,
+				uploadBtn:'确认上传',
+				again:false
 			}
 		},
 		methods: {
@@ -71,11 +73,31 @@
 				})
 			},
 			uploadFile() {
+				if(this.loading){
+					return;
+				}
+				//校验输入是否正确
+				if (this.title == '') {
+					uni.showToast({
+						title: '请输入演讲标题',
+						icon: 'none'
+					})
+					return;
+				} else if (this.author == '') {
+					uni.showToast({
+						title: '请输入作者名称',
+						icon: 'none'
+					})
+					return;
+				}
+				this.loading = true;
+				this.uploadBtn = '正在上传';
+				
 				const self = this;
 				//获取文件后缀
 				let suffix = file.name.substring(file.name.lastIndexOf('.'));
 				//生成文件名
-				let cloudPath = this.authorNumber + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
+				let cloudPath = '' + this.authorNumber + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
 				console.lo
 				//上传到云存储
 				const uploadTask = wx.cloud.uploadFile({
@@ -89,10 +111,10 @@
 						//获取音频时长--这里这么复杂获取音频时长，是因为小程序的api有bug
 						const innerAudioContext = uni.createInnerAudioContext()
 						innerAudioContext.autoplay = true;
-						innerAudioContext.volume = 0;//设置音量为0
+						innerAudioContext.volume = 0; //设置音量为0
 						innerAudioContext.src = res.fileID;
 						innerAudioContext.onTimeUpdate(() => {
-							self.insert(innerAudioContext.duration,res.fileID)
+							self.insert(innerAudioContext.duration, res.fileID)
 							innerAudioContext.stop();
 						})
 					}
@@ -116,10 +138,12 @@
 						duration: duration //音频时长
 					}
 				}).then(res => {
-					console.log('插入数据成功')
 					uni.showToast({
 						title: '上传成功',
 					})
+					this.loading = false;
+					this.uploadBtn = '再传一个';
+					this.again = true;
 					return;
 				})
 			}
