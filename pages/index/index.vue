@@ -78,6 +78,7 @@
 		//下拉刷新
 		onPullDownRefresh() {
 			startPage = 0;
+			this.isLoad=false;
 			this.speeches = [];
 			this.getNextPage();
 		},
