@@ -10,9 +10,10 @@
 						{{formatDate(item.createTime)}} | {{formatDuration(item.duration)}}
 					</view>
 					<view class="nx-icon">
-						<view class="d-inline-flex align-items-center" style="margin-left: 42upx;" @tap="play(item.fileID,index)">
+						<view class="d-inline-flex align-items-center" :class="active==index?'text-green':''" style="margin-left: 42upx;"
+						 @tap="play(item.fileID,index)">
 							<text :class="active==index?'cuIcon-stop':'cuIcon-video'"></text>
-							<text style="font-size: 22upx;">{{active==index?'暂停':'播放'}}</text>
+							<text style="font-size: 22upx;">{{active==index?'停止':'播放'}}</text>
 						</view>
 					</view>
 				</view>
@@ -20,6 +21,7 @@
 		</view>
 		<uni-fab :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
 		 @trigger="trigger"></uni-fab>
+		<view class="cu-load" :class="!isLoad?'loading':'over'"></view>
 	</view>
 </template>
 
@@ -34,6 +36,7 @@
 	});
 	//#endif
 	const innerAudioContext = uni.createInnerAudioContext()
+	let startPage = 0; //起始页数
 	import uniFab from '../../components/uni-fab/uni-fab.vue';
 	export default {
 		components: {
@@ -47,7 +50,7 @@
 				pattern: {
 					color: '#353535',
 					backgroundColor: '#fff',
-					selectedColor: '#09bb07',
+					selectedColor: '#353535',
 					buttonColor: "#09bb07"
 				},
 				content: [{
@@ -59,15 +62,38 @@
 				speeches: [],
 				long: 0,
 				active: -1, //当前被点击播放的按钮
+				isLoad: false
 			}
 		},
-		onShow() {
-			//获取演讲数据,倒序排列
-			db.collection('speeches').orderBy('createTime', 'desc').get().then(res => {
-				this.speeches = res.data;
-			})
+		onLoad() {
+			startPage = 0;
+			this.speeches = [];
+			this.getNextPage();
+		},
+		onReachBottom() {
+			if (!this.isLoad) {
+				this.getNextPage();
+			}
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			startPage = 0;
+			this.speeches = [];
+			this.getNextPage();
 		},
 		methods: {
+			getNextPage() {
+				//获取演讲数据,倒序排列
+				db.collection('speeches').orderBy('createTime', 'desc').skip(startPage).limit(20).get().then(res => {
+					this.speeches = this.speeches.concat(res.data);
+					startPage += 20;
+					uni.stopPullDownRefresh();
+					if (res.data.length < 20) {
+						this.isLoad = true;
+						return;
+					}
+				})
+			},
 			formatDate(date) {
 				return `${date.getMonth()+1}月${date.getDate()}日`
 			},
@@ -93,6 +119,7 @@
 				}
 				innerAudioContext.autoplay = true;
 				innerAudioContext.src = fileID;
+				innerAudioContext.play()
 				this.active = index;
 			},
 		}

@@ -3,7 +3,8 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "超级演讲家"
+				"navigationBarTitleText": "超级演讲家",
+				"enablePullDownRefresh": true//下拉刷新
 			}
 		}
 	    ,{

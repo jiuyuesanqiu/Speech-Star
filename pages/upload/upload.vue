@@ -1,13 +1,10 @@
 <template>
 	<view>
+		<view class="load-progress" :class="progress!=0?'show':'hide'" :style="[{top:'0px'}]">
+			<view class="load-progress-bar bg-green" :style="[{transform: 'translate3d(-' + (100-progress) + '%, 0px, 0px)'}]"></view>
+			<view class="load-progress-spinner text-green"></view>
+		</view>
 		<view v-if="!uploadShow">
-			<view class="padding bg-white">
-				<view class="flex">
-					<view class="cu-progress round">
-						<view class="bg-green" :style="[{ width:progress+'%'}]"></view>
-					</view>
-				</view>
-			</view>
 			<view class="cu-form-group">
 				<view class="title">
 					标题
@@ -50,9 +47,9 @@
 				authorNumber: '',
 				progress: 0,
 				duration: 0,
-				loading:false,
-				uploadBtn:'确认上传',
-				again:false
+				loading: false,
+				uploadBtn: '确认上传',
+				again: false
 			}
 		},
 		methods: {
@@ -62,18 +59,21 @@
 				wx.chooseMessageFile({
 					count: 1,
 					type: 'file',
-					tempFiles: ['mp3', 'm4a', 'wav', 'aac'],
+					extension: ['mp3', 'm4a', 'wav', 'aac'],
 					success(res) {
 						file = res.tempFiles[0];
 						//隐藏上传按钮
 						self.uploadShow = false;
 						//获取文件名
 						self.title = file.name.substring(0, file.name.lastIndexOf('.'));
+						self.again = false;
+						self.uploadBtn = '确认上传';
+						self.author = '';
 					}
 				})
 			},
 			uploadFile() {
-				if(this.loading){
+				if (this.loading) {
 					return;
 				}
 				//校验输入是否正确
@@ -92,13 +92,12 @@
 				}
 				this.loading = true;
 				this.uploadBtn = '正在上传';
-				
+
 				const self = this;
 				//获取文件后缀
 				let suffix = file.name.substring(file.name.lastIndexOf('.'));
 				//生成文件名
 				let cloudPath = '' + this.authorNumber + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
-				console.lo
 				//上传到云存储
 				const uploadTask = wx.cloud.uploadFile({
 					cloudPath: cloudPath,
@@ -121,10 +120,11 @@
 				})
 				//监听文件上传进度，并展示给用户看
 				uploadTask.onProgressUpdate((res) => {
-					this.progress = res.progress;
+					this.progress = res.progress-10;//此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
 				})
 			},
 			insert(duration, fileID) {
+				this.progress = 100;
 				//上传成功后，保存文件id到数据库
 				db.collection('speeches').add({
 					data: {
@@ -144,6 +144,7 @@
 					this.loading = false;
 					this.uploadBtn = '再传一个';
 					this.again = true;
+					this.progress = 0;
 					return;
 				})
 			}
