@@ -17,12 +17,6 @@
 				</view>
 				<input placeholder="请输入演讲者名字" v-model="author"></input>
 			</view>
-			<view class="cu-form-group">
-				<view class="title">
-					编号
-				</view>
-				<input placeholder="请输入演讲者编号(选填)" v-model="authorNumber"></input>
-			</view>
 			<view class="padding mt-5">
 				<button class="weui-btn" type="primary" :loading="loading" @tap="again?chooseFile():uploadFile()">{{uploadBtn}}</button>
 			</view>
