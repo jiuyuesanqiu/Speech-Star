@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<imt-audio :src="src" :duration="duration"></imt-audio>
 		<view class="nx-list">
 			<view v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
@@ -11,7 +12,7 @@
 					</view>
 					<view class="nx-icon">
 						<view class="d-inline-flex align-items-center" :class="active==index?'text-green':''" style="margin-left: 42upx;"
-						 @tap="play(item.fileID,index)">
+						 @tap="play(item.fileID,index,item.duration)">
 							<text :class="active==index?'cuIcon-stop':'cuIcon-video'"></text>
 							<text style="font-size: 22upx;">{{active==index?'停止':'播放'}}</text>
 						</view>
@@ -38,9 +39,11 @@
 	const innerAudioContext = uni.createInnerAudioContext()
 	let startPage = 0; //起始页数
 	import uniFab from '../../components/uni-fab/uni-fab.vue';
+	import imtAudio from 'components/imt-audio/imt-audio'
 	export default {
 		components: {
-			uniFab
+			uniFab,
+			imtAudio
 		},
 		data() {
 			return {
@@ -62,7 +65,10 @@
 				speeches: [],
 				long: 0,
 				active: -1, //当前被点击播放的按钮
-				isLoad: false
+				isLoad: false,
+				src:'cloud://test-cjyjj.7465-test-cjyjj-1259470932/156085715105895.m4a',
+				duration:65.806,
+				now: 0
 			}
 		},
 		onLoad() {
@@ -112,16 +118,19 @@
 			/**
 			 * 播放音频
 			 */
-			play(fileID, index) {
-				if (index == this.active) {
-					innerAudioContext.stop();
-					this.active = -1;
-					return;
-				}
-				innerAudioContext.autoplay = true;
-				innerAudioContext.src = fileID;
-				innerAudioContext.play()
-				this.active = index;
+			play(fileID, index,duration) {
+				this.duration = duration;
+				this.src = fileID;
+				console.log(this.src,duration)
+				// if (index == this.active) {
+				// 	innerAudioContext.stop();
+				// 	this.active = -1;
+				// 	return;
+				// }
+				// innerAudioContext.autoplay = true;
+				// innerAudioContext.src = fileID;
+				// innerAudioContext.play()
+				// this.active = index;
 			},
 		}
 	}

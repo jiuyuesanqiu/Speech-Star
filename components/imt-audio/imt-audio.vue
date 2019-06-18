@@ -59,7 +59,7 @@
 			operation() {
 				if (audio.paused) {
 					audio.play()
-					this.loading = true
+					// this.loading = true
 				} else {
 					audio.pause()
 				}
