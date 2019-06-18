@@ -21,8 +21,13 @@
 				<button class="weui-btn" type="primary" :loading="loading" @tap="again?chooseFile():uploadFile()">{{uploadBtn}}</button>
 			</view>
 		</view>
-		<view v-if="uploadShow" class="upload round d-flex justify-center align-items-center white bg-green" @tap="chooseFile">
-			<text class="cuIcon-upload"></text>
+		<view class="text-center">
+			<view class="text-gray fixed-bottom py-5">
+				暂仅支持上传微信内音频文件
+			</view>
+			<view v-if="uploadShow" class="upload round d-flex justify-center align-items-center white bg-green" @tap="chooseFile">
+				<text class="cuIcon-upload"></text>
+			</view>
 		</view>
 	</view>
 </template>

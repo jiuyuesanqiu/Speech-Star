@@ -55,12 +55,12 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx43f28b4fab55a320",
+        "appid" : "wxeaebc3545cc7f95f",
         "setting" : {
             "urlCheck" : false
         },
         "usingComponents" : true,
-		"cloudfunctionRoot": "cloudfunctions/"
+        "cloudfunctionRoot" : "cloudfunctions/"
     },
     "mp-alipay" : {
         "usingComponents" : true
