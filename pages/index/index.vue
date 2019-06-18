@@ -31,7 +31,8 @@
 	//#ifdef MP-WEIXIN
 	//设置会终止其他应用或微信内的音乐
 	wx.setInnerAudioOption({
-		mixWithOther: false
+		mixWithOther: false,
+		obeyMuteSwitch:false//不遵循IOS静音开关
 	});
 	//#endif
 	const innerAudioContext = uni.createInnerAudioContext()
