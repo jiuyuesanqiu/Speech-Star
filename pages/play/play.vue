@@ -7,7 +7,7 @@
 			{{author}}
 		</view>
 		<view class="uni-common-mt">
-			<slider class="slider" min="0" :max="duration_s" step="1" @change="seek"></slider>
+			<slider class="slider" min="0" :max="duration_s" step="1" :value="seekTime" @change="seek"></slider>
 		</view>
 		<view class="play-time">
 			<text>{{playTime_text}}</text>
@@ -31,16 +31,19 @@
 		obeyMuteSwitch: false //不遵循IOS静音开关
 	});
 	//#endif
+	//maybe the instance we have used
+	const innerAudioContext = uni.createInnerAudioContext();
 	var util = require('../../common/util.js');
 	export default {
 		data() {
 			return {
 				title: '',
 				author: '',
-				innerAudioContext: null,
 				dataUrl: "",
 				playing: false,
 				playTime: 0,
+				seekTime: 0,
+				seeking: false,
 				playTime_text: "00:00:00",
 				duration_text: '00:00:00',
 				duration_s: 0
@@ -53,7 +56,8 @@
 			this.duration_s = parseInt(e.duration);
 			this.duration_text = util.formatTime(this.duration_s);
 			this.dataUrl = e.audioUrl;
-			let innerAudioContext = uni.createInnerAudioContext();
+			innerAudioContext.src = this.dataUrl;
+
 			//add listenner--start
 			innerAudioContext.onPlay(() => {
 				console.log("开始播放");
@@ -65,13 +69,15 @@
 				this.playTime = 0;
 			});
 
+			var vueObject = this;
 			innerAudioContext.onTimeUpdate(function() {
-				this.changePlayTimeText(innerAudioContext.currentTime);
-				console.log(this.playTime);
-			})
+				//this.changePlayTimeText(innerAudioContext.currentTime);
+				console.log(innerAudioContext.currentTime);
+				vueObject.changePlayTimeText(innerAudioContext.currentTime);
+			});
 			//add listenner end
-			this.changePlayTimeText(innerAudioContext.currentTime);
-			this.innerAudioContext = innerAudioContext;
+			innerAudioContext.playTime = 0;
+			this.changePlayTimeText(0);
 		},
 		onShow() {
 			console.log("show")
@@ -84,49 +90,51 @@
 		},
 		onUnload() {
 			console.log("unload")
-			this.innerAudioContext.stop();
+			innerAudioContext.stop();
 		},
 		onBackPress() {
 			console.log("backPress")
 		},
 		methods: {
 			changePlayTimeText: function(value) {
-				this.playTime = value;
-				this.playTime_text = util.formatTime(parseInt(this.playTime));
-			},
-			seek: function(e) {
-				console.log("seek and play");
-				this.initAudioContext();
-				this.changePlayTimeText(e.target.value);
-				this.innerAudioContext.seek(e.target.value);
-				this.innerAudioContext.play();
-				this.playing = true;
-			},
-			initAudioContext: function() {
-				if ((this.innerAudioContext === undefined) || (this.dataUrl !== this.innerAudioContext.src)) {
-					console.log("init data")
-					this.innerAudioContext.src = this.dataUrl;
-				}
+				this.seekTime = this.playTime = value;
+				this.playTime_text = util.formatTime(parseInt(this.seekTime));
 			},
 			play: function() {
-				this.initAudioContext();
-				this.innerAudioContext.seek(this.playTime);
-				this.innerAudioContext.play();
+				innerAudioContext.play();
 				this.playing = true;
+				console.log("play");
 			},
 			pause: function() {
 				console.log("pause")
-				this.innerAudioContext.pause();
+				innerAudioContext.pause();
 				this.playing = false;
+			},
+			seek: function(e) {
+/* 				innerAudioContext.offTimeUpdate(function(){
+					console.log("offupdateTime")
+				});
+				 */
+				innerAudioContext.seek(e.target.value);
+				this.pause();
+				console.log("seek");
+				this.changePlayTimeText(e.target.value);
+				
+/* 				var vueObject = this;
+				innerAudioContext.onTimeUpdate(function() {
+					//this.changePlayTimeText(innerAudioContext.currentTime);
+					console.log(innerAudioContext.currentTime);
+					vueObject.changePlayTimeText(innerAudioContext.currentTime);
+				});
+				 */
+				this.play();
 			},
 			stop: function() {
-				this.innerAudioContext.stop();
+				innerAudioContext.stop();
 				this.playing = false;
 				changePlayTimeText(0);
-				this.formatedPlayTime = util.formatTime(0);
 			},
 			play_or_stop: function() {
-				//console.log("play-or——stop")
 				if (!this.playing) {
 					this.play();
 				} else {
@@ -142,11 +150,13 @@
 		width: 150upx;
 		height: 150upx;
 	}
-    .page{
+
+	.page {
 		background: #FFFFFF;
 		padding: 12upx;
 		height: 100%;
 	}
+
 	.title {
 		padding-top: 150upx;
 		text-align: center;
