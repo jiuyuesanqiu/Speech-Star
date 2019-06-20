@@ -10,7 +10,11 @@
 	    ,{
             "path" : "pages/upload/upload",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "pages/play/play",
+		    "style" : {}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "超演助手",

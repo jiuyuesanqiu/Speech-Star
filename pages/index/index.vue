@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="nx-list">
-			<view v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
+			<view @tap="navigateTo(item)" v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
 					{{item.author}} | {{item.title}}
 				</view>
@@ -11,7 +11,7 @@
 					</view>
 					<view class="nx-icon">
 						<view class="d-inline-flex align-items-center" :class="active==index?'text-green':''" style="margin-left: 42upx;"
-						 @tap="play(item.fileID,index)">
+						v-on:tap.stop="play(item.fileID,index)">
 							<text :class="active==index?'cuIcon-stop':'cuIcon-video'"></text>
 							<text style="font-size: 22upx;">{{active==index?'停止':'播放'}}</text>
 						</view>
@@ -83,18 +83,6 @@
 			this.getNextPage();
 		},
 		methods: {
-			getNextPage() {
-				//获取演讲数据,倒序排列
-				db.collection('speeches').orderBy('createTime', 'desc').skip(startPage).limit(20).get().then(res => {
-					this.speeches = this.speeches.concat(res.data);
-					startPage += 20;
-					uni.stopPullDownRefresh();
-					if (res.data.length < 20) {
-						this.isLoad = true;
-						return;
-					}
-				})
-			},
 			formatDate(date) {
 				return `${date.getMonth()+1}月${date.getDate()}日`
 			},
@@ -123,6 +111,29 @@
 				innerAudioContext.play()
 				this.active = index;
 			},
+			//page related
+			getNextPage() {
+				//获取演讲数据,倒序排列
+				db.collection('speeches').orderBy('createTime', 'desc').skip(startPage).limit(20).get().then(res => {
+					this.speeches = this.speeches.concat(res.data);
+					startPage += 20;
+					uni.stopPullDownRefresh();
+					if (res.data.length < 20) {
+						this.isLoad = true;
+						return;
+					}
+				})
+			},
+			navigateTo(item) {
+				console.log(item.author);
+				uni.navigateTo({
+					url: '../play/play'+'?author='+item.author
+					+'&createTime='+item.createTime
+					+'&duration='+item.duration
+					+'&title='+item.title
+					+'&audioUrl='+item.fileID
+				})
+			}
 		}
 	}
 </script>
