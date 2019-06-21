@@ -2,7 +2,7 @@
 	<view>
 		<imt-audio :src="src" :duration="duration"></imt-audio>
 		<view class="nx-list">
-			<view v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
+			<view @tap="navigateTo(item)" v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
 					{{item.author}} | {{item.title}}
 				</view>
@@ -89,18 +89,6 @@
 			this.getNextPage();
 		},
 		methods: {
-			getNextPage() {
-				//获取演讲数据,倒序排列
-				db.collection('speeches').orderBy('createTime', 'desc').skip(startPage).limit(20).get().then(res => {
-					this.speeches = this.speeches.concat(res.data);
-					startPage += 20;
-					uni.stopPullDownRefresh();
-					if (res.data.length < 20) {
-						this.isLoad = true;
-						return;
-					}
-				})
-			},
 			formatDate(date) {
 				return `${date.getMonth()+1}月${date.getDate()}日`
 			},
@@ -132,6 +120,29 @@
 				// innerAudioContext.play()
 				// this.active = index;
 			},
+			//page related
+			getNextPage() {
+				//获取演讲数据,倒序排列
+				db.collection('speeches').orderBy('createTime', 'desc').skip(startPage).limit(20).get().then(res => {
+					this.speeches = this.speeches.concat(res.data);
+					startPage += 20;
+					uni.stopPullDownRefresh();
+					if (res.data.length < 20) {
+						this.isLoad = true;
+						return;
+					}
+				})
+			},
+			navigateTo(item) {
+				console.log(item.author);
+				uni.navigateTo({
+					url: '../play/play'+'?author='+item.author
+					+'&createTime='+item.createTime
+					+'&duration='+item.duration
+					+'&title='+item.title
+					+'&audioUrl='+item.fileID
+				})
+			}
 		}
 	}
 </script>
