@@ -3,23 +3,49 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "超演助手",
-				"enablePullDownRefresh": true//下拉刷新
+				"navigationBarTitleText": "演讲圈",
+				"enablePullDownRefresh": true //下拉刷新
 			}
+		}, {
+			"path": "pages/upload/upload",
+			"style": {}
+		}, {
+			"path": "pages/play/play",
+			"style": {}
+		}, {
+			"path": "pages/speak/speak",
+			"style": {}
 		}
 	    ,{
-            "path" : "pages/upload/upload",
+            "path" : "pages/my/my",
             "style" : {}
-        },
-		{
-		    "path" : "pages/play/play",
-		    "style" : {}
-		}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "超演助手",
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#f7f7f7",
 		"backgroundColor": "#f7f7f7"
+	},
+	"tabBar": {
+		"color": "#353535",
+		"selectedColor": "#09bb07",
+		"backgroundColor": "#FAFAFA",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"text": "首页",
+			"iconPath": "static/home.png",
+			"selectedIconPath": "static/home-select.png"
+		}, {
+			"pagePath": "pages/speak/speak",
+			"text": "演讲",
+			"iconPath": "static/light.png",
+			"selectedIconPath": "static/light-select.png"
+		}, {
+			"pagePath": "pages/my/my",
+			"text": "我的",
+			"iconPath": "static/my.png",
+			"selectedIconPath": "static/my-select.png"
+		}]
 	}
 }

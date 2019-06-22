@@ -1,6 +1,5 @@
 <template>
 	<view>
-		<imt-audio :src="src" :duration="duration"></imt-audio>
 		<view class="nx-list">
 			<view @tap="navigateTo(item)" v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
@@ -39,11 +38,9 @@
 	const innerAudioContext = uni.createInnerAudioContext()
 	let startPage = 0; //起始页数
 	import uniFab from '../../components/uni-fab/uni-fab.vue';
-	import imtAudio from 'components/imt-audio/imt-audio'
 	export default {
 		components: {
-			uniFab,
-			imtAudio
+			uniFab
 		},
 		data() {
 			return {
