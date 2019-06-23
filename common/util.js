@@ -16,7 +16,9 @@ function formatTime(time) {
 }
 function formatDuration(duration) {
 	let m = Math.trunc(duration / 60) + '';
+	m = m.padStart(2,'0');
 	let s = Math.trunc(duration % 60) + '';
+	s = s.padStart(2,'0');
 	return `${m}:${s}`;
 }
 function formatLocation(longitude, latitude) {
@@ -73,5 +75,6 @@ var dateUtils = {
 module.exports = {
 	formatTime: formatTime,
 	formatLocation: formatLocation,
-	dateUtils: dateUtils
+	dateUtils: dateUtils,
+	formatDuration
 }

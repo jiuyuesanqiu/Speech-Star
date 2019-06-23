@@ -20,6 +20,10 @@
             "path" : "pages/my/my",
             "style" : {}
         }
+        ,{
+            "path" : "pages/publish/publish",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "超演助手",
