@@ -16,12 +16,7 @@
 			<text>{{displayDuration}}</text>
 			<text>10:00</text>
 		</view>
-		<!-- <button @tap="play" v-show="state==2&&!isPlay">
-			试听
-		</button>
-		<button @tap="pause" v-show="state==2&&isPlay">
-			试听中
-		</button> -->
+
 		<view style="display: flex;justify-content: space-between;padding: 0 74upx;height: 16.6%;margin-top: 4%;">
 			<view class="left" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
 				<image @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
@@ -44,16 +39,7 @@
 			</view>
 			
 		</view>
-		
-		<!-- <button @tap="stopRecord" v-show="state==1">
-			停止录音
-		</button>
-		<button  @tap="publish" v-show="state==2">
-			发布
-		</button>
-		<button @tap="aginRecord" v-show="state==2">
-			重录
-		</button> -->
+
 	</view>
 </template>
 
