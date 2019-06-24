@@ -15,12 +15,13 @@
 		}, {
 			"path": "pages/speak/speak",
 			"style": {}
-		}
-	    ,{
+		}, {
+			"path": "pages/recording/recording",
+			"style": {}
+		},{
             "path" : "pages/my/my",
             "style" : {}
-        }
-        ,{
+        },{
             "path" : "pages/publish/publish",
             "style" : {}
         }
