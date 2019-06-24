@@ -1,18 +1,57 @@
 <template>
 	<view>
-		<view>
-			{{displayDuration}}/10:00
+		<view style="width:100%;">
+			<img src="../../static/issueImg.png" alt="" style="width:100%;height: 770upx;">
 		</view>
-		<button @tap="play" v-show="state==2&&!isPlay">
+		<view style="width: 100%;font-size: 0;" v-show="state==0">
+			<img src="../../static/timg1.png" alt=""  style="width: 100%;height: 177upx;">
+		</view>
+		<view style="width: 100%;font-size: 0;" v-show="state==1">
+			<img src="../../static/timg1.gif" alt=""  style="width: 100%;height: 177upx;">
+		</view>
+		<view style="width: 100%;font-size: 0;" v-show="state==2">
+			<img src="../../static/timg1.png" alt=""  style="width: 100%;height: 177upx;">
+		</view>
+		
+		<view style="display: flex;justify-content: space-between;align-items: center;padding: 0 30upx;color: #a3a6af;font-size: 24upx;border-top: 3px solid #fff3ea;height: 40upx;">
+			<text>{{displayDuration}}</text>
+			<text>10:00</text>
+		</view>
+		<!-- <button @tap="play" v-show="state==2&&!isPlay">
 			试听
 		</button>
 		<button @tap="pause" v-show="state==2&&isPlay">
 			试听中
-		</button>
-		<button open-type="getUserInfo" @tap="startRecord" v-show="state==0">
-			开始录音
-		</button>
-		<button @tap="stopRecord" v-show="state==1">
+		</button> -->
+		<view style="display: flex;">
+			<view class="middle" style="display: flex;flex-direction: column;">
+				<view style="border: 2px solid #ffa72e;border-radius: 50%;width: 137upx;height: 137upx;display: flex;justify-content: center;align-items: center;">
+					<image @tap="startRecord" v-show="state==0" src="../../static/audioFill.png" style="width: 104upx;height: 104upx;border-radius: 50%;"></image>
+					<image @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png" style="width: 104upx;height: 104upx;border-radius: 50%;"></image>
+					<text @tap="publish" v-show="state==2" style="width: 104upx;height: 104upx;line-height: 104upx;text-align: center;border-radius: 50%;color: #ffaa33;font-size: 32upx;font-weight: bold;">发布</text>	
+				</view>
+				<view v-show="state==0" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">点击开始录音</view>
+				<view v-show="state==1" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">点击停止录音</view>
+			</view>
+			<view class="left" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+				<image @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
+				<view v-show="state==2&&!isPlay" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">试听</view>
+				<image @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
+				<view v-show="state==2&&isPlay" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">试听中</view>
+			</view>
+			<view class="right" style="display: flex;flex-direction: column;">
+				<image @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
+				<view v-show="state==2&&!isPlay" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">试听</view>
+				<image @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
+				<view v-show="state==2&&isPlay" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">试听中</view>
+			</view>
+			
+			
+			
+		
+		</view>
+		
+		<!-- <button @tap="stopRecord" v-show="state==1">
 			停止录音
 		</button>
 		<button  @tap="publish" v-show="state==2">
@@ -20,7 +59,7 @@
 		</button>
 		<button @tap="aginRecord" v-show="state==2">
 			重录
-		</button>
+		</button> -->
 	</view>
 </template>
 
@@ -131,5 +170,12 @@
 </script>
 
 <style>
+	button {
+		all:initial
+	}
+
+	button:after {
+		all:initial
+	}
 
 </style>
