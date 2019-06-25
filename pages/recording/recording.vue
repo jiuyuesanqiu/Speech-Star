@@ -6,8 +6,11 @@
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
 			<img src="../../static/timg1.png" alt=""  style="width: 100%;height:100%">
 		</view>
-		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==1">
-			<img src="../../static/timg1.gif" alt=""  style="width: 100%;height:100%">
+		<!-- <view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==1">
+			<img src="../../static/timg11.gif" alt=""  style="width: 100%;height:100%">
+		</view> -->
+		<view class="bg-gradual-yellow" style="width: 100%;height: 15.10%;font-size: 0;">
+			<image src="../../static/timg1.gif" class="gif-black response" style="width: 100%;height:100%"></image>
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==2">
 			<img src="../../static/timg1.png" alt=""  style="width: 100%;height:100%">
