@@ -1,19 +1,22 @@
 <template>
 	<view class="page" style="height: 100%;">
 		<view style="width:100%;height: 62.597%;">
-			<img src="../../static/issueImg.png" alt="" style="width:100%;height:100%">
+			<image src="../../static/issueImg.png" alt="" style="width:100%;height:100%" />
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
-			<img src="../../static/timg1.png" alt=""  style="width: 100%;height:100%">
+			<image src="../../static/timg1.png" alt=""  style="width: 100%;height:100%" />
 		</view>
-		<!-- <view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==1">
-			<img src="../../static/timg11.gif" alt=""  style="width: 100%;height:100%">
-		</view> -->
-		<view class="bg-gradual-yellow" style="width: 100%;height: 15.10%;font-size: 0;">
-			<image src="../../static/timg1.gif" class="gif-black response" style="width: 100%;height:100%"></image>
+		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
+			<image src="../../static/timg1.png" alt=""  style="width: 100%;height:100%" />
+		</view>
+		<view class="margin radius bg-gradual-green shadow-blur">
+			<image src="https://image.weilanwl.com/gif/wave.gif" mode="scaleToFill" class="gif-black response" style="height:100upx"></image>
+		</view>
+		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==1">
+			<image src="../../static/timg11.gif" alt=""  style="width: 100%;height:100%" />
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==2">
-			<img src="../../static/timg1.png" alt=""  style="width: 100%;height:100%">
+			<image src="../../static/timg1.png" alt=""  style="width: 100%;height:100%" />
 		</view>
 		<view style="display: flex;justify-content: space-between;align-items: center;padding: 0 30upx;color: #a3a6af;font-size: 24upx;border-top: 4px solid #fff3ea;height: 3.356%;">
 			<text>{{displayDuration}}</text>
