@@ -11,10 +11,10 @@
 			请完成微信授权以继续使用
 		</view>
 		<view class="" style="width: 100%;display: flex;justify-content: center;">
-			<button @getuserinfo="getInfo" open-type="getUserInfo" style="color: #fff;font-size: 32upx;background-color: #ffa22c;height: 88upx;width: 77%;display:flex;justify-content: center;align-items: center;border-radius: 44upx;">授权登录</button>
+			<button @getuserinfo="getInfo" open-type="getUserInfo" style="color: #fff;font-size: 32upx;background-color: #09BB07;height: 88upx;width: 77%;display:flex;justify-content: center;align-items: center;border-radius: 44upx;">授权登录</button>
 		</view>
 		<view class="" style="width: 100%;display: flex;justify-content: center;">
-			<button @tap="toRecording" style="color: #fff;font-size: 32upx;background-color: #ffa22c;height: 88upx;width: 77%;display:flex;justify-content: center;align-items: center;border-radius: 44upx;">开始演讲</button>
+			<button @tap="toRecording" style="color: #fff;font-size: 32upx;background-color: #09BB07;height: 88upx;width: 77%;display:flex;justify-content: center;align-items: center;border-radius: 44upx;">开始演讲</button>
 		</view>
 		
 	</view>

@@ -1,28 +1,27 @@
 <template>
 	<view class="page" style="height: 100%;">
 		<view style="width:100%;height: 62.597%;">
-			<image src="../../static/issueImg.png" alt="" style="width:100%;height:100%" />
+			<image src="../../static/issueImg.png" alt="" style="width:100%;height:100%"></image>
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
-			<image src="../../static/timg1.png" alt=""  style="width: 100%;height:100%" />
+			<image src="../../static/timg1.png" alt="" style="width: 100%;height:100%"></image>
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
-			<image src="../../static/timg1.png" alt=""  style="width: 100%;height:100%" />
+			<image src="../../static/timg1.png" alt="" style="width: 100%;height:100%"></image>
 		</view>
 		<view class="margin radius bg-gradual-green shadow-blur">
 			<image src="https://image.weilanwl.com/gif/wave.gif" mode="scaleToFill" class="gif-black response" style="height:100upx"></image>
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==1">
-			<image src="../../static/timg11.gif" alt=""  style="width: 100%;height:100%" />
+			<image src="../../static/timg11.gif" alt="" style="width: 100%;height:100%"></image>
 		</view>
 		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==2">
-			<image src="../../static/timg1.png" alt=""  style="width: 100%;height:100%" />
+			<image src="../../static/timg1.png" alt="" style="width: 100%;height:100%"></image>
 		</view>
 		<view style="display: flex;justify-content: space-between;align-items: center;padding: 0 30upx;color: #a3a6af;font-size: 24upx;border-top: 4px solid #fff3ea;height: 3.356%;">
 			<text>{{displayDuration}}</text>
 			<text>10:00</text>
 		</view>
-
 		<view style="display: flex;justify-content: space-between;padding: 0 74upx;height: 16.6%;margin-top: 4%;">
 			<view class="left" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
 				<image @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
@@ -34,7 +33,7 @@
 				<view style="border: 2px solid #ffa72e;border-radius: 50%;width: 137upx;height: 137upx;display: flex;justify-content: center;align-items: center;">
 					<image @tap="startRecord" v-show="state==0" src="../../static/audioFill.png" style="width: 104upx;height: 104upx;border-radius: 50%;"></image>
 					<image @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png" style="width: 104upx;height: 104upx;border-radius: 50%;"></image>
-					<text @tap="publish" v-show="state==2" style="width: 104upx;height: 104upx;line-height: 104upx;text-align: center;border-radius: 50%;color: #ffaa33;font-size: 32upx;font-weight: bold;">发布</text>	
+					<text @tap="publish" v-show="state==2" style="width: 104upx;height: 104upx;line-height: 104upx;text-align: center;border-radius: 50%;color: #ffaa33;font-size: 32upx;font-weight: bold;">发布</text>
 				</view>
 				<view v-show="state==0" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">点击开始录音</view>
 				<view v-show="state==1" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">点击停止录音</view>
@@ -43,7 +42,7 @@
 				<image @tap="aginRecord" v-show="state==2" src="../../static/reload.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
 				<view v-show="state==2" style="color: #7d7f82;font-size: 24upx;">重录</view>
 			</view>
-			
+
 		</view>
 
 	</view>
@@ -156,15 +155,15 @@
 </script>
 
 <style>
-	.page{
+	.page {
 		background-color: #fff;
 	}
+
 	button {
-		all:initial
+		all: initial
 	}
 
 	button:after {
-		all:initial
+		all: initial
 	}
-
 </style>
