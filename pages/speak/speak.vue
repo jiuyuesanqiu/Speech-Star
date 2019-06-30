@@ -13,7 +13,7 @@
 		<view class="jurisdiction">
 			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">授权登录</button>
 		</view>
-		<view class="jurisdiction">
+		<view class="jurisdiction"v-show="isLogin">
 			<button class="getUserInfo" @tap="toRecording">开始演讲</button>
 		</view>
 
@@ -23,18 +23,36 @@
 	export default {
 		data() {
 			return {
-
+				isLogin:false
 			}
 		},
 		methods: {
-			getInfo(result) {
-				console.log(result);
-			},
 			toRecording() {
 				uni.navigateTo({
 					url: '../recording/recording'
 				})
 			}
+		},
+		onLoad (){
+			var that = this;
+			// 查看是否授权
+			wx.getSetting({
+				success: function (res) {
+					if (res.authSetting['scope.userInfo']) {
+						wx.getUserInfo({
+							success: function (res) {
+								//从数据库获取用户信息
+								console.log(res);
+								this.isLogin = true;
+								//用户已经授权过
+								// wx.switchTab({
+								// 	url: '/pages/index/index'
+								// })
+							}
+						});
+					}
+				}
+			})
 		}
 	}
 </script>
