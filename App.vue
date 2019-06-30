@@ -56,4 +56,17 @@
 	.text-error {
 		color: #e64340;
 	}
+	.wCenter{
+		display: flex;
+		justify-content: center;
+	}
+	.hCenter{
+		display: flex;
+		align-items: center;
+	}
+	.whCenter{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 </style>

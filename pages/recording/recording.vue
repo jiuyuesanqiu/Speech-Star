@@ -1,54 +1,90 @@
 <template>
-	<view class="page" style="height: 100%;">
-		<view style="width:100%;height: 62.597%;">
-			<image src="../../static/issueImg.png" alt="" style="width:100%;height:100%"></image>
+	<view class="page">
+		<view class="whCenter recordingTop">
+			<image class="topImg" src="../../static/microphone.jpg" alt=""></image>
 		</view>
-		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
-			<image src="../../static/timg1.png" alt="" style="width: 100%;height:100%"></image>
+		<view class="wave" v-show="state==0">
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
 		</view>
-		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==0">
-			<image src="../../static/timg1.png" alt="" style="width: 100%;height:100%"></image>
+		<view class="wave" v-show="state==1">
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
+			<waveMove></waveMove>
 		</view>
-		<view class="margin radius bg-gradual-green shadow-blur">
-			<image src="https://image.weilanwl.com/gif/wave.gif" mode="scaleToFill" class="gif-black response" style="height:100upx"></image>
+		<view class="wave" v-show="state==2">
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
+			<wave></wave>
 		</view>
-		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==1">
-			<image src="../../static/timg11.gif" alt="" style="width: 100%;height:100%"></image>
-		</view>
-		<view style="width: 100%;height: 15.10%;font-size: 0;" v-show="state==2">
-			<image src="../../static/timg1.png" alt="" style="width: 100%;height:100%"></image>
-		</view>
-		<view style="display: flex;justify-content: space-between;align-items: center;padding: 0 30upx;color: #a3a6af;font-size: 24upx;border-top: 4px solid #fff3ea;height: 3.356%;">
+		<view class="duration">
 			<text>{{displayDuration}}</text>
 			<text>10:00</text>
 		</view>
-		<view style="display: flex;justify-content: space-between;padding: 0 74upx;height: 16.6%;margin-top: 4%;">
-			<view class="left" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
-				<image @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
-				<view v-show="state==2&&!isPlay" style="color: #7d7f82;font-size: 24upx;">试听</view>
-				<image @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
-				<view v-show="state==2&&isPlay" style="color: #7d7f82;font-size: 24upx;">试听中</view>
+		<view class="footer">
+			<view class="footerL">
+				<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png"></image>
+				<view class="playText" v-show="state==2&&!isPlay">试听</view>
+				<image class="playImg" @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png"></image>
+				<view class="playText" v-show="state==2&&isPlay">试听中</view>
 			</view>
-			<view class="middle" style="display: flex;flex-direction: column;">
-				<view style="border: 2px solid #ffa72e;border-radius: 50%;width: 137upx;height: 137upx;display: flex;justify-content: center;align-items: center;">
-					<image @tap="startRecord" v-show="state==0" src="../../static/audioFill.png" style="width: 104upx;height: 104upx;border-radius: 50%;"></image>
-					<image @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png" style="width: 104upx;height: 104upx;border-radius: 50%;"></image>
-					<text @tap="publish" v-show="state==2" style="width: 104upx;height: 104upx;line-height: 104upx;text-align: center;border-radius: 50%;color: #ffaa33;font-size: 32upx;font-weight: bold;">发布</text>
+			<view class="footerM">
+				<view class="record">
+					<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
+					<image class="recordImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
+					<text class="recordIssue" @tap="publish" v-show="state==2">发布</text>
 				</view>
-				<view v-show="state==0" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">点击开始录音</view>
-				<view v-show="state==1" style="color: #7d7f82;font-size: 24upx;padding-top: 20upx;">点击停止录音</view>
+				<view class="recordText" v-show="state==0">点击开始录音</view>
+				<view class="recordText" v-show="state==1">点击停止录音</view>
 			</view>
-			<view class="right" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
-				<image @tap="aginRecord" v-show="state==2" src="../../static/reload.png" style="width: 60upx;height: 60upx;border-radius: 50%;"></image>
-				<view v-show="state==2" style="color: #7d7f82;font-size: 24upx;">重录</view>
+			<view class="footerR">
+				<image class="footerRImg" @tap="aginRecord" v-show="state==2" src="../../static/reload.png"></image>
+				<view class="reload" v-show="state==2">重录</view>
 			</view>
-
 		</view>
-
 	</view>
 </template>
 
 <script>
+	import wave from '../../components/wave.vue'
+	import waveMove from '../../components/waveMove.vue'
 	let {
 		formatDuration
 	} = require('../../common/util.js');
@@ -83,6 +119,10 @@
 			displayDuration() {
 				return formatDuration(this.duration);
 			}
+		},
+		components: {
+			wave,
+			waveMove
 		},
 		methods: {
 			timedCount() {
@@ -154,9 +194,10 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.page {
 		background-color: #fff;
+		height: 100%;
 	}
 
 	button {
@@ -165,5 +206,108 @@
 
 	button:after {
 		all: initial
+	}
+
+	.recordingTop {
+		width: 100%;
+		height: 62.597%;
+		background-color: #F8F8F8;
+	}
+
+	.topImg {
+		width: 50%;
+		height: 45%;
+		border-radius: 20upx;
+	}
+
+	.wave {
+		display: flex;
+		width: 100%;
+		height: 15.10%;
+	}
+
+	.duration {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 30upx;
+		color: #a3a6af;
+		font-size: 24upx;
+		border-top: 4px solid #74ED74;
+		height: 3.356%;
+	}
+
+	.footer {
+		display: flex;
+		justify-content: space-between;
+		height: 16.6%;
+		margin-top: 4%;
+	}
+
+	.footerL,.footerR {
+		display: flex;
+		width: 30%;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.footerM {
+		display: flex;
+		width: 40%;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		padding-top: 20upx;
+	}
+
+	.playImg {
+		width: 60upx;
+		height: 60upx;
+		border-radius: 50%;
+	}
+
+	.playText {
+		color: #7d7f82;
+		font-size: 24upx;
+	}
+
+	.record {
+		border: 2px solid #09BB07;
+		border-radius: 50%;
+		width: 137upx;
+		height: 137upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.recordImg {
+		width: 104upx;
+		height: 104upx;
+		border-radius: 50%;
+	}
+
+	.recordIssue {
+		width: 104upx;
+		height: 104upx;
+		line-height: 104upx;
+		text-align: center;
+		border-radius: 50%;
+		color: #09BB07;
+		font-size: 32upx;
+		font-weight: bold;
+	}
+
+	.recordText {
+		color: #7d7f82;
+		font-size: 24upx;
+		padding-top: 20upx;
+	}
+	.footerRImg{
+		width: 60upx;height: 60upx;border-radius: 50%;
+	}
+	.reload{
+		color: #7d7f82;font-size: 24upx;
 	}
 </style>

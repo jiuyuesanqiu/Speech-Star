@@ -1,51 +1,108 @@
 <template>
-	<view style="background-color: #fff;height: 100%;">
-		<view style="display: flex;align-items: center;justify-content: center;flex-direction: column;height: 400upx;">
-			<image src="../../static/microphone.jpg" alt="" style="width: 158upx;height: 158upx;border-radius: 24%;" />
-			<view style="color: #292a2e;font-size: 34upx;font-weight: bold;margin-top: 20upx;">演讲口才</view>
+	<view class="page">
+		<view class="speakTop">
+			<image class="topImg" src="../../static/microphone.jpg" alt="" />
+			<view class="topText">演讲口才</view>
 		</view>
-		<view style="font-size: 30upx;color: #000;text-align: center;">
+		<view class="topDes">
 			欢迎进入演讲圈，来和我们一起演讲吧！
 		</view>
-		<view style="font-size: 22upx;color: #838689;text-align: center;height: 90upx;line-height: 90upx;margin-top: 10upx;">
+		<view class="topJurisdiction">
 			请完成微信授权以继续使用
 		</view>
-		<view class="" style="width: 100%;display: flex;justify-content: center;">
-			<button @getuserinfo="getInfo" open-type="getUserInfo" style="color: #fff;font-size: 32upx;background-color: #09BB07;height: 88upx;width: 77%;display:flex;justify-content: center;align-items: center;border-radius: 44upx;">授权登录</button>
+		<view class="jurisdiction">
+			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">授权登录</button>
 		</view>
-		<view class="" style="width: 100%;display: flex;justify-content: center;">
-			<button @tap="toRecording" style="color: #fff;font-size: 32upx;background-color: #09BB07;height: 88upx;width: 77%;display:flex;justify-content: center;align-items: center;border-radius: 44upx;">开始演讲</button>
+		<view class="jurisdiction">
+			<button class="getUserInfo" @tap="toRecording">开始演讲</button>
 		</view>
-		
+
 	</view>
 </template>
 <script>
 	export default {
-		data(){
+		data() {
 			return {
-				
+
 			}
 		},
-		methods:{
-			getInfo(result){
+		methods: {
+			getInfo(result) {
 				console.log(result);
 			},
-			toRecording(){
+			toRecording() {
 				uni.navigateTo({
-					url:'../recording/recording'
+					url: '../recording/recording'
 				})
 			}
 		}
 	}
-	
-	
 </script>
-<style>
+<style scoped>
 	button {
-		all:initial
+		all: initial
 	}
-	
+
 	button:after {
-		all:initial
+		all: initial
+	}
+
+	.page {
+		background-color: #fff;
+		height: 100%;
+	}
+
+	.speakTop {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		height: 400upx;
+	}
+
+	.topImg {
+		width: 158upx;
+		height: 158upx;
+		border-radius: 24%;
+	}
+
+	.topText {
+		color: #292a2e;
+		font-size: 34upx;
+		font-weight: bold;
+		margin-top: 20upx;
+	}
+
+	.topDes {
+		font-size: 30upx;
+		color: #000;
+		text-align: center;
+	}
+
+	.topJurisdiction {
+		font-size: 22upx;
+		color: #838689;
+		text-align: center;
+		height: 90upx;
+		line-height: 90upx;
+		margin-top: 10upx;
+	}
+
+	.jurisdiction {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.getUserInfo {
+		color: #fff;
+		font-size: 32upx;
+		background-color: #09BB07;
+		height: 88upx;
+		width: 77%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 44upx;
 	}
 </style>
