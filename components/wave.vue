@@ -19,14 +19,17 @@
 </script>
 
 <style scoped>
-	.waveContent{
-		width: 100%;height: 100%;
+	.waveContent {
+		width: 100%;
+		height: 100%;
 	}
-	.waveContent text{
+
+	.waveContent text {
 		background-color: #D7D7D7;
 		width: 6upx;
 		margin-left: 14upx;
 	}
+
 	.wave1 {
 		height: 20%;
 	}
