@@ -210,7 +210,7 @@
 
 	.recordingTop {
 		width: 100%;
-		height: 62.597%;
+		height: 60%;
 		background-color: #F8F8F8;
 	}
 
