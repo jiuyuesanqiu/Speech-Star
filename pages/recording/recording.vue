@@ -187,7 +187,7 @@
 			 */
 			publish() {
 				uni.navigateTo({
-					url: `../publish/publish?tempSrc=${tempSrc}`
+					url: `../publish/publish?tempSrc=${tempSrc}&duration=${this.duration}`
 				})
 			}
 		}

@@ -42,7 +42,6 @@
 				uploadShow: true, //上传按钮是否显示
 				title: '',
 				author: '',
-				authorNumber: '',
 				progress: 0,
 				duration: 0,
 				loading: false,
@@ -95,7 +94,7 @@
 				//获取文件后缀
 				let suffix = file.name.substring(file.name.lastIndexOf('.'));
 				//生成文件名
-				let cloudPath = '' + this.authorNumber + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
+				let cloudPath = '' + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
 				//上传到云存储
 				const uploadTask = wx.cloud.uploadFile({
 					cloudPath: cloudPath,
