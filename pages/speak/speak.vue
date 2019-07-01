@@ -23,7 +23,7 @@
 	export default {
 		data() {
 			return {
-				isLogin:false
+				isLogin: false
 			}
 		},
 		methods: {
@@ -33,14 +33,14 @@
 				})
 			}
 		},
-		onLoad (){
+		onLoad() {
 			var that = this;
 			// 查看是否授权
 			wx.getSetting({
-				success: function (res) {
+				success: function(res) {
 					if (res.authSetting['scope.userInfo']) {
 						wx.getUserInfo({
-							success: function (res) {
+							success: function(res) {
 								//从数据库获取用户信息
 								// console.log(res);
 								that.isLogin = true;

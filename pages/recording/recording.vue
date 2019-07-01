@@ -245,7 +245,8 @@
 		margin-bottom: 4%;
 	}
 
-	.footerL,.footerR {
+	.footerL,
+	.footerR {
 		display: flex;
 		width: 30%;
 		flex-direction: column;
@@ -305,10 +306,15 @@
 		font-size: 24upx;
 		padding-top: 20upx;
 	}
-	.footerRImg{
-		width: 60upx;height: 60upx;border-radius: 50%;
+
+	.footerRImg {
+		width: 60upx;
+		height: 60upx;
+		border-radius: 50%;
 	}
-	.reload{
-		color: #7d7f82;font-size: 24upx;
+
+	.reload {
+		color: #7d7f82;
+		font-size: 24upx;
 	}
 </style>
