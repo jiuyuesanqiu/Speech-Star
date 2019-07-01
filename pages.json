@@ -20,15 +20,26 @@
 			"style": {}
 		},{
             "path" : "pages/my/my",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "我的"
+				}
         },{
             "path" : "pages/publish/publish",
             "style" : {}
-        }
-        ,{
+        },{
             "path" : "pages/login/login",
             "style" : {}
-        }
+        }, {
+			"path": "pages/myInfo/myInfo",
+			"style": {
+				"navigationBarTitleText": "我的资料"
+			}
+		}, {
+			"path": "pages/edit/edit",
+			"style": {
+				"navigationBarTitleText": "编辑资料"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "超演助手",

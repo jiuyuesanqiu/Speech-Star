@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="d-flex bg-white" style="padding: 68upx 26upx;margin-bottom: 16upx;">
+		<view class="d-flex bg-white" @tap="toInformation" style="padding: 68upx 26upx;margin-bottom: 16upx;">
 			<view style="padding: 20upx;">
 				<image style="width: 128upx; height: 128upx;" class="radius" :src="userInfo.avatarUrl" mode=""></image>
 			</view>
@@ -45,7 +45,11 @@
 			}
 		},
 		methods: {
-
+			toInformation() {
+				uni.navigateTo({
+					url: '../myInfo/myInfo'
+				})
+			}
 		},
 		components: {
 			nxCell
@@ -53,7 +57,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	/* 恢复button默认值 */
 	button {
 		all: initial;
