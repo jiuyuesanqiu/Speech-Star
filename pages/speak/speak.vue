@@ -7,16 +7,16 @@
 		<view class="topDes">
 			欢迎进入演讲圈，来和我们一起演讲吧！
 		</view>
-		<view class="topJurisdiction">
+		<view class="topJurisdiction" v-if="isLogin"></view>
+		<view class="topJurisdiction" v-else>
 			请完成微信授权以继续使用
 		</view>
-		<view class="jurisdiction">
-			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">授权登录</button>
-		</view>
-		<view class="jurisdiction"v-show="isLogin">
+		<view class="jurisdiction" v-if="isLogin">
 			<button class="getUserInfo" @tap="toRecording">开始演讲</button>
 		</view>
-
+		<view class="jurisdiction" v-else>
+			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">授权登录</button>
+		</view>
 	</view>
 </template>
 <script>
@@ -43,7 +43,7 @@
 							success: function (res) {
 								//从数据库获取用户信息
 								console.log(res);
-								this.isLogin = true;
+								that.isLogin = true;
 								//用户已经授权过
 								// wx.switchTab({
 								// 	url: '/pages/index/index'
