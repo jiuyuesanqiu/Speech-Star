@@ -8,8 +8,14 @@ Vue.prototype.$store = store
 
 App.mpType = 'app'
 
+Vue.mixin({
+	onLoad() {
+		wx.hideShareMenu()
+	}
+})
+
 const app = new Vue({
 	store,
-    ...App
+	...App
 })
 app.$mount()
