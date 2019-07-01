@@ -3,7 +3,7 @@
 		<view class="whCenter recordingTop">
 			<image class="topImg" src="../../static/microphone.jpg" alt=""></image>
 		</view>
-		<view class="wave" v-show="state==0">
+		<view class="wave" v-if="state==0">
 			<wave></wave>
 			<wave></wave>
 			<wave></wave>
@@ -20,7 +20,7 @@
 			<wave></wave>
 			<wave></wave>
 		</view>
-		<view class="wave" v-show="state==1">
+		<view class="wave" v-if="state==1">
 			<waveMove></waveMove>
 			<waveMove></waveMove>
 			<waveMove></waveMove>
@@ -37,7 +37,7 @@
 			<waveMove></waveMove>
 			<waveMove></waveMove>
 		</view>
-		<view class="wave" v-show="state==2">
+		<view class="wave" v-if="state==2">
 			<wave></wave>
 			<wave></wave>
 			<wave></wave>
@@ -210,7 +210,7 @@
 
 	.recordingTop {
 		width: 100%;
-		height: 62.597%;
+		height: 60%;
 		background-color: #F8F8F8;
 	}
 
@@ -242,6 +242,7 @@
 		justify-content: space-between;
 		height: 16.6%;
 		margin-top: 4%;
+		margin-bottom: 4%;
 	}
 
 	.footerL,.footerR {
@@ -258,7 +259,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-between;
-		padding-top: 20upx;
+		padding-top: 10upx;
 	}
 
 	.playImg {
