@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<view class="d-flex bg-white border-bottom" @tap="toEdit" style="margin: 0 0 0 26upx;padding: 20upx 20upx 20upx 0;">
 			<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
 				<view style="font-size: 40upx;line-height: 68upx;height: 68upx;">
@@ -98,5 +98,7 @@
 </script>
 
 <style scoped>
-	
+	.page{
+		background-color: #fff;
+	}
 </style>
