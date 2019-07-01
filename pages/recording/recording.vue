@@ -135,13 +135,30 @@
 			 * 开始录音
 			 */
 			startRecord() {
-				//开始录音
-				recorderManager.start();
-				this.state = 1;
-				//开始计时
-				timeoutID = setTimeout(() => {
-					this.timedCount()
-				}, 1000);
+				const self = this;
+				//判断是否开启录音权限
+				wx.getSetting({
+					success(res) {
+						if (!res.authSetting['scope.record']) {
+							uni.showModal({
+								showCancel:false,
+								content:'请先打开录音开关',
+								success() {
+									uni.openSetting()
+								}
+							})
+							return;
+						}else{
+							//开始录音
+							recorderManager.start(options);
+							self.state = 1;
+							//开始计时
+							timeoutID = setTimeout(() => {
+								self.timedCount()
+							}, 1000);
+						}
+					}
+				})
 			},
 			/**
 			 * 停止录音

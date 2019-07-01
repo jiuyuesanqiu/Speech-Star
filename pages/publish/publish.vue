@@ -19,6 +19,9 @@
 </template>
 
 <script>
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -31,8 +34,12 @@
 			}
 		},
 		onLoad(option) {
+			console.log(option)
 			this.tempSrc = option.tempSrc;
 			this.duration = option.duration;
+		},
+		computed: {
+			...mapState(['userInfo'])
 		},
 		methods: {
 			publish() {
@@ -57,7 +64,7 @@
 				db.collection('speeches').add({
 					data: {
 						title: this.title, //演讲标题
-						author: this.author,
+						author: this.userInfo.nickName,
 						fileID: this.tempSrc,
 						createTime: new Date(),
 						listener: 0, //听众人数
