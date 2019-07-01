@@ -32,7 +32,7 @@
 	//设置会终止其他应用或微信内的音乐
 	wx.setInnerAudioOption({
 		mixWithOther: false,
-		obeyMuteSwitch:false//不遵循IOS静音开关
+		obeyMuteSwitch: false //不遵循IOS静音开关
 	});
 	//#endif
 	const innerAudioContext = uni.createInnerAudioContext()
@@ -63,8 +63,8 @@
 				long: 0,
 				active: -1, //当前被点击播放的按钮
 				isLoad: false,
-				src:'cloud://test-cjyjj.7465-test-cjyjj-1259470932/156085715105895.m4a',
-				duration:65.806,
+				src: 'cloud://test-cjyjj.7465-test-cjyjj-1259470932/156085715105895.m4a',
+				duration: 65.806,
 				now: 0
 			}
 		},
@@ -81,7 +81,7 @@
 		//下拉刷新
 		onPullDownRefresh() {
 			startPage = 0;
-			this.isLoad=false;
+			this.isLoad = false;
 			this.speeches = [];
 			this.getNextPage();
 		},
@@ -103,10 +103,10 @@
 			/**
 			 * 播放音频
 			 */
-			play(fileID, index,duration) {
+			play(fileID, index, duration) {
 				this.duration = duration;
 				this.src = fileID;
-				console.log(this.src,duration)
+				console.log(this.src, duration)
 				// if (index == this.active) {
 				// 	innerAudioContext.stop();
 				// 	this.active = -1;
@@ -133,11 +133,11 @@
 			navigateTo(item) {
 				console.log(item.author);
 				uni.navigateTo({
-					url: '../play/play'+'?author='+item.author
-					+'&createTime='+item.createTime
-					+'&duration='+item.duration
-					+'&title='+item.title
-					+'&audioUrl='+item.fileID
+					url: '../play/play' + '?author=' + item.author +
+						'&createTime=' + item.createTime +
+						'&duration=' + item.duration +
+						'&title=' + item.title +
+						'&audioUrl=' + item.fileID
 				})
 			}
 		}
@@ -171,5 +171,4 @@
 	.nx-icon {
 		font-size: 42upx;
 	}
-
 </style>

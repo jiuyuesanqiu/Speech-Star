@@ -15,44 +15,38 @@
 			<button class="getUserInfo" @tap="toRecording">开始演讲</button>
 		</view>
 		<view class="jurisdiction" v-else>
-			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">授权登录</button>
+			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">点击登录</button>
 		</view>
 	</view>
 </template>
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 	export default {
 		data() {
-			return {
-				isLogin:false
-			}
+			return {}
+		},
+		computed: {
+			...mapState(['isLogin'])
 		},
 		methods: {
+			getInfo(res) {
+				console.log(res)
+			},
 			toRecording() {
 				uni.navigateTo({
 					url: '../recording/recording'
 				})
 			}
 		},
-		onLoad (){
-			var that = this;
-			// 查看是否授权
-			wx.getSetting({
-				success: function (res) {
-					if (res.authSetting['scope.userInfo']) {
-						wx.getUserInfo({
-							success: function (res) {
-								//从数据库获取用户信息
-								// console.log(res);
-								that.isLogin = true;
-								//用户已经授权过
-								// wx.switchTab({
-								// 	url: '/pages/index/index'
-								// })
-							}
-						});
-					}
-				}
-			})
+		onLoad() {
+			if(!this.isLogin){
+				uni.redirectTo({
+					url:'../login/login?backUrl=../speak/speak&isTab=true'
+				})
+			}
 		}
 	}
 </script>

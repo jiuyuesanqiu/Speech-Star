@@ -25,6 +25,10 @@
             "path" : "pages/publish/publish",
             "style" : {}
         }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "超演助手",
