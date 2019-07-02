@@ -5,16 +5,31 @@
 	wx.cloud.init({
 		env: 'test-cjyjj'
 	});
+	const db = wx.cloud.database();
 	export default {
 		onLaunch: function() {
 			let self = this;
-			wx.getUserInfo({
-				success: function(res) {
-					self.login(res.userInfo);
+			//查询云数据库是否有此用户数据
+			db.collection('user').get().then(res => {
+				if(res.data.length>0){
+					self.login(res.data[0]);
+				}else{
+					//没有则调用微信接口获取
+					wx.getUserInfo({
+						success: function(res) {
+							self.login(res.userInfo);
+							//上传用户信息到云数据库
+							db.collection('user').add({
+								data: res.userInfo
+							}).then(res => {
+								console.log('保存用户数据到云数据库')
+							})
+						}
+					})
 				}
 			})
 		},
-		methods:{
+		methods: {
 			...mapMutations(['login'])
 		},
 		onShow: function() {},
@@ -57,15 +72,18 @@
 	.text-error {
 		color: #e64340;
 	}
-	.wCenter{
+
+	.wCenter {
 		display: flex;
 		justify-content: center;
 	}
-	.hCenter{
+
+	.hCenter {
 		display: flex;
 		align-items: center;
 	}
-	.whCenter{
+
+	.whCenter {
 		display: flex;
 		justify-content: center;
 		align-items: center;

@@ -16,7 +16,7 @@
 				<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
 			</view>
 		</view>
-		<nx-cell icon="/static/disk.png" border title="我的作品"></nx-cell>
+		<!-- <nx-cell icon="/static/disk.png" border title="我的作品"></nx-cell> -->
 		<button open-type="contact">
 			<nx-cell icon="/static/service.png" title="我要吐槽"></nx-cell>
 		</button>
