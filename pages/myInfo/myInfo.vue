@@ -1,13 +1,13 @@
 <template>
 	<view class="page">
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="changeAvatar" style="margin: 0 0 0 26upx;padding: 20upx 20upx 20upx 0;">
-				<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+			<view class="d-flex border-bottom" @tap="changeAvatar" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;">
 						更换头像
 					</view>
 				</view>
-				<view class="d-flex align-center pr-2" style="">
+				<view class="d-flex align-center pr-2" style="height: 180upx;">
 					<image style="width: 128upx; height: 128upx;border-radius: 50%;" :src="userInfo.avatarUrl" mode=""></image>
 				</view>
 				<view class="d-flex align-center">
@@ -16,14 +16,14 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 26upx;padding: 20upx 20upx 20upx 0;">
-				<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						昵称
 					</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						{{userInfo.nickName}}
 					</view>
 				</view>
@@ -33,17 +33,17 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex" style="margin: 0 0 16upx 26upx;padding: 20upx 20upx 20upx 0;">
-				<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+			<view class="d-flex" style="margin: 0 0 16upx 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						性别
 					</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;" v-if="userInfo.gender==2">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==2">
 						女
 					</view>
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;" v-else="userInfo.gender==1">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==1">
 						男
 					</view>
 				</view>
@@ -53,15 +53,15 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 26upx;padding: 20upx 20upx 20upx 0;">
-				<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						生日
 					</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
-						1990-06-01
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
+						1996-06-01
 					</view>
 				</view>
 				<view class="d-flex align-center">
@@ -70,14 +70,14 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex" @tap="toEdit" style="margin: 0 0 16upx 26upx;padding: 20upx 20upx 20upx 0;">
-				<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+			<view class="d-flex" @tap="toEdit" style="margin: 0 0 16upx 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						所在城市
 					</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						{{userInfo.province}}
 					</view>
 				</view>
@@ -87,9 +87,9 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 26upx;padding: 20upx 20upx 20upx 0;">
-				<view class="d-flex flex-grow-1 align-center" style="padding: 20upx 0 20upx 6upx;">
-					<view style="font-size: 32upx;line-height: 68upx;height: 68upx;">
+			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						简介
 					</view>
 				</view>
@@ -111,7 +111,7 @@
 	export default {
 		data() {
 			return {
-				placeholder: '开始输入...'
+				placeholder: '小主很懒，还没有简介'
 			}
 		},
 		computed: {
@@ -189,10 +189,17 @@
 	.page {
 		/* background-color: #fff; */
 	}
-
+	
 	.container {
-		padding: 10px;
-	}
+        padding: 32upx;
+    }
+
+    #editor {
+        width: 100%;
+        height: 10%;
+        background-color: #fff;
+		font-size: 32upx;
+    }
 
 	#editor {
 		width: 100%;
