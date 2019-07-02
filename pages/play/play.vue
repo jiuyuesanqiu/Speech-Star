@@ -50,7 +50,6 @@
 			}
 		},
 		onLoad: function(e) {
-			console.log("onload")
 			this.title = e.title;
 			this.author = e.author;
 			this.duration_s = parseInt(e.duration);
@@ -60,10 +59,8 @@
 
 			//add listenner--start
 			innerAudioContext.onPlay(() => {
-				console.log("开始播放");
 			});
 			innerAudioContext.onPause(() => {
-				console.log("暂停播放");
 			});
 			innerAudioContext.onEnded(() => {
 				this.playTime = 0;
@@ -72,28 +69,14 @@
 			var vueObject = this;
 			innerAudioContext.onTimeUpdate(function() {
 				//this.changePlayTimeText(innerAudioContext.currentTime);
-				console.log(innerAudioContext.currentTime);
 				vueObject.changePlayTimeText(innerAudioContext.currentTime);
 			});
 			//add listenner end
 			innerAudioContext.playTime = 0;
 			this.changePlayTimeText(0);
 		},
-		onShow() {
-			console.log("show")
-		},
-		onReady() {
-			console.log("ready");
-		},
-		onHide() {
-			console.log("stop")
-		},
 		onUnload() {
-			console.log("unload")
 			innerAudioContext.stop();
-		},
-		onBackPress() {
-			console.log("backPress")
 		},
 		methods: {
 			changePlayTimeText: function(value) {
@@ -103,10 +86,8 @@
 			play: function() {
 				innerAudioContext.play();
 				this.playing = true;
-				console.log("play");
 			},
 			pause: function() {
-				console.log("pause")
 				innerAudioContext.pause();
 				this.playing = false;
 			},
@@ -117,7 +98,6 @@
 				 */
 				innerAudioContext.seek(e.target.value);
 				this.pause();
-				console.log("seek");
 				this.changePlayTimeText(e.target.value);
 				
 /* 				var vueObject = this;

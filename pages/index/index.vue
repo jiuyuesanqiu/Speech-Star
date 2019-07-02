@@ -9,13 +9,13 @@
 					<view>
 						{{formatDate(item.createTime)}} | {{formatDuration(item.duration)}}
 					</view>
-					<view class="nx-icon">
+					<!-- <view class="nx-icon">
 						<view class="d-inline-flex align-items-center" :class="active==index?'text-green':''" style="margin-left: 42upx;"
 						 @tap="play(item.fileID,index,item.duration)">
 							<text :class="active==index?'cuIcon-stop':'cuIcon-video'"></text>
 							<text style="font-size: 22upx;">{{active==index?'停止':'播放'}}</text>
 						</view>
-					</view>
+					</view> -->
 				</view>
 			</view>
 		</view>
@@ -131,7 +131,6 @@
 				})
 			},
 			navigateTo(item) {
-				console.log(item.author);
 				uni.navigateTo({
 					url: '../play/play' + '?author=' + item.author +
 						'&createTime=' + item.createTime +

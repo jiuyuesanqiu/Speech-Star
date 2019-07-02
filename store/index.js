@@ -16,15 +16,8 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		login(state, provider) {
-			console.log(provider)
 			state.isLogin = true;
 			state.userInfo = provider;
-		},
-		logout(state) {
-			state.login = false;
-			state.token = '';
-			state.userName = '';
-			state.avatarUrl = '';
 		}
 	}
 })

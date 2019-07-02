@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<view class="load-progress" :class="progress!=0?'show':'hide'" :style="[{top:'0px'}]">
+			<view class="load-progress-bar bg-green" :style="[{transform: 'translate3d(-' + (100-progress) + '%, 0px, 0px)'}]"></view>
+			<view class="load-progress-spinner text-green"></view>
+		</view>
 		<view class="cu-form-group">
 			<view class="title">
 				标题
@@ -19,6 +23,7 @@
 </template>
 
 <script>
+	const db = wx.cloud.database();
 	import {
 		mapState
 	} from 'vuex';
@@ -34,9 +39,9 @@
 			}
 		},
 		onLoad(option) {
-			console.log(option)
-			this.tempSrc = option.tempSrc;
-			this.duration = option.duration;
+			let file = uni.getStorageSync('file');
+			this.tempSrc = file.tempSrc;
+			this.duration = file.duration;
 		},
 		computed: {
 			...mapState(['userInfo'])
@@ -49,8 +54,9 @@
 				//上传到云存储
 				const uploadTask = wx.cloud.uploadFile({
 					cloudPath: cloudPath,
-					filePath: this.tempSrc,
+					filePath: self.tempSrc,
 					success: res => {
+						console.log('插入数据')
 						self.insert(res.fileID)
 					}
 				})
@@ -65,7 +71,7 @@
 					data: {
 						title: this.title, //演讲标题
 						author: this.userInfo.nickName,
-						fileID: this.tempSrc,
+						fileID: fileID,
 						createTime: new Date(),
 						listener: 0, //听众人数
 						comment: 0, //评论人数
@@ -73,12 +79,17 @@
 					}
 				}).then(res => {
 					this.progress = 100;
-					uni.showToast({
-						title: '上传成功',
-					})
 					this.loading = false;
 					this.progress = 0;
-					return;
+					uni.setStorageSync('parameter',{
+						author:this.userInfo.nickName,
+						duration:this.duration,
+						title:this.title,
+						audioUrl:fileID
+					})
+					uni.reLaunch({
+						url:'../success/success'
+					})
 				})
 			}
 		}

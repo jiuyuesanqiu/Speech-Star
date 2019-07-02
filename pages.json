@@ -40,6 +40,12 @@
 				"navigationBarTitleText": "编辑资料"
 			}
 		}
+        ,{
+            "path" : "pages/success/success",
+            "style" : {
+				"navigationBarTitleText": "上传成功"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "超演助手",
