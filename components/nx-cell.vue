@@ -3,7 +3,7 @@
 		<view class="nx-cell-left d-flex align-items-center">
 			<image class="nx-cell-icon" :src="icon"></image>
 		</view>
-		<view class="nx-cell-right flex-grow-1 d-flex" :class="border?'border-b':''">
+		<view class="nx-cell-right flex-grow-1 d-flex" :class="border?'border-bottom':''">
 			<view class="flex-grow-1">
 				<text>{{title}}</text>
 			</view>

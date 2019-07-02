@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="nx-list">
-			<view @tap="navigateTo(item)" v-for="(item,index) in speeches" :key="item._id" class="nx-item">
+			<view @tap="navigateTo(item)" v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
 				<view class="nx-title">
 					{{item.author}} | {{item.title}}
 				</view>
@@ -152,7 +152,6 @@
 		background-color: #FFFFFF;
 		padding: 30upx 32upx;
 		line-height: 46upx;
-		border: 1upx solid #F3F3F3;
 	}
 
 	.nx-title {
