@@ -72,6 +72,7 @@
 			startPage = 0;
 			this.speeches = [];
 			this.getNextPage();
+			wx.showShareMenu()
 		},
 		onReachBottom() {
 			if (!this.isLoad) {

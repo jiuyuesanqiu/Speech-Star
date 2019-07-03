@@ -46,6 +46,9 @@
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==1">
 						男
 					</view>
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==0">
+						未知
+					</view>
 				</view>
 				<view class="d-flex align-center">
 					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
@@ -124,11 +127,6 @@
 			...mapState(['userInfo'])
 		},
 		onLoad() {
-			wx.getUserInfo({
-				success: (res) => {
-					console.log(res);
-				},
-			})
 		},
 		methods: {
 			/* getDate(type) {

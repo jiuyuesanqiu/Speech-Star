@@ -1,6 +1,9 @@
 <template>
 	<view>
-		<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">点击登录</button>
+		<view class="padding" style="margin-top: 400upx;">
+			<button class="weui-btn" type="primary" @getuserinfo="getInfo" open-type="getUserInfo">点击登录</button>
+			<button class="weui-btn" type="default" @tap="goHome">返回首页</button>
+		</view>
 	</view>
 </template>
 
@@ -8,11 +11,12 @@
 	import {
 		mapMutations
 	} from 'vuex';
+	const db = wx.cloud.database();
 	export default {
 		data() {
 			return {
-				isTab:false,
-				backUrl:''
+				isTab: false,
+				backUrl: ''
 			}
 		},
 		onLoad(option) {
@@ -21,18 +25,29 @@
 		},
 		methods: {
 			getInfo(e) {
-				if(e.detail.errMsg=="getUserInfo:ok"){
+				if (e.detail.errMsg == "getUserInfo:ok") {
 					this.login(e.detail.userInfo);
-					if(this.isTab){
+					//上传用户信息到云数据库
+					db.collection('user').add({
+						data: e.detail.userInfo
+					}).then(res => {
+						console.log('保存用户数据到云数据库')
+					})
+					if (this.isTab) {
 						uni.switchTab({
-							url:this.backUrl
+							url: this.backUrl
 						})
-					}else{
+					} else {
 						uni.navigateTo({
-							url:this.backUrl
+							url: this.backUrl
 						})
 					}
 				}
+			},
+			goHome() {
+				uni.switchTab({
+					url: '../index/index'
+				})
 			},
 			...mapMutations(['login'])
 		}
