@@ -48,6 +48,13 @@
 		},
 		methods: {
 			publish() {
+				if(this.title == ''){
+					uni.showToast({
+						icon:'none',
+						title:'请输入演讲标题'
+					})
+					return;
+				}
 				const self = this;
 				//生成文件名
 				let cloudPath = '' + new Date().getTime() + Math.floor(Math.random() * 100) + '.aac';
