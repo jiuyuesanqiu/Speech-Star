@@ -78,6 +78,12 @@
 				this.getNextPage();
 			}
 		},
+		onShareAppMessage() {
+			return {
+				title: '每天10分钟，演讲好轻松',
+				path: '/pages/index/index'
+			}
+		},
 		//下拉刷新
 		onPullDownRefresh() {
 			startPage = 0;
