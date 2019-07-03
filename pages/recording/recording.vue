@@ -265,8 +265,8 @@
 	}
 
 	.topImg {
-		width: 50%;
-		height: 45%;
+		width: 30%;
+		height: 30%;
 		border-radius: 20upx;
 	}
 
