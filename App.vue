@@ -31,9 +31,7 @@
 		},
 		methods: {
 			...mapMutations(['login'])
-		},
-		onShow: function() {},
-		onHide: function() {}
+		}
 	}
 </script>
 
