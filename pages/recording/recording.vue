@@ -274,6 +274,7 @@
 		display: flex;
 		width: 100%;
 		height: 15.10%;
+		overflow: hidden;
 	}
 
 	.duration {
