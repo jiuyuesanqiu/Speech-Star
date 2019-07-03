@@ -28,7 +28,11 @@ const store = new Vuex.Store({
 		},
 		updateAvatar(state,url){
 			state.userInfo.avatarUrl = url;
-		}
+		},
+		updateNickName(state,nickName){
+			state.userInfo.nickName = nickName;
+		},
+		
 	}
 })
 
