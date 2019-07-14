@@ -42,9 +42,14 @@
 			}
 		},
 		onLoad() {
+			console.log(this.isLogin);
 			if(!this.isLogin){
 				uni.redirectTo({
 					url:'../login/login?backUrl=../speak/speak&isTab=true'
+				})
+			}else{
+				uni.navigateTo({
+					url:'../recording/recording'
 				})
 			}
 		}
