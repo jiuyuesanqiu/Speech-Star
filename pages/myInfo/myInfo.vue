@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex border-bottom" @tap="toEdit('设置名字','nikeName')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						昵称
@@ -46,22 +46,8 @@
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==1">
 						男
 					</view>
-				</view>
-				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
-				</view>
-			</view>
-		</view>
-		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
-				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						生日
-					</view>
-				</view>
-				<view class="d-flex align-center pr-2" style="">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						1996-06-01
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==0">
+						未知
 					</view>
 				</view>
 				<view class="d-flex align-center">
@@ -69,6 +55,25 @@
 				</view>
 			</view>
 		</view>
+		<!-- <picker mode="date" :value="date" start="1950-01-01" :end="endDate" @change="bindDateChange">
+			<view class="bg-white" style="width: 100%;">
+				<view class="d-flex border-bottom" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+					<view class="d-flex flex-grow-1 align-center">
+						<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
+							生日
+						</view>
+					</view>
+					<view class="d-flex align-center pr-2" style="">
+						<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
+							{{date}}
+						</view>
+					</view>
+					<view class="d-flex align-center">
+						<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					</view>
+				</view>
+			</view>
+		</picker>
 		<view class="bg-white" style="width: 100%;">
 			<view class="d-flex" @tap="toEdit" style="margin: 0 0 16upx 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
@@ -85,7 +90,7 @@
 					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
 				</view>
 			</view>
-		</view>
+		</view> 
 		<view class="bg-white" style="width: 100%;">
 			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
@@ -98,7 +103,7 @@
 		<view class="container bg-white">
 			<editor id="editor" class="" :placeholder="placeholder" @ready="onEditorReady"></editor>
 			<view style="text-align: right;">0/140</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -110,21 +115,41 @@
 	const db = wx.cloud.database();
 	export default {
 		data() {
+			/* const currentDate = this.getDate({
+				format: true
+			}) */
+
 			return {
-				placeholder: '小主很懒，还没有简介'
+				// placeholder: '小主很懒，还没有简介'
 			}
 		},
 		computed: {
-			...mapState(['isLogin', 'userInfo'])
+			...mapState(['userInfo'])
 		},
 		onLoad() {
-			wx.getUserInfo({
-				success: (res) => {
-					console.log(res);
-				},
-			})
 		},
 		methods: {
+			/* getDate(type) {
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+
+				if (type === 'start') {
+					year = year - 60;
+				} else if (type === 'end') {
+					year = year + 2;
+				}
+				month = month > 9 ? month : '0' + month;;
+				day = day > 9 ? day : '0' + day;
+				return `${year}-${month}-${day}`;
+			}, */
+			/**
+			 * 修改生日
+			 */
+			/* bindDateChange: function(e) {
+				this.date = e.target.value
+			}, */
 			//更换头像
 			changeAvatar() {
 				const self = this;
@@ -167,9 +192,9 @@
 					}
 				})
 			},
-			toEdit() {
+			toEdit(title, opt) {
 				uni.navigateTo({
-					url: '../edit/edit'
+					url: `../edit/edit?title=${title}&opt=${opt}`
 				})
 			},
 			onEditorReady() {
@@ -177,10 +202,7 @@
 					this.editorCtx = res.context
 				}).exec()
 			},
-			...mapMutations(['updateUserInfo','updateAvatar'])
-		},
-		components: {
-
+			...mapMutations(['updateUserInfo', 'updateAvatar'])
 		}
 	};
 </script>
@@ -189,21 +211,15 @@
 	.page {
 		/* background-color: #fff; */
 	}
-	
-	.container {
-        padding: 32upx;
-    }
 
-    #editor {
-        width: 100%;
-        height: 10%;
-        background-color: #fff;
-		font-size: 32upx;
-    }
+	.container {
+		padding: 32upx;
+	}
 
 	#editor {
 		width: 100%;
 		height: 10%;
 		background-color: #fff;
+		font-size: 32upx;
 	}
 </style>

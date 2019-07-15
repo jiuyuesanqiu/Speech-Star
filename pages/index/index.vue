@@ -72,10 +72,17 @@
 			startPage = 0;
 			this.speeches = [];
 			this.getNextPage();
+			wx.showShareMenu()
 		},
 		onReachBottom() {
 			if (!this.isLoad) {
 				this.getNextPage();
+			}
+		},
+		onShareAppMessage() {
+			return {
+				title: '每天10分钟，演讲好轻松',
+				path: '/pages/index/index'
 			}
 		},
 		//下拉刷新

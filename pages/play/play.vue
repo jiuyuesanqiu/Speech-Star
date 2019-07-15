@@ -19,6 +19,10 @@
 				<image v-else src="/static/pause.png"></image>
 			</view>
 		</view>
+		<view class="padding mt-5">
+			<button class="weui-btn" type="primary" open-type="share">分享好友</button>
+			<button class="weui-btn" type="default" @tap="goHome" v-if="isShare">返回首页</button>
+		</view>
 	</view>
 </template>
 <script>
@@ -46,26 +50,27 @@
 				seeking: false,
 				playTime_text: "00:00:00",
 				duration_text: '00:00:00',
-				duration_s: 0
+				duration_s: 0,
+				isShare:false
 			}
 		},
 		onLoad: function(e) {
+			/**
+			 * 判断用户是否是从别人分享的小程序进入的
+			 */
+			if(e.isShare){
+				this.isShare = true;
+			}
 			this.title = e.title;
 			this.author = e.author;
 			this.duration_s = parseInt(e.duration);
 			this.duration_text = util.formatTime(this.duration_s);
 			this.dataUrl = e.audioUrl;
 			innerAudioContext.src = this.dataUrl;
-
-			//add listenner--start
-			innerAudioContext.onPlay(() => {
-			});
-			innerAudioContext.onPause(() => {
-			});
 			innerAudioContext.onEnded(() => {
 				this.playTime = 0;
+				this.playing = false;
 			});
-
 			var vueObject = this;
 			innerAudioContext.onTimeUpdate(function() {
 				//this.changePlayTimeText(innerAudioContext.currentTime);
@@ -78,7 +83,22 @@
 		onUnload() {
 			innerAudioContext.stop();
 		},
+		onShareAppMessage() {
+			return {
+				title: this.title,
+				path: '/pages/play/play?isShare=true&author=' + this.author +
+						'&duration=' + this.duration_s +
+						'&title=' + this.title +
+						'&audioUrl=' + this.dataUrl,
+				imageUrl:'../../static/share.png'
+			}
+		},
 		methods: {
+			goHome(){
+				uni.switchTab({
+					url:'../index/index'
+				})
+			},
 			changePlayTimeText: function(value) {
 				this.seekTime = this.playTime = value;
 				this.playTime_text = util.formatTime(parseInt(this.seekTime));

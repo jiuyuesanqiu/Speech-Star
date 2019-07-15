@@ -29,7 +29,7 @@
 				path: '/pages/play/play?author=' + item.author +
 						'&duration=' + item.duration +
 						'&title=' + item.title +
-						'&audioUrl=' + item.fileID,
+						'&audioUrl=' + item.audioUrl+'&isShare=true',
 				imageUrl:'../../static/share.png'
 			}
 		},

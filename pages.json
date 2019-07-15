@@ -8,28 +8,40 @@
 			}
 		}, {
 			"path": "pages/upload/upload",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "上传演讲"
+			}
 		}, {
 			"path": "pages/play/play",
-			"style": {}
-		}, {
-			"path": "pages/speak/speak",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "演讲详情"
+			}
 		}, {
 			"path": "pages/recording/recording",
-			"style": {}
-		},{
-            "path" : "pages/my/my",
-            "style" : {
+			"style": {
+				"navigationBarTitleText": "开始演讲"
+			}
+		}, {
+			"path": "pages/my/my",
+			"style": {
 				"navigationBarTitleText": "我的"
-				}
-        },{
-            "path" : "pages/publish/publish",
-            "style" : {}
-        },{
-            "path" : "pages/login/login",
-            "style" : {}
-        }, {
+			}
+		}, {
+			"path": "pages/publish/publish",
+			"style": {
+				"navigationBarTitleText": "发布作品"
+			}
+		}, {
+			"path": "pages/speak/speak",
+			"style": {
+				"navigationBarTitleText": "开始演讲"
+			}
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录页面"
+			}
+		}, {
 			"path": "pages/myInfo/myInfo",
 			"style": {
 				"navigationBarTitleText": "我的资料"
@@ -37,18 +49,19 @@
 		}, {
 			"path": "pages/edit/edit",
 			"style": {
-				"navigationBarTitleText": "编辑资料"
+				"navigationBarTitleText": "编辑资料",
+				"navigationBarBackgroundColor": "#ededed",
+				"backgroundColor": "#ededed"
 			}
-		}
-        ,{
-            "path" : "pages/success/success",
-            "style" : {
+		}, {
+			"path": "pages/success/success",
+			"style": {
 				"navigationBarTitleText": "上传成功"
 			}
-        }
-    ],
+		}
+	],
 	"globalStyle": {
-		"navigationBarTitleText": "超演助手",
+		"navigationBarTitleText": "演讲口才",
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#f7f7f7",
 		"backgroundColor": "#f7f7f7"

@@ -1,81 +1,28 @@
 <template>
 	<view class="page">
-		<view class="whCenter recordingTop">
-			<image class="topImg" src="../../static/microphone.jpg" alt=""></image>
-		</view>
-		<view class="wave" v-if="state==0">
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-		</view>
-		<view class="wave" v-if="state==1">
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-			<waveMove></waveMove>
-		</view>
-		<view class="wave" v-if="state==2">
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-			<wave></wave>
-		</view>
-		<view class="duration">
+		<view class="whCenter duration">
 			<text>{{displayDuration}}</text>
-			<text>10:00</text>
 		</view>
+
 		<view class="footer">
 			<view class="footerL">
-				<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/playAudio.png"></image>
+				<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/headset.png"></image>
 				<view class="playText" v-show="state==2&&!isPlay">试听</view>
 				<image class="playImg" @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png"></image>
 				<view class="playText" v-show="state==2&&isPlay">试听中</view>
 			</view>
 			<view class="footerM">
-				<view class="record">
+				<!-- <view class="record"> -->
 					<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
-					<image class="recordImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
-					<text class="recordIssue" @tap="publish" v-show="state==2">发布</text>
-				</view>
-				<view class="recordText" v-show="state==0">点击开始录音</view>
-				<view class="recordText" v-show="state==1">点击停止录音</view>
+					<image class="stopImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
+					<image class="recordImg publish" @tap="publish" v-show="state==2" src="../../static/issue.png"></image>
+				<!-- </view> -->
+				<view class="recordText" v-show="state==0">录音</view>
+				<view class="recordText" v-show="state==1">停止录音</view>
+				<view class="recordText" v-show="state==2">发布</view>
 			</view>
 			<view class="footerR">
-				<image class="footerRImg" @tap="aginRecord" v-show="state==2" src="../../static/reload.png"></image>
+				<image class="playImg" @tap="aginRecord" v-show="state==2" src="../../static/reload.png"></image>
 				<view class="reload" v-show="state==2">重录</view>
 			</view>
 		</view>
@@ -177,7 +124,7 @@
 									})
 								}
 							})
-						}else{
+						} else {
 							//开始录音
 							recorderManager.start(options);
 							self.state = 1;
@@ -258,50 +205,27 @@
 		all: initial
 	}
 
-	.recordingTop {
-		width: 100%;
-		height: 60%;
-		background-color: #F8F8F8;
-	}
-
-	.topImg {
-		width: 50%;
-		height: 45%;
-		border-radius: 20upx;
-	}
-
-	.wave {
-		display: flex;
-		width: 100%;
-		height: 15.10%;
-	}
-
 	.duration {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0 30upx;
-		color: #a3a6af;
-		font-size: 24upx;
-		border-top: 4px solid #74ED74;
-		height: 3.356%;
+		color: #09BB07;
+		font-size: 140upx;
+		height: 30%;
 	}
 
 	.footer {
 		display: flex;
 		justify-content: space-between;
-		height: 16.6%;
-		margin-top: 4%;
-		margin-bottom: 4%;
+		height: 22%;
+		margin-top: 70%;
 	}
 
 	.footerL,
 	.footerR {
 		display: flex;
-		width: 30%;
+		width: 26%;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		padding-top: 80upx;
 	}
 
 	.footerM {
@@ -309,62 +233,47 @@
 		width: 40%;
 		flex-direction: column;
 		align-items: center;
-		justify-content: space-between;
-		padding-top: 10upx;
 	}
 
 	.playImg {
-		width: 60upx;
-		height: 60upx;
+		width: 120upx;
+		height: 120upx;
 		border-radius: 50%;
+		padding: 30upx;
+		margin-bottom: 32upx;
+		box-shadow: 0 0 10px 0 rgba(9,187,7,1);
 	}
 
 	.playText {
-		color: #7d7f82;
-		font-size: 24upx;
-	}
-
-	.record {
-		border: 2px solid #09BB07;
-		border-radius: 50%;
-		width: 137upx;
-		height: 137upx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		color: #b2b2b2;
+		font-size: 32upx;
 	}
 
 	.recordImg {
-		width: 104upx;
-		height: 104upx;
+		width: 200upx;
+		height: 200upx;
+		padding: 30upx;
 		border-radius: 50%;
+		box-shadow: 0 0 10px 0 rgba(170,170,170,1);
 	}
-
-	.recordIssue {
-		width: 104upx;
-		height: 104upx;
-		line-height: 104upx;
-		text-align: center;
+	.publish{
+		box-shadow: 0 0 10px 0 rgba(9,187,7,1);
+	}
+	
+	.stopImg{
+		width: 200upx;
+		height: 200upx;
 		border-radius: 50%;
-		color: #09BB07;
-		font-size: 32upx;
-		font-weight: bold;
 	}
 
 	.recordText {
-		color: #7d7f82;
-		font-size: 24upx;
-		padding-top: 20upx;
-	}
-
-	.footerRImg {
-		width: 60upx;
-		height: 60upx;
-		border-radius: 50%;
+		color: #b2b2b2;
+		font-size: 32upx;
+		padding-top: 32upx;
 	}
 
 	.reload {
-		color: #7d7f82;
-		font-size: 24upx;
+		color: #b2b2b2;
+		font-size: 32upx;
 	}
 </style>

@@ -1,31 +1,64 @@
 <template>
-	<view class="cu-bar search bg-white fixed">
-		<view class="search-form">
-			<input v-model="nikeName" class="px-2" auto-focus type="text" :placeholder="placeholder"></input>
-		</view>
-		<view class="action">
-			<button class="cu-btn bg-green shadow-blur" @tap="back">取消</button>
+	<view>
+		<input style="height: 112upx;font-size: 32upx;line-height: 112upx;padding-left: 20upx;" v-model="value" type="text" class="bg-white text-black">
+		<view class="padding mt-5">
+			<button class="weui-btn" type="primary" @tap="finish">完成</button>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
+	const db = wx.cloud.database();
+	const getOpt = (opt)=>{
+		switch (opt){
+			case 'nikeName':
+				break;
+			default:
+				break;
+		}
+	}
 	export default {
 		data() {
 			return {
-				nikeName:'',
-				placeholder:'请输入昵称'
+				value:''
 			}
 		},
-		methods:{
-			back(){
-				uni.navigateBack({
-					delta:1
+		onLoad(option) {
+			//设置标题
+			uni.setNavigationBarTitle({
+				title: option.title
+			})
+			this.value = this.userInfo.nickName;
+		},
+		computed: {
+			...mapState(['userInfo'])
+		},
+		methods: {
+			finish() {
+				const self = this;
+				//更新用户名
+				db.collection('user').doc(self.userInfo._id).update({
+					data: {
+						nickName: self.value
+					},
+					success: function(res) {
+						console.log('更新用户名成功')
+						self.updateNickName(self.value);
+						uni.navigateBack();
+					}
 				})
-			}
+			},
+			...mapMutations(['updateNickName'])
 		}
 	}
 </script>
 
 <style>
+	page {
+		background-color: #ededed;
+	}
 </style>
