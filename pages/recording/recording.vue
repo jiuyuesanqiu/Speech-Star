@@ -214,8 +214,8 @@
 	.footer {
 		display: flex;
 		justify-content: space-between;
-		height: 22%;
-		margin-top: 70%;
+		height: 23%;
+		margin-top: 66%;
 	}
 
 	.footerL,
@@ -225,7 +225,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding-top: 80upx;
+		padding-top: 78upx;
 	}
 
 	.footerM {
