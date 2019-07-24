@@ -1,179 +1,150 @@
 <template>
 	<view>
-		<view class="nx-list">
-			<view @tap="navigateTo(item)" v-for="(item,index) in speeches" :key="item._id" class="nx-item border-bottom">
-				<view class="nx-title">
-					{{item.author}} | {{item.title}}
+		<view class="dynamic bg-white">
+			<view class="user d-flex align-center">
+				<view>
+					<image src="http://iph.href.lu/37x37" class="avatar"></image>
 				</view>
-				<view class="nx-secondary flex justify-between">
-					<view>
-						{{formatDate(item.createTime)}} | {{formatDuration(item.duration)}}
-					</view>
-					<!-- <view class="nx-icon">
-						<view class="d-inline-flex align-items-center" :class="active==index?'text-green':''" style="margin-left: 42upx;"
-						 @tap="play(item.fileID,index,item.duration)">
-							<text :class="active==index?'cuIcon-stop':'cuIcon-video'"></text>
-							<text style="font-size: 22upx;">{{active==index?'停止':'播放'}}</text>
-						</view>
-					</view> -->
+				<view class="pl-2">
+					<view class="nickName">九月三秋</view>
+					<view class="createTime">05-27 23:34</view>
 				</view>
 			</view>
+			<view class="introduce">
+				<text>
+					第一次录音，不好听请见谅
+				</text>
+			</view>
+			<view>
+				<image class="cover" src="http://iph.href.lu/130x205" mode="widthFix"></image>
+			</view>
+			<view class="player">
+				<nxPlayer src="cloud://test-cjyjj.7465-test-cjyjj/156086052309277.mp3" duration="60" title="李四的歌" singer="李四"></nxPlayer>
+			</view>
+			<view class="comment d-flex justify-between">
+				<view class="viewCounts d-flex align-center">播放10次</view>
+				<view class="operation">
+					<text class="cuIcon-appreciate"></text>
+					<text class="cuIcon-comment"></text>
+					<text class="cuIcon-share"></text>
+				</view>
+			</view>
+			<view class="likenum border-top">
+				<text class="cuIcon-appreciatefill"></text>
+				<text>九月三秋、逍遥客、我是一小白白</text>
+			</view>
+			<view>
+				<view class="my-1">
+					<text>逍遥客：</text>
+					<text>你的演讲很棒哦！</text>
+				</view>
+				<view class="d-flex align-center my-1">
+					<text>九月三秋：</text>
+					<nxPlayer src="cloud://test-cjyjj.7465-test-cjyjj/156086052309277.mp3" duration="60" title="李四的歌" singer="李四" noControl></nxPlayer>
+				</view>
+			</view>
+			<view class="noInputComment">
+				<text>评论</text>
+			</view>
 		</view>
-		<uni-fab :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
-		 @trigger="trigger"></uni-fab>
-		<view class="cu-load" :class="!isLoad?'loading':'over'"></view>
 	</view>
 </template>
 
 <script>
-	const db = wx.cloud.database();
-	const _ = db.command;
-	//#ifdef MP-WEIXIN
-	//设置会终止其他应用或微信内的音乐
-	wx.setInnerAudioOption({
-		mixWithOther: false,
-		obeyMuteSwitch: false //不遵循IOS静音开关
-	});
-	//#endif
-	const innerAudioContext = uni.createInnerAudioContext()
-	let startPage = 0; //起始页数
-	import uniFab from '../../components/uni-fab/uni-fab.vue';
+	import nxPlayer from '../../components/nx-player.vue';
 	export default {
-		components: {
-			uniFab
-		},
 		data() {
 			return {
-				horizontal: 'right',
-				vertical: 'bottom',
-				direction: 'horizontal',
-				pattern: {
-					color: '#353535',
-					backgroundColor: '#fff',
-					selectedColor: '#353535',
-					buttonColor: "#09bb07"
-				},
-				content: [{
-					iconPath: '/static/uploadInactive.png',
-					selectedIconPath: '/static/upload.png',
-					text: '上传',
-					active: true
-				}],
-				speeches: [],
-				long: 0,
-				active: -1, //当前被点击播放的按钮
-				isLoad: false,
-				src: 'cloud://test-cjyjj.7465-test-cjyjj-1259470932/156085715105895.m4a',
-				duration: 65.806,
-				now: 0
+
 			}
-		},
-		onLoad() {
-			startPage = 0;
-			this.speeches = [];
-			this.getNextPage();
-			wx.showShareMenu()
-		},
-		onReachBottom() {
-			if (!this.isLoad) {
-				this.getNextPage();
-			}
-		},
-		onShareAppMessage() {
-			return {
-				title: '每天10分钟，演讲好轻松',
-				path: '/pages/index/index'
-			}
-		},
-		//下拉刷新
-		onPullDownRefresh() {
-			startPage = 0;
-			this.isLoad = false;
-			this.speeches = [];
-			this.getNextPage();
 		},
 		methods: {
-			formatDate(date) {
-				return `${date.getMonth()+1}月${date.getDate()}日`
-			},
-			formatDuration(duration) {
-				let m = Math.trunc(duration / 60) + '';
-				let s = Math.trunc(duration % 60) + '';
-				return `${m.padStart(2,'0')}分${s.padStart(2,'0')}秒`;
-			},
-			trigger(e) {
-				uni.navigateTo({
-					url: '../upload/upload'
-				})
-				e.open();
-			},
-			/**
-			 * 播放音频
-			 */
-			play(fileID, index, duration) {
-				this.duration = duration;
-				this.src = fileID;
-				console.log(this.src, duration)
-				// if (index == this.active) {
-				// 	innerAudioContext.stop();
-				// 	this.active = -1;
-				// 	return;
-				// }
-				// innerAudioContext.autoplay = true;
-				// innerAudioContext.src = fileID;
-				// innerAudioContext.play()
-				// this.active = index;
-			},
-			//page related
-			getNextPage() {
-				//获取演讲数据,倒序排列
-				db.collection('speeches').orderBy('createTime', 'desc').skip(startPage).limit(20).get().then(res => {
-					this.speeches = this.speeches.concat(res.data);
-					startPage += 20;
-					uni.stopPullDownRefresh();
-					if (res.data.length < 20) {
-						this.isLoad = true;
-						return;
-					}
-				})
-			},
-			navigateTo(item) {
-				uni.navigateTo({
-					url: '../play/play' + '?author=' + item.author +
-						'&createTime=' + item.createTime +
-						'&duration=' + item.duration +
-						'&title=' + item.title +
-						'&audioUrl=' + item.fileID
-				})
-			}
+
+		},
+		components: {
+			nxPlayer
 		}
+
 	}
 </script>
 
-<style>
-	.nx-list {
-		padding: 20upx;
-	}
+<style lang="scss">
+	.dynamic {
+		padding: 16px 8px;
 
-	.nx-item {
-		background-color: #FFFFFF;
-		padding: 30upx 32upx;
-		line-height: 46upx;
-	}
+		.user {
+			padding-bottom: 5px;
 
-	.nx-title {
-		font-size: 30upx;
-		padding: 6upx 46upx 6upx 0;
-	}
+			.avatar {
+				width: 37px;
+				height: 37px;
+				border-radius: 4px;
+			}
 
-	.nx-secondary {
-		font-size: 24upx;
-		line-height: 38upx;
-		color: #888888;
-		margin-top: 12upx;
-	}
+			.nickName {
+				margin-bottom: 5px;
+				color: rgba(16, 16, 16, 1);
+				font-size: 15px;
+				line-height: 17px;
+			}
 
-	.nx-icon {
-		font-size: 42upx;
+			.createTime {
+				color: rgba(136, 136, 136, 1);
+				font-size: 11px;
+			}
+		}
+
+		.introduce {
+			color: rgba(16, 16, 16, 1);
+			font-size: 14px;
+			padding: 11px 0;
+		}
+
+		.cover {
+			width: 130px;
+		}
+
+		.player {
+			padding: 11px 0;
+		}
+
+		.comment {
+			padding-right: 7px;
+
+			.viewCounts {
+				color: rgba(119, 119, 119, 1);
+				font-size: 14px;
+			}
+
+			.operation {
+				font-size: 24px;
+			}
+
+			.cuIcon-appreciate {
+				margin-right: 33px;
+			}
+
+			.cuIcon-comment {
+				margin-right: 33px;
+			}
+		}
+
+		.likenum {
+			padding: 15px 2px 0 2px;
+			margin-top: 15px;
+			margin-bottom: 15px;
+		}
+
+		.noInputComment {
+			width: 361px;
+			height: 27px;
+			border-radius: 2px;
+			background-color: rgba(248, 248, 248, 1);
+			color: rgba(176, 176, 176, 1);
+			font-size: 13px;
+			padding-left: 10px;
+			padding-top: 6px;
+			margin-top: 15px;
+		}
 	}
 </style>

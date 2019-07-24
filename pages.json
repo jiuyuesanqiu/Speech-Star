@@ -59,7 +59,11 @@
 				"navigationBarTitleText": "上传成功"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/index_bak/index_bak",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTitleText": "演讲口才",
 		"navigationBarTextStyle": "black",
