@@ -19,7 +19,12 @@
 				<image class="cover" src="http://iph.href.lu/130x205" mode="widthFix"></image>
 			</view>
 			<view class="player">
-				<nxPlayer src="cloud://test-cjyjj.7465-test-cjyjj/156086052309277.mp3" duration="60" title="李四的歌" singer="李四"></nxPlayer>
+				<view v-for="(song,index) in songs" :key="song.id">
+					<nxPlayer @play="onPlay(index)" @paused="onPause(index)" @sliderChange="onSliderChange(index,$event)"
+					 @sliderChanging="onSliderChanging(index,$event)" :src="song.src" :title="song.title" :duration="song.duration"
+					 :coverImgUrl="song.coverImgUrl" :singer="song.singer" :isLoading="song.isLoading" :currentTime="song.currentTime"
+					 :isPlay="song.isPlay" isBackgroundAudio></nxPlayer>
+				</view>
 			</view>
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放10次</view>
@@ -40,7 +45,8 @@
 				</view>
 				<view class="d-flex align-center my-1">
 					<text>九月三秋：</text>
-					<nxPlayer src="cloud://test-cjyjj.7465-test-cjyjj/156086052309277.mp3" duration="60" title="李四的歌" singer="李四" noControl></nxPlayer>
+					<nxPlayer @playAudio="playAudio(1)" :src="song.src" :title="song.title" :duration="song.duration" :coverImgUrl="song.coverImgUrl"
+					 :singer="song.singer" :isLoading="song.isLoading" :currentTime="song.currentTime" :isPlay="song.isPlay"></nxPlayer>
 				</view>
 			</view>
 			<view class="noInputComment">
@@ -52,14 +58,134 @@
 
 <script>
 	import nxPlayer from '../../components/nx-player.vue';
+	const backgroundAudioManager = wx.getBackgroundAudioManager();
+	const innerAudioContext = wx.createInnerAudioContext();
 	export default {
 		data() {
 			return {
-
+				songs: [{
+					id: 1,
+					title: '张三的歌',
+					singer: '张三',
+					duration: 300,
+					src: 'cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3',
+					currentTime: 0,
+					isLoading: false,
+					isPlay: false,
+					coverImgUrl: 'http://iph.href.lu/130x205'
+				}, {
+					id: 2,
+					title: '李四的歌',
+					singer: '李四',
+					duration: 60,
+					src: 'cloud://test-cjyjj.7465-test-cjyjj/156085715105895.m4a',
+					currentTime: 0,
+					isLoading: false,
+					isPlay: false,
+					coverImgUrl: 'http://iph.href.lu/130x205'
+				}],
+				song: {
+					id: 1,
+					title: '张三的歌',
+					singer: '张三',
+					duration: 300,
+					src: 'cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3',
+					currentTime: 0,
+					isLoading: false,
+					isPlay: false,
+					coverImgUrl: 'http://iph.href.lu/130x205'
+				},
+				activeIndex: -1, //当前播放的音频
+				intervalId: 0,
+				isEnded: false,
+				activeAudioId:0
 			}
 		},
 		methods: {
-
+			onPlay(index) {
+				let song = this.songs[index];
+				if (index != this.activeIndex || index == this.activeIndex && this.isEnded) {
+					if (this.activeIndex != -1) {
+						this.songs[this.activeIndex].isPlay = false;
+						clearInterval(this.intervalId);
+						this.intervalId = 0;
+					}
+					backgroundAudioManager.title = song.title;
+					backgroundAudioManager.singer = song.singer;
+					backgroundAudioManager.startTime = song.currentTime;
+					backgroundAudioManager.src = song.src;
+					this.activeIndex = index;
+					// //监听音频能够播放的事件
+					backgroundAudioManager.onWaiting(() => {
+						song.isLoading = true;
+					})
+					backgroundAudioManager.onCanplay(() => {
+						song.isLoading = false;
+					})
+					backgroundAudioManager.onPlay(() => {
+						song.isPlay = true;
+						song.isLoading = false;
+						this.updateCurrentTime();
+					})
+					backgroundAudioManager.onPause(() => {
+						song.isPlay = false;
+						clearInterval(this.intervalId);
+						this.intervalId = 0;
+					})
+					backgroundAudioManager.onStop(() => {
+						console.log("背景音频被停止")
+					});
+					backgroundAudioManager.onEnded(() => {
+						song.isPlay = false;
+						song.currentTime = 0;
+						clearInterval(this.intervalId);
+						this.intervalId = 0;
+						this.isEnded = true;
+					});
+				} else {
+					backgroundAudioManager.play();
+				}
+			},
+			onPause() {
+				backgroundAudioManager.pause();
+			},
+			onSliderChange(index, value) {
+				this.songs[index].currentTime = value;
+				if (this.activeIndex != index) {
+					this.onPlay(index);
+					return;
+				}
+				backgroundAudioManager.seek(value);
+			},
+			onSliderChanging(index, value) {
+				this.songs[index].currentTime = value;
+			},
+			updateCurrentTime() {
+				if (this.intervalId != 0) {
+					return;
+				}
+				let intervalId = setInterval(() => {
+					this.songs[this.activeIndex].currentTime = backgroundAudioManager.currentTime;
+				}, 1000)
+				this.intervalId = intervalId;
+			},
+			playAudio(id) {
+				if(this.activeAudioId != id){
+					innerAudioContext.autoplay = true
+					innerAudioContext.src ='cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3';
+					innerAudioContext.onPlay(() => {
+						console.log('开始播放')
+					})
+					this.activeAudioId = id;
+				}else{
+					if(innerAudioContext.paused){
+						innerAudioContext.play();
+					}else{
+						innerAudioContext.pause();
+					}
+				}
+				
+			}
 		},
 		components: {
 			nxPlayer
