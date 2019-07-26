@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="noControl" class="noControl d-flex align-items-center" @click="onControlClick">
+		<view v-if="!isBackgroundAudio" class="noControl d-flex align-items-center" @click="playAudio">
 			<view class="play-cion">
 				<text v-show="!isPlay&&!isLoading" class="cuIcon-video"></text>
 				<text v-show="isPlay&&!isLoading" class="cuIcon-stop"></text>
@@ -32,20 +32,10 @@
 
 <script>
 	let util = require('../common/util.js');
-	const backgroundAudioManager = wx.getBackgroundAudioManager();
-	let activePlayer = "";
-
 	export default {
 		data() {
 			return {
-				currentTime: 0,
-				isPlay: false,
-				isLoading: false, //音频加载中
-				intervalId: 0
 			};
-		},
-		created() {
-
 		},
 		computed: {
 			currentTimeText() {
@@ -56,96 +46,38 @@
 			}
 		},
 		methods: {
-			onControlClick(){
-				if(this.isLoading){
-					return;
-				}
-				if(this.isPlay){
-					this.paused();
-				}else{
-					this.play();
-				}
-			},
-			check() {
-				//判断背景音频管理器当前是否播放的是否为此组件内的音乐
-				if (backgroundAudioManager.src != this.src) {
-					//判断背景音频是否暂停
-					if (!backgroundAudioManager.paused && activePlayer != "") {
-						activePlayer.setPlay(false);
-					}
-					backgroundAudioManager.title = this.title;
-					backgroundAudioManager.singer = this.singer;
-					backgroundAudioManager.startTime = this.currentTime;
-					//监听音频能够播放的事件
-					backgroundAudioManager.onWaiting(() => {
-						console.log(this.title, "加载中")
-						this.isLoading = true;
-					})
-					backgroundAudioManager.onCanplay(() => {
-						console.log(this.title, "能播放")
-						this.isLoading = false;
-					})
-					backgroundAudioManager.onPlay(() => {
-						console.log(this.title, "播放中")
-						this.isPlay = true;
-						this.isLoading = false;
-					})
-					backgroundAudioManager.onPause(() => {
-						console.log(this.title, "暂停了")
-						this.isPlay = false;
-					})
-					backgroundAudioManager.src = this.src;
-					activePlayer = this;
-				}
-			},
 			/**
 			 * 播放音频
 			 */
 			play() {
-				this.check();
-				backgroundAudioManager.play();
-				this.updateCurrentTime();
+				this.$emit('play');
 			},
 			/**
 			 * 暂停音频
 			 */
 			paused() {
-				backgroundAudioManager.pause();
-				clearInterval(this.intervalId)
+				this.$emit('paused');
 			},
 			/**
 			 * 停止音频
 			 */
 			stop(){
-				backgroundAudioManager.stop();
+				this.$emit('stop');
 			},
 			/**
 			 * 滚动后触发
 			 */
-			sliderChange({
-				detail
-			}) {
-				this.check();
-				backgroundAudioManager.seek(detail.value);
+			sliderChange({detail}) {
+				this.$emit('sliderChange',detail.value);
 			},
 			/**
 			 * 拖动中触发
 			 */
-			sliderChanging({
-				detail
-			}) {
-				this.currentTime = detail.value;
+			sliderChanging({detail}) {
+				this.$emit('sliderChanging',detail.value);
 			},
-			setPlay(isPlay) {
-				this.isPlay = isPlay;
-				clearInterval(this.intervalId);
-			},
-			//
-			updateCurrentTime() {
-				let intervalId = setInterval(() => {
-					this.currentTime++;
-				}, 1000)
-				this.intervalId = intervalId;
+			playAudio(){
+				this.$emit('playAudio');
 			}
 		},
 		props: {
@@ -154,9 +86,21 @@
 			duration: String, //音频时长
 			coverImgUrl: String, //封面图
 			singer: String, //歌手名
-			noControl: {
+			isBackgroundAudio: {
 				type: Boolean,
 				default: false
+			},
+			isLoading:{
+				type:Boolean,
+				default:false
+			},
+			currentTime:{
+				type:Number,
+				default:0
+			},
+			isPlay:{
+				type:Boolean,
+				default:false
 			}
 		}
 	}
