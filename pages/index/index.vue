@@ -25,7 +25,8 @@
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view class="operation">
-					<text class="cuIcon-appreciate"></text>
+					<text v-if="isLike(item.likeUsers)" class="cuIcon-appreciate" @click="like"></text>
+					<text class="cuIcon-appreciatefill"></text>
 					<text class="cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
@@ -51,11 +52,16 @@
 				<text>评论</text>
 			</view>
 		</view>
+		<nxLogin :show="loginShow" @success="loginShow=false" @cancel="loginShow=false"></nxLogin>
 	</view>
 </template>
 
 <script>
 	import nxPlayer from '../../components/nx-player.vue';
+	import nxLogin  from '../../components/nx-login.vue';
+	import {
+		mapState
+	} from 'vuex';
 	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	const db = wx.cloud.database();
 	const _ = db.command
@@ -64,23 +70,10 @@
 	export default {
 		data() {
 			return {
-				song: {
-					title: '张三的歌',
-					singer: '张三',
-					duration: 300,
-					src: 'cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3',
-					coverImgUrl: 'http://iph.href.lu/130x205'
-				},
-				song1: {
-					title: '李四的歌',
-					singer: '李四',
-					duration: 100,
-					src: '',
-					coverImgUrl: 'http://iph.href.lu/130x205'
-				},
 				activeSrc: '', //当前播放的音频
 				dynamics: [], //动态列表
 				isLoading: false, //数据是否正在加载中
+				loginShow:false
 			}
 		},
 		onLoad() {
@@ -99,7 +92,23 @@
 			this.dynamics = [];
 			this.getNextPage();
 		},
+		computed: {
+			...mapState(['isLogin', 'userInfo'])
+		},
 		methods: {
+			isLike(arr){
+				console.log(arr);
+				arr.some((value)=>{
+					return value._openid == this.userInfo._openid;
+				})
+				return false;
+			},
+			/**
+			 * 点赞
+			 */
+			like(){
+				
+			},
 			/**
 			 * 跳转用户信息
 			 */
@@ -124,7 +133,8 @@
 			},
 		},
 		components: {
-			nxPlayer
+			nxPlayer,
+			nxLogin
 		}
 	}
 </script>
@@ -181,7 +191,7 @@
 				font-size: 24px;
 			}
 
-			.cuIcon-appreciate {
+			.cuIcon-appreciate,.cuIcon-appreciatefill {
 				margin-right: 33px;
 			}
 

@@ -13,9 +13,9 @@
 			</view>
 			<view class="footerM">
 				<!-- <view class="record"> -->
-					<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
-					<image class="stopImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
-					<image class="recordImg publish" @tap="publish" v-show="state==2" src="../../static/issue.png"></image>
+				<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
+				<image class="stopImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
+				<image class="recordImg publish" @tap="publish" v-show="state==2" src="../../static/issue.png"></image>
 				<!-- </view> -->
 				<view class="recordText" v-show="state==0">录音</view>
 				<view class="recordText" v-show="state==1">停止录音</view>
@@ -30,25 +30,26 @@
 </template>
 
 <script>
-	import wave from '../../components/wave.vue'
-	import waveMove from '../../components/waveMove.vue'
 	let {
 		formatDuration
 	} = require('../../common/util.js');
 	//获取全局录音器
 	const recorderManager = uni.getRecorderManager();
 	const options = {
+		duration: 5000,
 		sampleRate: 48000,
 		encodeBitRate: 320000
 	}
-	let tempSrc = '';
-	recorderManager.onStop(({
-		tempFilePath,
-		duration,
-		fileSize
-	}) => {
-		tempSrc = tempFilePath;
+	recorderManager.onStart(function() {
+		console.log('开始录音')
 	})
+	recorderManager.onResume(() => {
+		console.log('录音继续')
+	})
+	recorderManager.onPause(function() {
+		console.log('录音暂停')
+	})
+
 	//获取音乐播放器
 	const innerAudioContext = uni.createInnerAudioContext();
 	innerAudioContext.autoplay = true;
@@ -59,7 +60,8 @@
 			return {
 				duration: 0,
 				state: 0, //0代表未开始，1代表开始录音，2代表停止录音，3代表重新录音
-				isPlay: false
+				isPlay: false,
+				tempSrc: ''
 			}
 		},
 		computed: {
@@ -67,9 +69,19 @@
 				return formatDuration(this.duration);
 			}
 		},
-		components: {
-			wave,
-			waveMove
+		onUnload() {
+			this.stopRecord();
+			innerAudioContext.stop();
+		},
+		onLoad() {
+			recorderManager.onStop(({
+				tempFilePath,
+				duration,
+				fileSize
+			}) => {
+				this.tempSrc = tempFilePath;
+				this.stopRecord();
+			})
 		},
 		methods: {
 			timedCount() {
@@ -83,23 +95,6 @@
 			 */
 			startRecord() {
 				const self = this;
-				//判断是否开启录音权限
-				// wx.getSetting({
-				// 	success(res) {
-				// 		if (!res.authSetting['scope.record']) {
-				// 			uni.showModal({
-				// 				showCancel:false,
-				// 				content:'请先打开录音开关',
-				// 				success() {
-				// 					uni.openSetting()
-				// 				}
-				// 			})
-				// 			return;
-				// 		}else{
-				// 			
-				// 		}
-				// 	}
-				// })
 				uni.getSetting({
 					success(res) {
 						if (!res.authSetting['scope.record']) {
@@ -148,7 +143,7 @@
 			 * 试听播放
 			 */
 			play() {
-				innerAudioContext.src = tempSrc;
+				innerAudioContext.src = this.tempSrc;
 				innerAudioContext.onEnded(() => {
 					this.isPlay = false;
 				})
@@ -180,7 +175,7 @@
 			 */
 			publish() {
 				uni.setStorageSync('file', {
-					tempSrc: tempSrc,
+					tempSrc: this.tempSrc,
 					duration: this.duration
 				})
 				uni.navigateTo({
@@ -241,7 +236,7 @@
 		border-radius: 50%;
 		padding: 30upx;
 		margin-bottom: 32upx;
-		box-shadow: 0 0 10px 0 rgba(9,187,7,1);
+		box-shadow: 0 0 10px 0 rgba(9, 187, 7, 1);
 	}
 
 	.playText {
@@ -254,13 +249,14 @@
 		height: 200upx;
 		padding: 30upx;
 		border-radius: 50%;
-		box-shadow: 0 0 10px 0 rgba(170,170,170,1);
+		box-shadow: 0 0 10px 0 rgba(170, 170, 170, 1);
 	}
-	.publish{
-		box-shadow: 0 0 10px 0 rgba(9,187,7,1);
+
+	.publish {
+		box-shadow: 0 0 10px 0 rgba(9, 187, 7, 1);
 	}
-	
-	.stopImg{
+
+	.stopImg {
 		width: 200upx;
 		height: 200upx;
 		border-radius: 50%;

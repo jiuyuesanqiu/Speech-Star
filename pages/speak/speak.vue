@@ -1,57 +1,52 @@
 <template>
 	<view class="page">
 		<view class="speakTop">
-			<image class="topImg" src="../../static/microphone.jpg" alt="" />
-			<view class="topText">演讲口才</view>
+			<image class="topImg" src="../../static/star.png" alt="" />
+			<view class="topText">演讲星球</view>
 		</view>
 		<view class="topDes">
-			欢迎进入演讲圈，来和我们一起演讲吧！
+			每天10分钟，演讲好轻松
 		</view>
-		<view class="topJurisdiction" v-if="isLogin"></view>
-		<view class="topJurisdiction" v-else>
-			请完成微信授权以继续使用
-		</view>
-		<view class="jurisdiction" v-if="isLogin">
+		<view class="d-flex justify-center mt-5">
 			<button class="getUserInfo" @tap="toRecording">开始演讲</button>
 		</view>
-		<view class="jurisdiction" v-else>
-			<button class="getUserInfo" @getuserinfo="getInfo" open-type="getUserInfo">点击登录</button>
-		</view>
+		<nxLogin :show="loginShow" @success="loginSuccess" @cancel="loginShow=false"></nxLogin>
 	</view>
 </template>
 <script>
+	import nxLogin  from '../../components/nx-login.vue';
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex';
 	export default {
 		data() {
-			return {}
+			return {
+				loginShow:false
+			}
 		},
 		computed: {
 			...mapState(['isLogin'])
 		},
 		methods: {
-			getInfo(res) {
-				console.log(res)
-			},
 			toRecording() {
+				if(!this.isLogin){
+					this.loginShow = true;
+					return;
+				}
+				uni.navigateTo({
+					url: '../recording/recording'
+				})
+			},
+			loginSuccess(){
+				this.loginShow = false;
 				uni.navigateTo({
 					url: '../recording/recording'
 				})
 			}
 		},
-		onLoad() {
-			console.log(this.isLogin);
-			if(!this.isLogin){
-				uni.redirectTo({
-					url:'../login/login?backUrl=../speak/speak&isTab=true'
-				})
-			}else{
-				uni.navigateTo({
-					url:'../recording/recording'
-				})
-			}
+		components: {
+			nxLogin
 		}
 	}
 </script>
@@ -78,8 +73,8 @@
 	}
 
 	.topImg {
-		width: 158upx;
-		height: 158upx;
+		width: 210upx;
+		height: 210upx;
 		border-radius: 24%;
 	}
 
@@ -95,22 +90,6 @@
 		color: #000;
 		text-align: center;
 	}
-
-	.topJurisdiction {
-		font-size: 22upx;
-		color: #838689;
-		text-align: center;
-		height: 90upx;
-		line-height: 90upx;
-		margin-top: 10upx;
-	}
-
-	.jurisdiction {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-	}
-
 	.getUserInfo {
 		color: #fff;
 		font-size: 32upx;
