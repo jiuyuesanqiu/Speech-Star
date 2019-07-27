@@ -4,21 +4,33 @@
 			<view class="load-progress-bar bg-green" :style="[{transform: 'translate3d(-' + (100-progress) + '%, 0px, 0px)'}]"></view>
 			<view class="load-progress-spinner text-green"></view>
 		</view>
-		<view class="cu-form-group">
-			<view class="title">
-				标题
+
+		<view class="container">
+			<view class="bg-grey banner d-flex justify-center align-center">
+				<view class="dashBox d-flex flex-column">
+					<text class="cuIcon-add add"></text>
+					<text class="text">添加配图</text>
+				</view>
 			</view>
-			<input placeholder="给我取个好听的名字吧" v-model="title"></input>
-		</view>
-		<view class="cu-form-group">
-			<view class="title">
-				简介
+			<view class="pl-3 bg-white">
+				<view class="d-flex justify-between cell">
+					<view class="label d-flex align-center">标题</view>
+					<input class="text-right flex-grow-1" placeholder-class="placeholder" type="text" v-model="title" placeholder="给我取个好听的名字吧"></input>
+				</view>
+				<view class="d-flex justify-between cell">
+					<view class="label">简介</view>
+					<textarea class="text-right introduction" placeholder-class="placeholder" v-model="synopsis" placeholder="介绍本期内容,可吸引更多播放哦!"></textarea>
+				</view>
 			</view>
-			<input placeholder="介绍本期内容,可吸引更多播放哦" v-model="synopsis"></input>
+			<view class="d-flex justify-center">
+				<view class="upload d-flex align-center justify-center" @click="publish">
+					<text>
+						上传声音
+					</text>
+				</view>
+			</view>
 		</view>
-		<view class="padding mt-5">
-			<button class="weui-btn" type="primary" @tap="publish">立即发布</button>
-		</view>
+
 	</view>
 </template>
 
@@ -34,8 +46,8 @@
 				synopsis: '',
 				tempSrc: '',
 				duration: 0,
-				progress:0,
-				loading:false
+				progress: 0,
+				loading: false
 			}
 		},
 		onLoad(option) {
@@ -48,10 +60,10 @@
 		},
 		methods: {
 			publish() {
-				if(this.title == ''){
+				if (this.title == '') {
 					uni.showToast({
-						icon:'none',
-						title:'请输入演讲标题'
+						icon: 'none',
+						title: '请输入演讲标题'
 					})
 					return;
 				}
@@ -69,7 +81,7 @@
 				})
 				//监听文件上传进度，并展示给用户看
 				uploadTask.onProgressUpdate((res) => {
-					this.progress = res.progress-10;//此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
+					this.progress = res.progress - 10; //此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
 				})
 			},
 			insert(fileID) {
@@ -88,14 +100,14 @@
 					this.progress = 100;
 					this.loading = false;
 					this.progress = 0;
-					uni.setStorageSync('parameter',{
-						author:this.userInfo.nickName,
-						duration:this.duration,
-						title:this.title,
-						audioUrl:fileID
+					uni.setStorageSync('parameter', {
+						author: this.userInfo.nickName,
+						duration: this.duration,
+						title: this.title,
+						audioUrl: fileID
 					})
 					uni.reLaunch({
-						url:'../success/success'
+						url: '../success/success'
 					})
 				})
 			}
@@ -103,6 +115,65 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	.container {
+		.banner {
+			width: 375px;
+			height: 144px;
+			background-color: rgba(184, 184, 184, 1);
 
+			.dashBox {
+				width: 200rpx;
+				height: 200rpx;
+				border: 1px dashed rgba(255, 255, 255, 1);
+				padding-top: 39upx;
+
+				.add {
+					font-size: 60upx;
+					text-align: center;
+				}
+
+				.text {
+					padding-top: 15upx;
+					font-size: 14px;
+					text-align: center;
+				}
+			}
+		}
+
+		.cell {
+			padding: 30rpx;
+			padding-left: 0;
+
+			&:first-of-type {
+				border-bottom: 2rpx solid rgba(204, 204, 204, 1);
+			}
+		}
+
+		.label {
+			min-width: 20%;
+			color: rgba(51, 51, 51, 1);
+			font-size: 30rpx;
+		}
+
+		.placeholder {
+			color: rgba(204, 204, 204, 1);
+			font-size: 26rpx;
+		}
+
+		.introduction {
+			margin-top: 6rpx;
+			line-height: 39rpx;
+		}
+
+		.upload {
+			width: 345px;
+			height: 44px;
+			border-radius: 4px;
+			background-color: #09BB07;
+			color: rgba(255, 255, 255, 1);
+			font-size: 17px;
+			margin-top: 90rpx;
+		}
+	}
 </style>
