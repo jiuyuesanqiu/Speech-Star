@@ -1,33 +1,29 @@
 <template>
 	<view>
-		<view class="dynamic bg-white">
+		<view class="dynamic bg-white" v-for="item in dynamics" :key="item._id">
 			<view class="user d-flex align-center">
 				<view>
-					<image src="http://iph.href.lu/37x37" class="avatar"></image>
+					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
 				<view class="pl-2">
-					<view class="nickName">九月三秋</view>
-					<view class="createTime">05-27 23:34</view>
+					<view class="nickName">{{item.userInfo.nickName}}</view>
+					<view class="createTime">{{item.createTime}}</view>
 				</view>
 			</view>
 			<view class="introduce">
 				<text>
-					第一次录音，不好听请见谅
+					{{item.introduce}}
 				</text>
 			</view>
 			<view>
-				<image class="cover" src="http://iph.href.lu/130x205" mode="widthFix"></image>
+				<image class="cover" :src="item.cover" mode="widthFix"></image>
 			</view>
 			<view class="player">
-				<view v-for="(song,index) in songs" :key="song.id">
-					<nxPlayer @play="onPlay(index)" @paused="onPause(index)" @sliderChange="onSliderChange(index,$event)"
-					 @sliderChanging="onSliderChanging(index,$event)" :src="song.src" :title="song.title" :duration="song.duration"
-					 :coverImgUrl="song.coverImgUrl" :singer="song.singer" :isLoading="song.isLoading" :currentTime="song.currentTime"
-					 :isPlay="song.isPlay" isBackgroundAudio></nxPlayer>
-				</view>
+				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.fileId" :title="item.title" :duration="item.duration"
+				 :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
-				<view class="viewCounts d-flex align-center">播放10次</view>
+				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view class="operation">
 					<text class="cuIcon-appreciate"></text>
 					<text class="cuIcon-comment"></text>
@@ -36,17 +32,19 @@
 			</view>
 			<view class="likenum border-top">
 				<text class="cuIcon-appreciatefill"></text>
-				<text>九月三秋、逍遥客、我是一小白白</text>
+				<text v-for="(likeUser,index) in item.likeUsers" :key="index" @click="userInfo(likeUser._openid)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
 			</view>
 			<view>
-				<view class="my-1">
-					<text>逍遥客：</text>
-					<text>你的演讲很棒哦！</text>
-				</view>
-				<view class="d-flex align-center my-1">
-					<text>九月三秋：</text>
-					<nxPlayer @playAudio="playAudio(1)" :src="song.src" :title="song.title" :duration="song.duration" :coverImgUrl="song.coverImgUrl"
-					 :singer="song.singer" :isLoading="song.isLoading" :currentTime="song.currentTime" :isPlay="song.isPlay"></nxPlayer>
+				<view class="my-1 d-flex" v-for="(comment,index) in item.comment" :key="index">
+					<view>
+						<text>{{comment.userInfo.nickName}}：</text>
+					</view>
+					<view>
+						<view class="mb-1">
+							<text>{{comment.content.text}}</text>
+						</view>
+						<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="comment.content.voice.src" :duration="comment.content.voice.duration"></nxPlayer>
+					</view>
 				</view>
 			</view>
 			<view class="noInputComment">
@@ -59,138 +57,75 @@
 <script>
 	import nxPlayer from '../../components/nx-player.vue';
 	const backgroundAudioManager = wx.getBackgroundAudioManager();
-	const innerAudioContext = wx.createInnerAudioContext();
+	const db = wx.cloud.database();
+	const _ = db.command
+	let startPage = 0; //起始页数
+	let pageSize = 20;
 	export default {
 		data() {
 			return {
-				songs: [{
-					id: 1,
-					title: '张三的歌',
-					singer: '张三',
-					duration: 300,
-					src: 'cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3',
-					currentTime: 0,
-					isLoading: false,
-					isPlay: false,
-					coverImgUrl: 'http://iph.href.lu/130x205'
-				}, {
-					id: 2,
-					title: '李四的歌',
-					singer: '李四',
-					duration: 60,
-					src: 'cloud://test-cjyjj.7465-test-cjyjj/156085715105895.m4a',
-					currentTime: 0,
-					isLoading: false,
-					isPlay: false,
-					coverImgUrl: 'http://iph.href.lu/130x205'
-				}],
 				song: {
-					id: 1,
 					title: '张三的歌',
 					singer: '张三',
 					duration: 300,
 					src: 'cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3',
-					currentTime: 0,
-					isLoading: false,
-					isPlay: false,
 					coverImgUrl: 'http://iph.href.lu/130x205'
 				},
-				activeIndex: -1, //当前播放的音频
-				intervalId: 0,
-				isEnded: false,
-				activeAudioId:0
+				song1: {
+					title: '李四的歌',
+					singer: '李四',
+					duration: 100,
+					src: '',
+					coverImgUrl: 'http://iph.href.lu/130x205'
+				},
+				activeSrc: '', //当前播放的音频
+				dynamics: [], //动态列表
+				isLoading: false, //数据是否正在加载中
 			}
 		},
+		onLoad() {
+			startPage = 0;
+			this.dynamics = [];
+			this.getNextPage();
+			wx.showShareMenu();
+		},
+		onShow(){
+			this.activeSrc = backgroundAudioManager.src;
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			startPage = 0;
+			this.isLoading = false;
+			this.dynamics = [];
+			this.getNextPage();
+		},
 		methods: {
-			onPlay(index) {
-				let song = this.songs[index];
-				if (index != this.activeIndex || index == this.activeIndex && this.isEnded) {
-					if (this.activeIndex != -1) {
-						this.songs[this.activeIndex].isPlay = false;
-						clearInterval(this.intervalId);
-						this.intervalId = 0;
+			/**
+			 * 跳转用户信息
+			 */
+			userInfo() {
+
+			},
+			onChangeActive(src) {
+				this.activeSrc = src;
+			},
+			async getNextPage() {
+				const self = this;
+				//获取演讲数据,倒序排列
+				db.collection('dynamic').orderBy('createTime', 'desc').skip(startPage * pageSize).limit(pageSize).get().then(res => {
+					this.dynamics = res.data;
+					startPage += 20;
+					uni.stopPullDownRefresh();
+					if (res.data.length < 20) {
+						this.isLoad = true;
+						return;
 					}
-					backgroundAudioManager.title = song.title;
-					backgroundAudioManager.singer = song.singer;
-					backgroundAudioManager.startTime = song.currentTime;
-					backgroundAudioManager.src = song.src;
-					this.activeIndex = index;
-					// //监听音频能够播放的事件
-					backgroundAudioManager.onWaiting(() => {
-						song.isLoading = true;
-					})
-					backgroundAudioManager.onCanplay(() => {
-						song.isLoading = false;
-					})
-					backgroundAudioManager.onPlay(() => {
-						song.isPlay = true;
-						song.isLoading = false;
-						this.updateCurrentTime();
-					})
-					backgroundAudioManager.onPause(() => {
-						song.isPlay = false;
-						clearInterval(this.intervalId);
-						this.intervalId = 0;
-					})
-					backgroundAudioManager.onStop(() => {
-						console.log("背景音频被停止")
-					});
-					backgroundAudioManager.onEnded(() => {
-						song.isPlay = false;
-						song.currentTime = 0;
-						clearInterval(this.intervalId);
-						this.intervalId = 0;
-						this.isEnded = true;
-					});
-				} else {
-					backgroundAudioManager.play();
-				}
+				})
 			},
-			onPause() {
-				backgroundAudioManager.pause();
-			},
-			onSliderChange(index, value) {
-				this.songs[index].currentTime = value;
-				if (this.activeIndex != index) {
-					this.onPlay(index);
-					return;
-				}
-				backgroundAudioManager.seek(value);
-			},
-			onSliderChanging(index, value) {
-				this.songs[index].currentTime = value;
-			},
-			updateCurrentTime() {
-				if (this.intervalId != 0) {
-					return;
-				}
-				let intervalId = setInterval(() => {
-					this.songs[this.activeIndex].currentTime = backgroundAudioManager.currentTime;
-				}, 1000)
-				this.intervalId = intervalId;
-			},
-			playAudio(id) {
-				if(this.activeAudioId != id){
-					innerAudioContext.autoplay = true
-					innerAudioContext.src ='cloud://test-cjyjj.7465-test-cjyjj/M500001VfvsJ21xFqb.mp3';
-					innerAudioContext.onPlay(() => {
-						console.log('开始播放')
-					})
-					this.activeAudioId = id;
-				}else{
-					if(innerAudioContext.paused){
-						innerAudioContext.play();
-					}else{
-						innerAudioContext.pause();
-					}
-				}
-				
-			}
 		},
 		components: {
 			nxPlayer
 		}
-
 	}
 </script>
 

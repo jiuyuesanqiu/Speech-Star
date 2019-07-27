@@ -32,9 +32,16 @@
 
 <script>
 	let util = require('../common/util.js');
+	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	export default {
 		data() {
 			return {
+				isLoading: false,
+				isPlay: false,
+				isEnded: false,
+				intervalId: 0,
+				currentTime: 0,
+				isPlayed:false,//是否播放过至少一次
 			};
 		},
 		computed: {
@@ -43,46 +50,138 @@
 			},
 			durationText() {
 				return util.formatDuration(this.duration);
+			},
+			isActive() {
+				if (this.src == this.activeSrc) {
+					if (!backgroundAudioManager.paused && this.intervalId == 0 && !this.isPlayed) {
+						this.currentTime = backgroundAudioManager.currentTime;
+						this.isPlay = true;
+						this.updateCurrentTime();
+						this.listener();
+					}
+					if(backgroundAudioManager.paused && !this.isPlayed){
+						this.currentTime = backgroundAudioManager.currentTime;
+					}
+					return true;
+				} else {
+					this.init();
+					return false;
+				}
 			}
 		},
 		methods: {
+			init() {
+				this.isLoading = false;
+				this.isPlay = false;
+				clearInterval(this.intervalId);
+			},
 			/**
-			 * 播放音频
+			 * 播放背景音频
 			 */
 			play() {
-				this.$emit('play');
+				this.isPlayed = true;
+				if (this.isActive && !this.isEnded) {
+					backgroundAudioManager.play();
+				} else {
+					backgroundAudioManager.title = this.title;
+					backgroundAudioManager.singer = this.singer;
+					backgroundAudioManager.startTime = this.currentTime;
+					backgroundAudioManager.src = this.src;
+					this.$emit('changeActive', this.src);
+				}
+				this.listener();
+			},
+			/**
+			 * 监听事件
+			 */
+			listener() {
+				//监听音频能够播放的事件
+				backgroundAudioManager.onWaiting(() => {
+					this.isLoading = true;
+				})
+				backgroundAudioManager.onCanplay(() => {
+					this.isLoading = false;
+				})
+				backgroundAudioManager.onPlay(() => {
+					this.isPlay = true;
+					this.isLoading = false;
+					this.updateCurrentTime();
+				})
+				backgroundAudioManager.onPause(() => {
+					this.isPlay = false;
+					clearInterval(this.intervalId);
+					this.intervalId = 0;
+				})
+				backgroundAudioManager.onStop(() => {
+					console.log("背景音频被停止")
+				});
+				backgroundAudioManager.onEnded(() => {
+					this.isPlay = false;
+					this.currentTime = 0;
+					clearInterval(this.intervalId);
+					this.intervalId = 0;
+					this.isEnded = true;
+				});
 			},
 			/**
 			 * 暂停音频
 			 */
 			paused() {
-				this.$emit('paused');
+				backgroundAudioManager.pause();
 			},
 			/**
 			 * 停止音频
 			 */
-			stop(){
-				this.$emit('stop');
+			stop() {
+				backgroundAudioManager.stop();
 			},
 			/**
 			 * 滚动后触发
 			 */
-			sliderChange({detail}) {
-				this.$emit('sliderChange',detail.value);
+			sliderChange({
+				detail
+			}) {
+				this.currentTime = detail.value;
+				if (this.isActive) {
+					backgroundAudioManager.seek(detail.value);
+				} else {
+					this.play();
+				}
 			},
 			/**
 			 * 拖动中触发
 			 */
-			sliderChanging({detail}) {
-				this.$emit('sliderChanging',detail.value);
+			sliderChanging({
+				detail
+			}) {
+				this.currentTime = detail.value;
 			},
-			playAudio(){
-				this.$emit('playAudio');
+			/**
+			 * 更新时间
+			 */
+			updateCurrentTime() {
+				if (this.intervalId != 0) {
+					return;
+				}
+				let intervalId = setInterval(() => {
+					this.currentTime = backgroundAudioManager.currentTime;
+				}, 1000)
+				this.intervalId = intervalId;
+			},
+			playAudio() {
+				if (!this.isPlay && !this.isLoading) {
+					this.play();
+				} else if (this.isPlay && !this.isLoading) {
+					this.paused();
+				}
 			}
 		},
 		props: {
 			src: String, //音频播放地址
-			title: String, //音频标题
+			title: {
+				type: String,
+				default: new Date().toString()
+			}, //音频标题
 			duration: String, //音频时长
 			coverImgUrl: String, //封面图
 			singer: String, //歌手名
@@ -90,17 +189,9 @@
 				type: Boolean,
 				default: false
 			},
-			isLoading:{
-				type:Boolean,
-				default:false
-			},
-			currentTime:{
-				type:Number,
-				default:0
-			},
-			isPlay:{
-				type:Boolean,
-				default:false
+			//当前音频播放的音频src
+			activeSrc: {
+				type: String,
 			}
 		}
 	}
@@ -175,8 +266,8 @@
 		background-color: rgba(248, 248, 248, 1);
 		padding-left: 25px;
 		font-size: 14px;
-		
-		.play-cion{
+
+		.play-cion {
 			font-size: 20px;
 		}
 	}
