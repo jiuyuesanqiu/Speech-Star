@@ -68,6 +68,9 @@
 				uni.navigateTo({
 					url: '../myInfo/myInfo'
 				})
+			},
+			loginSuccess(){
+				this.loginShow = false;
 			}
 		},
 		components: {

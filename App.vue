@@ -3,7 +3,7 @@
 		mapMutations
 	} from 'vuex';
 	wx.cloud.init({
-		env: 'test-cjyjj'
+		env: 'product-yjcc'
 	});
 	const db = wx.cloud.database();
 	export default {
