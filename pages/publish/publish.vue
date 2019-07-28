@@ -6,10 +6,13 @@
 		</view>
 
 		<view class="container">
-			<view class="bg-grey banner d-flex justify-center align-center">
-				<view class="dashBox d-flex flex-column">
+			<view class="bg-grey banner d-flex justify-center align-center" @click="chooseImage">
+				<view v-if="coverPath==''" class="dashBox d-flex flex-column">
 					<text class="cuIcon-add add"></text>
 					<text class="text">添加配图</text>
+				</view>
+				<view v-else>
+					<image :src="coverPath" class="coverImg" mode="aspectFit"></image>
 				</view>
 			</view>
 			<view class="pl-3 bg-white">
@@ -19,7 +22,7 @@
 				</view>
 				<view class="d-flex justify-between cell">
 					<view class="label">简介</view>
-					<textarea class="text-right introduction" placeholder-class="placeholder" v-model="synopsis" placeholder="介绍本期内容,可吸引更多播放哦!"></textarea>
+					<textarea class="text-right introduction" placeholder-class="placeholder" v-model="introduction" placeholder="介绍本期内容,可吸引更多播放哦!"></textarea>
 				</view>
 			</view>
 			<view class="d-flex justify-center">
@@ -42,12 +45,13 @@
 	export default {
 		data() {
 			return {
-				title: '',
-				synopsis: '',
-				tempSrc: '',
-				duration: 0,
-				progress: 0,
-				loading: false
+				title: '',//演讲标题
+				introduction: '',//简介
+				tempSrc: '',//音频文件临时路径
+				duration: 0,//音频时长
+				progress: 0,//上传进度
+				loading: false,//是否加载中
+				coverPath:'',//封面图片临时路径
 			}
 		},
 		onLoad(option) {
@@ -59,6 +63,16 @@
 			...mapState(['userInfo'])
 		},
 		methods: {
+			chooseImage() {
+				const self = this;
+				uni.chooseImage({
+					count: 1,
+					success(res) {
+						let tempFilePath = res.tempFilePaths[0];
+						self.coverPath = tempFilePath;
+					}
+				})
+			},
 			publish() {
 				if (this.title == '') {
 					uni.showToast({
@@ -68,25 +82,34 @@
 					return;
 				}
 				const self = this;
-				//生成文件名
+				//获取文件后缀
+				let suffix = this.coverPath.substring(this.coverPath.lastIndexOf('.'));
+				//封面生成文件名
+				let coverCloudPath = 'avatar/' + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
+				//生成音频文件名
 				let cloudPath = '' + new Date().getTime() + Math.floor(Math.random() * 100) + '.aac';
-				//上传到云存储
-				const uploadTask = wx.cloud.uploadFile({
-					cloudPath: cloudPath,
-					filePath: self.tempSrc,
-					success: res => {
-						console.log('插入数据')
-						self.insert(res.fileID)
-					}
-				})
-				//监听文件上传进度，并展示给用户看
-				uploadTask.onProgressUpdate((res) => {
-					this.progress = res.progress - 10; //此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
+				wx.cloud.uploadFile({
+					cloudPath: coverCloudPath,
+					filePath: this.coverPath
+				}).then(coverRes=>{
+					//上传到云存储
+					const uploadTask = wx.cloud.uploadFile({
+						cloudPath: cloudPath,
+						filePath: self.tempSrc,
+						success: videoRes => {
+							console.log('插入数据')
+							self.insert(coverRes.fileID,videoRes.fileID)
+						}
+					})
+					//监听文件上传进度，并展示给用户看
+					uploadTask.onProgressUpdate((res) => {
+						this.progress = res.progress - 10; //此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
+					})
 				})
 			},
-			insert(fileID) {
+			insert(coverFileID,videoFileID) {
 				//上传成功后，保存文件id到数据库
-				db.collection('speeches').add({
+				db.collection('dynamic').add({
 					data: {
 						title: this.title, //演讲标题
 						author: this.userInfo.nickName,
@@ -121,7 +144,9 @@
 			width: 375px;
 			height: 144px;
 			background-color: rgba(184, 184, 184, 1);
-
+			.coverImg{
+				height: 288upx;
+			}
 			.dashBox {
 				width: 200rpx;
 				height: 200rpx;

@@ -55,55 +55,6 @@
 				</view>
 			</view>
 		</view>
-		<!-- <picker mode="date" :value="date" start="1950-01-01" :end="endDate" @change="bindDateChange">
-			<view class="bg-white" style="width: 100%;">
-				<view class="d-flex border-bottom" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
-					<view class="d-flex flex-grow-1 align-center">
-						<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-							生日
-						</view>
-					</view>
-					<view class="d-flex align-center pr-2" style="">
-						<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-							{{date}}
-						</view>
-					</view>
-					<view class="d-flex align-center">
-						<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
-					</view>
-				</view>
-			</view>
-		</picker>
-		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex" @tap="toEdit" style="margin: 0 0 16upx 32upx;padding: 0 20upx 0 0;">
-				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						所在城市
-					</view>
-				</view>
-				<view class="d-flex align-center pr-2" style="">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						{{userInfo.province}}
-					</view>
-				</view>
-				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
-				</view>
-			</view>
-		</view> 
-		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
-				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						简介
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="container bg-white">
-			<editor id="editor" class="" :placeholder="placeholder" @ready="onEditorReady"></editor>
-			<view style="text-align: right;">0/140</view>
-		</view> -->
 	</view>
 </template>
 
@@ -115,12 +66,7 @@
 	const db = wx.cloud.database();
 	export default {
 		data() {
-			/* const currentDate = this.getDate({
-				format: true
-			}) */
-
 			return {
-				// placeholder: '小主很懒，还没有简介'
 			}
 		},
 		computed: {
@@ -129,28 +75,6 @@
 		onLoad() {
 		},
 		methods: {
-			/* getDate(type) {
-				const date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth() + 1;
-				let day = date.getDate();
-
-				if (type === 'start') {
-					year = year - 60;
-				} else if (type === 'end') {
-					year = year + 2;
-				}
-				month = month > 9 ? month : '0' + month;;
-				day = day > 9 ? day : '0' + day;
-				return `${year}-${month}-${day}`;
-			}, */
-			/**
-			 * 修改生日
-			 */
-			/* bindDateChange: function(e) {
-				this.date = e.target.value
-			}, */
-			//更换头像
 			changeAvatar() {
 				const self = this;
 				uni.chooseImage({
@@ -208,10 +132,6 @@
 </script>
 
 <style scoped>
-	.page {
-		/* background-color: #fff; */
-	}
-
 	.container {
 		padding: 32upx;
 	}
