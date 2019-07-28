@@ -33,7 +33,7 @@
 			</view>
 			<view class="likenum border-top">
 				<text class="cuIcon-appreciatefill"></text>
-				<text v-for="(likeUser,index) in item.likeUsers" :key="index" @click="userInfo(likeUser._openid)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
+				<text v-for="(likeUser,index) in item.likeUsers" :key="index" @click="userDetail(likeUser._openid)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
 			</view>
 			<view>
 				<view class="my-1 d-flex" v-for="(comment,index) in item.comment" :key="index">
@@ -97,7 +97,6 @@
 		},
 		methods: {
 			isLike(arr){
-				console.log(arr);
 				arr.some((value)=>{
 					return value._openid == this.userInfo._openid;
 				})
@@ -110,10 +109,10 @@
 				
 			},
 			/**
-			 * 跳转用户信息
+			 * 用户详情
 			 */
-			userInfo() {
-
+			userDetail(){
+				
 			},
 			onChangeActive(src) {
 				this.activeSrc = src;
