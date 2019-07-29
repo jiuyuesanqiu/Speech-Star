@@ -41,7 +41,10 @@
 			<nx-cell icon="/static/disk.png" border title="我的作品"></nx-cell>
 		</view>
 		<button open-type="contact">
-			<nx-cell icon="/static/service.png" title="我要吐槽"></nx-cell>
+			<nx-cell icon="/static/service.png" border title="我要吐槽"></nx-cell>
+		</button>
+		<button open-type="share">
+			<nx-cell icon="/static/toShare.png" title="分享好友"></nx-cell>
 		</button>
 
 		<nxLogin :show="loginShow" @success="loginSuccess" @cancel="loginShow=false"></nxLogin>
@@ -71,7 +74,14 @@
 			},
 			loginSuccess(){
 				this.loginShow = false;
-			}
+			},
+			onShareAppMessage() {
+				return {
+					title: '演讲口才2',
+					path: '/pages/index/index',
+					imageUrl:'../../static/shareImg.jpg'
+				}
+			},
 		},
 		components: {
 			nxCell,
