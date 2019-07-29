@@ -10,12 +10,11 @@
 		onLaunch: function() {
 			let self = this;
 			wx.cloud.callFunction({
-				// 要调用的云函数名称
-				name: 'getOwnerOpenid',
-			}).then(resContext => {
+				name: 'getWxContext',
+			}).then(wxContext => {
 				//查询云数据库是否有此用户数据
 				db.collection('user').where({
-					_openid:resContext.OPENID
+					_openid:wxContext.result.openid,
 				}).get().then(res => {
 					if (res.data.length > 0) {
 						self.login(res.data[0]);
