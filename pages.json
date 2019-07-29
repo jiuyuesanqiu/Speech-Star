@@ -44,7 +44,7 @@
 		}, {
 			"path": "pages/myInfo/myInfo",
 			"style": {
-				"navigationBarTitleText": "我的资料"
+				"navigationBarTitleText": "个人信息"
 			}
 		}, {
 			"path": "pages/edit/edit",

@@ -4,11 +4,11 @@
 			<view class="d-flex border-bottom" @tap="changeAvatar" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center" style="font-size: 32upx;">
-						更换头像
+						头像
 					</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="height: 180upx;">
-					<image style="width: 128upx; height: 128upx;border-radius: 50%;" :src="userInfo.avatarUrl" mode=""></image>
+					<image class="radius" style="width: 128upx; height: 128upx;" :src="userInfo.avatarUrl" mode=""></image>
 				</view>
 				<view class="d-flex align-center">
 					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
