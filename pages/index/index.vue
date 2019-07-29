@@ -10,16 +10,16 @@
 					<view class="createTime">{{item.createTime}}</view>
 				</view>
 			</view>
-			<view class="introduce">
+			<view class="intro">
 				<text>
-					{{item.introduce}}
+					{{item.intro}}
 				</text>
 			</view>
 			<view>
 				<image class="cover" :src="item.cover" mode="widthFix"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.fileId" :title="item.title" :duration="item.duration"
+				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title" :duration="item.duration"
 				 :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
@@ -164,7 +164,7 @@
 			}
 		}
 
-		.introduce {
+		.intro {
 			color: rgba(16, 16, 16, 1);
 			font-size: 14px;
 			padding: 11px 0;

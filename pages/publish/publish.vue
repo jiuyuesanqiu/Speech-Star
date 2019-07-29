@@ -22,7 +22,7 @@
 				</view>
 				<view class="d-flex justify-between cell">
 					<view class="label">简介</view>
-					<textarea class="text-right introduction" placeholder-class="placeholder" v-model="introduction" placeholder="介绍本期内容,可吸引更多播放哦!"></textarea>
+					<textarea class="text-right intro" placeholder-class="placeholder" v-model="intro" placeholder="介绍本期内容,可吸引更多播放哦!"></textarea>
 				</view>
 			</view>
 			<view class="d-flex justify-center">
@@ -45,13 +45,13 @@
 	export default {
 		data() {
 			return {
-				title: '',//演讲标题
-				introduction: '',//简介
-				tempSrc: '',//音频文件临时路径
-				duration: 0,//音频时长
-				progress: 0,//上传进度
-				loading: false,//是否加载中
-				coverPath:'',//封面图片临时路径
+				title: '', //演讲标题
+				intro: '', //音频简介
+				tempSrc: '', //音频文件临时路径
+				duration: 0, //音频时长
+				progress: 0, //上传进度
+				loading: false, //是否加载中
+				coverPath: '', //封面图片临时路径
 			}
 		},
 		onLoad(option) {
@@ -73,7 +73,7 @@
 					}
 				})
 			},
-			publish() {
+			async publish() {
 				if (this.title == '') {
 					uni.showToast({
 						icon: 'none',
@@ -81,55 +81,74 @@
 					})
 					return;
 				}
-				const self = this;
+				let coverCloudPath = this.formatCloudPath(this.coverPath,'cover/');
+				//上传封面图
+				let coverFileID = await this.uploadFile(coverCloudPath,this.coverPath);
+				let audioCloudPath = this.formatCloudPath(this.tempSrc,'speech/');
+				//上传音频
+				let audioFileID = await this.uploadFile(audioCloudPath,this.tempSrc,(res)=>{
+					//此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
+					this.progress = res.progress - 10;
+				})
+				//发布动态
+				this.publishDynamic(coverFileID, audioFileID);
+			},
+			/**
+			 * 格式化云存储路径
+			 * @param {Object} tempFilePath	临时文件路径
+			 * @param {Object} folder	上传到哪个文件夹
+			 */
+			formatCloudPath(tempFilePath,folder='') {
 				//获取文件后缀
-				let suffix = this.coverPath.substring(this.coverPath.lastIndexOf('.'));
+				let suffix = tempFilePath.substring(tempFilePath.lastIndexOf('.'));
 				//封面生成文件名
-				let coverCloudPath = 'avatar/' + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
-				//生成音频文件名
-				let cloudPath = '' + new Date().getTime() + Math.floor(Math.random() * 100) + '.aac';
-				wx.cloud.uploadFile({
-					cloudPath: coverCloudPath,
-					filePath: this.coverPath
-				}).then(coverRes=>{
-					//上传到云存储
-					const uploadTask = wx.cloud.uploadFile({
+				let cloudPath = folder + new Date().getTime() + Math.floor(Math.random() * 100) + suffix;
+				console.log("格式化云存储路径成功")
+				return cloudPath;
+			},
+			/**
+			 * 上传文件
+			 * @param {Object} cloudPath	上传到云存储的路径
+			 * @param {Object} filePath		本地文件的路径
+			 */
+			async uploadFile(cloudPath, filePath,progressCallback=()=>{}) {
+				return new Promise((resolve, reject) => {
+					let uploadTask = wx.cloud.uploadFile({
 						cloudPath: cloudPath,
-						filePath: self.tempSrc,
-						success: videoRes => {
-							console.log('插入数据')
-							self.insert(coverRes.fileID,videoRes.fileID)
+						filePath: filePath,
+						success(res) {
+							resolve(res.fileID)
+							console.log('上传文件成功')
 						}
 					})
-					//监听文件上传进度，并展示给用户看
-					uploadTask.onProgressUpdate((res) => {
-						this.progress = res.progress - 10; //此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
-					})
+					uploadTask.onProgressUpdate(progressCallback)
 				})
 			},
-			insert(coverFileID,videoFileID) {
+			/**
+			 * @param {Object} coverFileID
+			 * @param {Object} audioFileID
+			 */
+			publishDynamic(coverFileID, audioFileID) {
 				//上传成功后，保存文件id到数据库
 				db.collection('dynamic').add({
 					data: {
 						title: this.title, //演讲标题
-						author: this.userInfo.nickName,
 						fileID: fileID,
 						createTime: new Date(),
-						listener: 0, //听众人数
-						comment: 0, //评论人数
-						duration: this.duration //音频时长
+						comment: [], //评论人数
+						duration: this.duration ,//音频时长
+						cover:coverFileID,//封面图
+						audioFileID,
+						intro:this.intro,
+						likeUsers:[],
+						playAmount:0,
+						userInfo:this.userInfo
 					}
 				}).then(res => {
 					this.progress = 100;
 					this.loading = false;
 					this.progress = 0;
-					uni.setStorageSync('parameter', {
-						author: this.userInfo.nickName,
-						duration: this.duration,
-						title: this.title,
-						audioUrl: fileID
-					})
-					uni.reLaunch({
+					uni.navigateTo({
 						url: '../success/success'
 					})
 				})
@@ -144,9 +163,11 @@
 			width: 375px;
 			height: 144px;
 			background-color: rgba(184, 184, 184, 1);
-			.coverImg{
+
+			.coverImg {
 				height: 288upx;
 			}
+
 			.dashBox {
 				width: 200rpx;
 				height: 200rpx;
@@ -186,7 +207,7 @@
 			font-size: 26rpx;
 		}
 
-		.introduction {
+		.intro {
 			margin-top: 6rpx;
 			line-height: 39rpx;
 		}
