@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex" style="margin: 0 0 16upx 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex border-bottom" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						性别
@@ -48,6 +48,23 @@
 					</view>
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==0">
 						未知
+					</view>
+				</view>
+				<view class="d-flex align-center">
+					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+				</view>
+			</view>
+		</view>
+		<view class="bg-white" style="width: 100%;">
+			<view class="d-flex border-bottom" @tap="toEdit('个性签名','signature')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
+						个性签名
+					</view>
+				</view>
+				<view class="d-flex align-center pr-2" style="">
+					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
+						走别人的路，让别人无路可走
 					</view>
 				</view>
 				<view class="d-flex align-center">
