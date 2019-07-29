@@ -60,10 +60,6 @@
 				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		}
-	    ,{
-            "path" : "pages/index_bak/index_bak",
-            "style" : {}
-        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "演讲口才",
