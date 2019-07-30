@@ -7,15 +7,7 @@ const db = wx.cloud.database();
 const store = new Vuex.Store({
 	state: {
 		isLogin: false,
-		userInfo:{
-			nickName:'',
-			avatarUrl:'',
-			gender:'',
-			province:'',
-			city:'',
-			country:'',
-			signature:''
-		}
+		userInfo:{}
 	},
 	mutations: {
 		login(state, provider) {
@@ -23,8 +15,14 @@ const store = new Vuex.Store({
 			state.userInfo = provider;
 		},
 		updateUserInfo(state){
-			db.collection('user').get().then(res => {
-				state.userInfo = res.data[0];
+			wx.cloud.callFunction({
+				name: 'getWxContext',
+			}).then(wxContext => {
+				db.collection('user').where({
+					_openid:wxContext.result.openid,
+				}).get().then(res => {
+					state.userInfo = res.data[0];
+				})
 			})
 		},
 		updateAvatar(state,url){
