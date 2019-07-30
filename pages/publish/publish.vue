@@ -133,7 +133,6 @@
 				db.collection('dynamic').add({
 					data: {
 						title: this.title, //演讲标题
-						fileID: fileID,
 						createTime: new Date(),
 						comment: [], //评论人数
 						duration: this.duration ,//音频时长
@@ -145,6 +144,7 @@
 						userInfo:this.userInfo
 					}
 				}).then(res => {
+					console.log("发布动态成功")
 					this.progress = 100;
 					this.loading = false;
 					this.progress = 0;
@@ -165,7 +165,7 @@
 			background-color: rgba(184, 184, 184, 1);
 
 			.coverImg {
-				height: 288upx;
+				height: 292upx;
 			}
 
 			.dashBox {
