@@ -36,7 +36,9 @@ const store = new Vuex.Store({
 		updateSignature(state,signature){
 			state.userInfo.signature = signature;
 		},
-		
+		updateGender(state,gender){
+			state.userInfo.gender = gender;
+		},
 	}
 })
 

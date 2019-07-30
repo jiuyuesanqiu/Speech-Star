@@ -1,75 +1,63 @@
 <template>
 	<view class="page">
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="changeAvatar" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex border-bottom marginPadding headBox" @tap="changeAvatar">
 				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;">
-						头像
-					</view>
+					<view class="d-flex align-center">头像</view>
 				</view>
-				<view class="d-flex align-center pr-2" style="height: 180upx;">
-					<image class="radius" style="width: 128upx; height: 128upx;" :src="userInfo.avatarUrl" mode=""></image>
+				<view class="d-flex align-center p-2">
+					<image class="radius" :src="userInfo.avatarUrl" mode=""></image>
 				</view>
 				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					<text class="cuIcon-right text-gray"></text>
 				</view>
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit('设置名字','nickName')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex border-bottom marginPadding" @tap="toEdit('设置名字','nickName')">
 				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						昵称
-					</view>
+					<view class="d-flex align-center pt-4 pb-4">昵称</view>
 				</view>
-				<view class="d-flex align-center pr-2" style="">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						{{userInfo.nickName}}
-					</view>
+				<view class="d-flex align-center pr-2">
+					<view class="d-flex align-center">{{userInfo.nickName}}</view>
 				</view>
 				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					<text class="cuIcon-right text-gray"></text>
 				</view>
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit('设置性别','gender')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view v-if="userInfo.gender==0" class="d-flex border-bottom marginPadding" @tap="editGender">
 				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						性别
-					</view>
+					<view class="d-flex align-center pt-4 pb-4">性别</view>
 				</view>
-				<view class="d-flex align-center pr-2" style="">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==2">
-						女
-					</view>
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==1">
-						男
-					</view>
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;" v-if="userInfo.gender==0">
-						未知
-					</view>
-				</view>
+				<picker class="d-flex align-center pr-2" @change="editGender" :range="genderList">
+					<view class="d-flex align-center" v-if="userInfo.gender==0">未知</view>
+				</picker>
 				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					<text class="cuIcon-right text-gray"></text>
+				</view>
+			</view>
+			<view v-else class="d-flex border-bottom marginPadding">
+				<view class="d-flex flex-grow-1 align-center">
+					<view class="d-flex align-center pt-4 pb-4">性别</view>
+				</view>
+				<view class="d-flex align-center pr-2">
+					<view class="d-flex align-center" v-if="userInfo.gender==2">女</view>
+					<view class="d-flex align-center" v-if="userInfo.gender==1">男</view>
 				</view>
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit('个性签名','signature')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex marginPadding" @tap="toEdit('个性签名','signature')">
 				<view class="d-flex flex-grow-1 align-center">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						个性签名
-					</view>
+					<view class="d-flex align-center pt-4 pb-4">个性签名</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="">
-					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						{{userInfo.signature}}
-						<!-- 走别人的路，让别人无路可走 -->
-					</view>
+					<view class="d-flex align-center">{{userInfo.signature}}</view>
 				</view>
 				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					<text class="cuIcon-right text-gray"></text>
 				</view>
 			</view>
 		</view>
@@ -85,6 +73,8 @@
 	export default {
 		data() {
 			return {
+				genderList: ['男', '女'],
+				genderNum: 0
 			}
 		},
 		computed: {
@@ -140,12 +130,27 @@
 					url: `../edit/edit?title=${title}&opt=${opt}`
 				})
 			},
+			editGender(e) {
+				if (e.type == 'change') {
+					const self = this;
+					//更新性别
+					db.collection('user').doc(self.userInfo._id).update({
+						data: {
+							gender: Number(e.detail.value) + 1
+						},
+						success: function(res) {
+							console.log('更新性别成功');
+							self.updateGender(Number(e.detail.value) + 1);
+						}
+					});
+				}
+			},
 			onEditorReady() {
 				uni.createSelectorQuery().select('#editor').context((res) => {
 					this.editorCtx = res.context
 				}).exec()
 			},
-			...mapMutations(['updateUserInfo', 'updateAvatar'])
+			...mapMutations(['updateUserInfo', 'updateAvatar', 'updateGender'])
 		}
 	};
 </script>
@@ -160,5 +165,16 @@
 		height: 10%;
 		background-color: #fff;
 		font-size: 32upx;
+	}
+
+	.marginPadding {
+		margin: 0 0 0 32upx;
+		padding: 0 20upx 0 0;
+		font-size: 32upx;
+	}
+
+	.headBox image {
+		width: 128upx;
+		height: 128upx;
 	}
 </style>
