@@ -10,7 +10,8 @@
 						{{userInfo.nickName}}
 					</view>
 					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray">
-						走别人的路，让别人无路可走
+						{{userInfo.signature}}
+						<!-- 走别人的路，让别人无路可走 -->
 					</view>
 				</view>
 				<view class="d-flex align-center">

@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" @tap="toEdit('设置名字','nikeName')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex border-bottom" @tap="toEdit('设置名字','nickName')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						昵称
@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<view class="bg-white" style="width: 100%;">
-			<view class="d-flex border-bottom" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
+			<view class="d-flex border-bottom" @tap="toEdit('设置性别','gender')" style="margin: 0 0 0 32upx;padding: 0 20upx 0 0;">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
 						性别
@@ -64,7 +64,8 @@
 				</view>
 				<view class="d-flex align-center pr-2" style="">
 					<view class="d-flex align-center" style="font-size: 32upx;height: 120upx;">
-						走别人的路，让别人无路可走
+						{{userInfo.signature}}
+						<!-- 走别人的路，让别人无路可走 -->
 					</view>
 				</view>
 				<view class="d-flex align-center">
@@ -90,6 +91,7 @@
 			...mapState(['userInfo'])
 		},
 		onLoad() {
+			console.log(this.userInfo);
 		},
 		methods: {
 			changeAvatar() {
