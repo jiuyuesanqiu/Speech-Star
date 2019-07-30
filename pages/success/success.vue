@@ -6,23 +6,23 @@
 		<view class="success text-center mt-3">
 			<text>恭喜！节目已经发布成功</text>
 		</view>
-		<view>
+		<view class="group">
 			<view class="mb-4">
-				<nxButton openType="share">分享，轻松提升播放量</nxButton>
+				<nxButton openType="share" round>分享，轻松提升播放量</nxButton>
 			</view>
-			<nxButton plain>完成</nxButton>
+			<nxButton plain round @click.native="goHome()">完成</nxButton>
 		</view>
 		<view class="d-flex justify-center mt-5">
 			<view class="content d-flex">
 				<view>
-					<image class="cover" src="http://iph.href.lu/60x60"></image>
+					<image class="cover" :src="coverSrc"></image>
 				</view>
 				<view class="right">
 					<view class="title">
-						<text>规则都是用来打破的</text>
+						<text>{{title}}</text>
 					</view>
 					<view class="time">
-						<text>时长：04:24</text>
+						<text>时长：{{durationText}}</text>
 					</view>
 				</view>
 			</view>
@@ -31,10 +31,15 @@
 </template>
 
 <script>
+	import util from '../../common/util.js';
 	import nxButton from '../../components/nx-button.vue';
 	export default {
 		data() {
-			return {}
+			return {
+				coverSrc:'',
+				title:'',
+				duration:''
+			}
 		},
 		onShareAppMessage() {
 			let item = uni.getStorageSync('parameter');
@@ -54,6 +59,16 @@
 				})
 			}
 		},
+		onLoad(option) {
+			this.coverSrc = option.coverSrc;
+			this.title = option.title;
+			this.duration = option.duration;
+		},
+		computed:{
+			durationText(){
+				return util.formatDuration(this.duration);
+			}
+		},
 		components: {
 			nxButton
 		}
@@ -70,6 +85,10 @@
 	.logo {
 		width: 300upx;
 		height: 300upx;
+	}
+	
+	.group{
+		padding: 0 90upx;
 	}
 
 	.success {

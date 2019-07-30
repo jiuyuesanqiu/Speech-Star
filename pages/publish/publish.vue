@@ -25,12 +25,8 @@
 					<textarea class="text-right intro" placeholder-class="placeholder" v-model="intro" placeholder="介绍本期内容,可吸引更多播放哦!"></textarea>
 				</view>
 			</view>
-			<view class="d-flex justify-center">
-				<view class="upload d-flex align-center justify-center" @click="publish">
-					<text>
-						上传声音
-					</text>
-				</view>
+			<view class="upload">
+				<nxButton @click.native="publish" :loading = "loading">上传声音</nxButton>
 			</view>
 		</view>
 
@@ -42,6 +38,7 @@
 	import {
 		mapState
 	} from 'vuex';
+	import nxButton from '../../components/nx-button.vue';
 	export default {
 		data() {
 			return {
@@ -81,12 +78,14 @@
 					})
 					return;
 				}
-				let coverCloudPath = this.formatCloudPath(this.coverPath,'cover/');
+				if (this.loading) return;
+				this.loading = true;
+				let coverCloudPath = this.formatCloudPath(this.coverPath, 'cover/');
 				//上传封面图
-				let coverFileID = await this.uploadFile(coverCloudPath,this.coverPath);
-				let audioCloudPath = this.formatCloudPath(this.tempSrc,'speech/');
+				let coverFileID = await this.uploadFile(coverCloudPath, this.coverPath);
+				let audioCloudPath = this.formatCloudPath(this.tempSrc, 'speech/');
 				//上传音频
-				let audioFileID = await this.uploadFile(audioCloudPath,this.tempSrc,(res)=>{
+				let audioFileID = await this.uploadFile(audioCloudPath, this.tempSrc, (res) => {
 					//此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
 					this.progress = res.progress - 10;
 				})
@@ -98,7 +97,7 @@
 			 * @param {Object} tempFilePath	临时文件路径
 			 * @param {Object} folder	上传到哪个文件夹
 			 */
-			formatCloudPath(tempFilePath,folder='') {
+			formatCloudPath(tempFilePath, folder = '') {
 				//获取文件后缀
 				let suffix = tempFilePath.substring(tempFilePath.lastIndexOf('.'));
 				//封面生成文件名
@@ -111,7 +110,7 @@
 			 * @param {Object} cloudPath	上传到云存储的路径
 			 * @param {Object} filePath		本地文件的路径
 			 */
-			async uploadFile(cloudPath, filePath,progressCallback=()=>{}) {
+			async uploadFile(cloudPath, filePath, progressCallback = () => {}) {
 				return new Promise((resolve, reject) => {
 					let uploadTask = wx.cloud.uploadFile({
 						cloudPath: cloudPath,
@@ -135,13 +134,13 @@
 						title: this.title, //演讲标题
 						createTime: new Date(),
 						comment: [], //评论人数
-						duration: this.duration ,//音频时长
-						cover:coverFileID,//封面图
+						duration: this.duration, //音频时长
+						cover: coverFileID, //封面图
 						audioFileID,
-						intro:this.intro,
-						likeUsers:[],
-						playAmount:0,
-						userInfo:this.userInfo
+						intro: this.intro,
+						likeUsers: [],
+						playAmount: 0,
+						userInfo: this.userInfo
 					}
 				}).then(res => {
 					console.log("发布动态成功")
@@ -149,10 +148,13 @@
 					this.loading = false;
 					this.progress = 0;
 					uni.navigateTo({
-						url: '../success/success'
+						url: `../success/success?coverSrc=${coverFileID}&title=${this.title}&duration=${this.duration}`
 					})
 				})
 			}
+		},
+		components: {
+			nxButton
 		}
 	}
 </script>
@@ -213,13 +215,8 @@
 		}
 
 		.upload {
-			width: 345px;
-			height: 44px;
-			border-radius: 4px;
-			background-color: #09BB07;
-			color: rgba(255, 255, 255, 1);
-			font-size: 17px;
-			margin-top: 90rpx;
+			margin-top: 90upx;
+			padding: 0 30upx;
 		}
 	}
 </style>
