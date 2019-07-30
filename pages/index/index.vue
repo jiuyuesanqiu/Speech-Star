@@ -15,7 +15,7 @@
 					{{item.intro}}
 				</text>
 			</view>
-			<view>
+			<view v-if="item.cover != defaultCover">
 				<image class="cover" :src="item.cover" mode="widthFix"></image>
 			</view>
 			<view class="player">
@@ -73,7 +73,8 @@
 				activeSrc: '', //当前播放的音频
 				dynamics: [], //动态列表
 				isLoading: false, //数据是否正在加载中
-				loginShow:false
+				loginShow:false,
+				defaultCover:'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png'
 			}
 		},
 		onLoad() {
@@ -93,7 +94,7 @@
 			this.getNextPage();
 		},
 		computed: {
-			...mapState(['isLogin', 'userInfo'])
+			...mapState(['isLogin', 'userInfo']),
 		},
 		methods: {
 			isLike(arr){

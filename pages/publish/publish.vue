@@ -80,17 +80,21 @@
 				}
 				if (this.loading) return;
 				this.loading = true;
-				let coverCloudPath = this.formatCloudPath(this.coverPath, 'cover/');
-				//上传封面图
-				let coverFileID = await this.uploadFile(coverCloudPath, this.coverPath);
 				let audioCloudPath = this.formatCloudPath(this.tempSrc, 'speech/');
 				//上传音频
 				let audioFileID = await this.uploadFile(audioCloudPath, this.tempSrc, (res) => {
 					//此处减10是因为防止进度条加载完成，但实际上这条数据还没有被插入数据库，以免引起用户焦虑的等待
 					this.progress = res.progress - 10;
 				})
-				//发布动态
-				this.publishDynamic(coverFileID, audioFileID);
+				if (this.coverPath != '') {
+					let coverCloudPath = this.formatCloudPath(this.coverPath, 'cover/');
+					//上传封面图
+					let coverFileID = await this.uploadFile(coverCloudPath, this.coverPath);
+					//发布动态
+					this.publishDynamic(audioFileID,coverFileID);
+				}else{
+					this.publishDynamic(audioFileID)
+				}
 			},
 			/**
 			 * 格式化云存储路径
@@ -127,7 +131,7 @@
 			 * @param {Object} coverFileID
 			 * @param {Object} audioFileID
 			 */
-			publishDynamic(coverFileID, audioFileID) {
+			publishDynamic(audioFileID,coverFileID='cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png') {
 				//上传成功后，保存文件id到数据库
 				db.collection('dynamic').add({
 					data: {
@@ -147,7 +151,7 @@
 					this.progress = 100;
 					this.loading = false;
 					this.progress = 0;
-					uni.navigateTo({
+					uni.reLaunch({
 						url: `../success/success?coverSrc=${coverFileID}&title=${this.title}&duration=${this.duration}`
 					})
 				})
