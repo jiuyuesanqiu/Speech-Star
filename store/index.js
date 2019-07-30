@@ -13,7 +13,8 @@ const store = new Vuex.Store({
 			gender:'',
 			province:'',
 			city:'',
-			country:''
+			country:'',
+			signature:''
 		}
 	},
 	mutations: {
@@ -31,6 +32,9 @@ const store = new Vuex.Store({
 		},
 		updateNickName(state,nickName){
 			state.userInfo.nickName = nickName;
+		},
+		updateSignature(state,signature){
+			state.userInfo.signature = signature;
 		},
 		
 	}
