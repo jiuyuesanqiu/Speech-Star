@@ -25,13 +25,12 @@
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view class="operation">
-					<text v-if="isLike(item.likeUsers)" class="cuIcon-appreciate" @click="like"></text>
-					<text class="cuIcon-appreciatefill"></text>
+					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'" @click="like"></text>
 					<text class="cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
 			</view>
-			<view class="likenum border-top">
+			<view v-if="item.likeUsers.length!=0" class="likenum border-top">
 				<text class="cuIcon-appreciatefill"></text>
 				<text v-for="(likeUser,index) in item.likeUsers" :key="index" @click="userDetail(likeUser._openid)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
 			</view>
@@ -98,10 +97,9 @@
 		},
 		methods: {
 			isLike(arr){
-				arr.some((value)=>{
+				return arr.some((value)=>{
 					return value._openid == this.userInfo._openid;
-				})
-				return false;
+				});
 			},
 			/**
 			 * 点赞

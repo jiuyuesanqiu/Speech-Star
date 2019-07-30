@@ -36,7 +36,7 @@
 	//获取全局录音器
 	const recorderManager = uni.getRecorderManager();
 	const options = {
-		duration: 5000,
+		duration: 600000,
 		sampleRate: 48000,
 		encodeBitRate: 320000
 	}
