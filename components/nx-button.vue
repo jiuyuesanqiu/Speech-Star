@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="d-flex justify-center">
-			<button :open-type="openType" :class="['btn','primary',plain?'plain':'']">
+			<button :open-type="openType" :class="['btn','primary',plain?'plain':'',round?'round':'']">
 				<slot></slot>
 			</button>
 		</view>
@@ -18,13 +18,20 @@
 			
 		},
 		props:{
+			//是否缕空
 			plain:{
 				type:Boolean,
 				default:false
 			},
+			//按钮类型
 			openType:{
 				type:String,
 				default:''
+			},
+			//是否为圆形按钮
+			round:{
+				type:Boolean,
+				default:false
 			}
 		}
 	}
@@ -45,10 +52,10 @@
 
 	.container {
 		.btn {
-			width: 285px;
-			height: 44px;
-			line-height: 44px;
-			border-radius: 22px;
+			width: 570upx;
+			height: 88upx;
+			line-height: 88upx;
+			border-radius: 9upx;
 			text-align: center;
 		}
 
@@ -59,9 +66,13 @@
 
 		.plain {
 			background-color: white;
-			border: 1px solid #09bb07;
+			border: 2upx solid #09bb07;
 			color: #09bb07;
 			box-sizing: border-box;
+		}
+		
+		.round{
+			border-radius: 44upx;
 		}
 	}
 </style>
