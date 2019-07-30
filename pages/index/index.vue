@@ -7,7 +7,7 @@
 				</view>
 				<view class="pl-2">
 					<view class="nickName">{{item.userInfo.nickName}}</view>
-					<view class="createTime">{{item.createTime}}</view>
+					<view class="createTime">{{timeAgoFormat(item.createTime)}}</view>
 				</view>
 			</view>
 			<view class="intro">
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+	import { format, render, cancel, register } from 'timeago.js';
 	import nxPlayer from '../../components/nx-player.vue';
 	import nxLogin from '../../components/nx-login.vue';
 	import {
@@ -96,6 +97,12 @@
 			...mapState(['isLogin', 'userInfo']),
 		},
 		methods: {
+			/**
+			 * 格式化创建时间
+			 */
+			timeAgoFormat(time){
+				return format(time,'zh_CN')
+			},
 			/**
 			 * 预览图片
 			 */

@@ -1,0 +1,22 @@
+{
+  "name": "super-speech",
+  "version": "1.0.0",
+  "description": "演讲星球",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiuyuesanqiu/super-speech.git"
+  },
+  "author": "刘良，刘利，梦浩然",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jiuyuesanqiu/super-speech/issues"
+  },
+  "homepage": "https://github.com/jiuyuesanqiu/super-speech#readme",
+  "dependencies": {
+    "timeago.js": "^4.0.0-beta.2"
+  }
+}
