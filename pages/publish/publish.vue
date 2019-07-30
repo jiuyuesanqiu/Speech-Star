@@ -64,6 +64,7 @@
 				const self = this;
 				uni.chooseImage({
 					count: 1,
+					sizeType: ['compressed'],
 					success(res) {
 						let tempFilePath = res.tempFilePaths[0];
 						self.coverPath = tempFilePath;

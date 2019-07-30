@@ -16,11 +16,11 @@
 				</text>
 			</view>
 			<view v-if="item.cover != defaultCover">
-				<image class="cover" :src="item.cover" mode="widthFix"></image>
+				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title" :duration="item.duration"
-				 :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
+				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title"
+				 :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
@@ -57,7 +57,7 @@
 
 <script>
 	import nxPlayer from '../../components/nx-player.vue';
-	import nxLogin  from '../../components/nx-login.vue';
+	import nxLogin from '../../components/nx-login.vue';
 	import {
 		mapState
 	} from 'vuex';
@@ -72,8 +72,8 @@
 				activeSrc: '', //当前播放的音频
 				dynamics: [], //动态列表
 				isLoading: false, //数据是否正在加载中
-				loginShow:false,
-				defaultCover:'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png'
+				loginShow: false,
+				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png'
 			}
 		},
 		onLoad() {
@@ -82,7 +82,7 @@
 			this.getNextPage();
 			wx.showShareMenu();
 		},
-		onShow(){
+		onShow() {
 			this.activeSrc = backgroundAudioManager.src;
 		},
 		//下拉刷新
@@ -96,22 +96,30 @@
 			...mapState(['isLogin', 'userInfo']),
 		},
 		methods: {
-			isLike(arr){
-				return arr.some((value)=>{
+			/**
+			 * 预览图片
+			 */
+			previewImage(url) {
+				wx.previewImage({
+					urls: [url]
+				})
+			},
+			isLike(arr) {
+				return arr.some((value) => {
 					return value._openid == this.userInfo._openid;
 				});
 			},
 			/**
 			 * 点赞
 			 */
-			like(){
-				
+			like() {
+
 			},
 			/**
 			 * 用户详情
 			 */
-			userDetail(){
-				
+			userDetail() {
+
 			},
 			onChangeActive(src) {
 				this.activeSrc = src;
@@ -189,7 +197,8 @@
 				font-size: 24px;
 			}
 
-			.cuIcon-appreciate,.cuIcon-appreciatefill {
+			.cuIcon-appreciate,
+			.cuIcon-appreciatefill {
 				margin-right: 33px;
 			}
 
