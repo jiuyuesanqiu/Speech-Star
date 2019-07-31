@@ -16,8 +16,7 @@
 <script>
 	import nxLogin  from '../../components/nx-login.vue';
 	import {
-		mapState,
-		mapMutations
+		mapGetters
 	} from 'vuex';
 	export default {
 		data() {
@@ -26,7 +25,7 @@
 			}
 		},
 		computed: {
-			...mapState(['isLogin'])
+			...mapGetters(['isLogin'])
 		},
 		methods: {
 			toRecording() {

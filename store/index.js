@@ -2,21 +2,20 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-const db = wx.cloud.database();
-
 const store = new Vuex.Store({
+	strict: process.env.NODE_ENV === 'development',//开发环境时执行严格模式
 	state: {
 		userInfo:{}
 	},
 	getters:{
+		/**
+		 * 只要userInfo的_id为有效值，那么就说明已经登录了
+		 */
 		isLogin(state){
 			return Boolean(state.userInfo._id);
 		}
 	},
-	mutations: {	//所有同步状态更改都提交mutation
-		login(state) {
-			state.isLogin = true;
-		},
+	mutations: {//同步更新状态
 		/**
 		 * 更新用户信息
 		 * @param {Object} state
@@ -26,7 +25,7 @@ const store = new Vuex.Store({
 			state.userInfo = {...state.userInfo,...userInfoFielld}
 		}
 	},
-	actions:{	//所有异步状态更改都分发action
+	actions:{//异步更新状态
 		updateUserInfo({commit}){
 			wx.cloud.callFunction({
 				name: 'getOwnerUserInfo',

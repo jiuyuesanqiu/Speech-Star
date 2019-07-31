@@ -1,19 +1,17 @@
 <script>
 	import {
-		mapMutations,mapGetters
+		mapMutations
 	} from 'vuex';
 	wx.cloud.init({
 		env: 'product-yjcc'
 	});
-	const db = wx.cloud.database();
 	export default {
 		onLaunch: function() {
-			let self = this;
 			wx.cloud.callFunction({
 				name: 'getOwnerUserInfo',
-			}).then(res => {
-				console.log('启动时请求用户信息',res)
-				self.updateUserInfoField(res.result);
+			}).then(({result}) => {
+				console.log('启动时请求用户信息',result)
+				this.updateUserInfoField(result);
 			})
 		},
 		methods: {
