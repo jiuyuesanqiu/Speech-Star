@@ -25,12 +25,12 @@
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
-					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'" @click="like"></text>
+					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'" @click="like(item._id,item.likeUsers)"></text>
 					<text class="cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
-					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'"></text>
+					<text :class="cuIcon-appreciate"></text>
 					<text class="cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
@@ -128,8 +128,28 @@
 			/**
 			 * 点赞
 			 */
-			like() {
-				
+			like(id,likeUsers) {
+				if(this.isLike(likeUsers)){
+					uni.showToast({
+						icon:'none',
+						title:'点赞不能反悔哦'
+					})
+					return;
+				}
+				likeUsers.push({
+					_openid: this.userInfo._openid,
+					nickName: this.userInfo.nickName
+				})
+				console.log(id)
+				wx.cloud.callFunction({
+					name:'likeDynamic',
+					data:{
+						id,
+						nickName:this.userInfo.nickName
+					}
+				}).then(res=>{
+					console.log('喜欢成功',res)
+				})
 			},
 			/**
 			 * 用户详情
