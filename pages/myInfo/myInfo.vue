@@ -80,9 +80,6 @@
 		computed: {
 			...mapState(['userInfo'])
 		},
-		onLoad() {
-			console.log(this.userInfo);
-		},
 		methods: {
 			changeAvatar() {
 				const self = this;

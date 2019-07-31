@@ -35,16 +35,16 @@
 		methods: {
 			getInfo(e) {
 				if (e.detail.errMsg == "getUserInfo:ok") {
+					let userInfo = {...e.detail.userInfo,signature:'每天一分钟，演讲好轻松'};
 					//上传用户信息到云数据库
 					db.collection('user').add({
-						data: e.detail.userInfo
+						data: userInfo
 					}).then(res => {
 						this.$emit('success');
 						uni.showToast({
 							title:'登录成功'
 						})
-						e.detail.userInfo._id = res._id;
-						this.updateUserInfoField(e.detail.userInfo);
+						this.updateUserInfoField({...userInfo,_id:res._id});
 						console.log('登录成功',res)
 					})
 				}else{

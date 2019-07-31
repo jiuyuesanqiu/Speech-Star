@@ -32,7 +32,7 @@
 						点击登录账户
 					</view>
 					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray">
-						每天十分钟，演讲好轻松
+						每天1分钟，演讲好轻松
 					</view>
 				</view>
 				<view class="d-flex align-center">

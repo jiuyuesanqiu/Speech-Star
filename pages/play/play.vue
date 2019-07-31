@@ -73,10 +73,8 @@
 			});
 			var vueObject = this;
 			innerAudioContext.onTimeUpdate(function() {
-				//this.changePlayTimeText(innerAudioContext.currentTime);
 				vueObject.changePlayTimeText(innerAudioContext.currentTime);
 			});
-			//add listenner end
 			innerAudioContext.playTime = 0;
 			this.changePlayTimeText(0);
 		},
@@ -112,21 +110,9 @@
 				this.playing = false;
 			},
 			seek: function(e) {
-/* 				innerAudioContext.offTimeUpdate(function(){
-					console.log("offupdateTime")
-				});
-				 */
 				innerAudioContext.seek(e.target.value);
 				this.pause();
 				this.changePlayTimeText(e.target.value);
-				
-/* 				var vueObject = this;
-				innerAudioContext.onTimeUpdate(function() {
-					//this.changePlayTimeText(innerAudioContext.currentTime);
-					console.log(innerAudioContext.currentTime);
-					vueObject.changePlayTimeText(innerAudioContext.currentTime);
-				});
-				 */
 				this.play();
 			},
 			stop: function() {

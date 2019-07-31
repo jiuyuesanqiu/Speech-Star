@@ -23,7 +23,6 @@
 		},
 		onLoad(option) {
 			//设置标题和编辑名称
-			console.log(option);
 			uni.setNavigationBarTitle({
 				title: option.title
 			})
