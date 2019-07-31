@@ -74,7 +74,7 @@
 		methods: {
 			toInformation() {
 				uni.navigateTo({
-					url: 'myInfo'
+					url: '../myInfo/myInfo'
 				})
 			},
 			loginSuccess() {
@@ -89,7 +89,7 @@
 			},
 			toMyVoice() {
 				uni.navigateTo({
-					url: 'myVoice'
+					url: '../myVoice/myVoice'
 				})
 			},
 		},
