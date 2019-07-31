@@ -6,29 +6,24 @@ const db = wx.cloud.database();
 
 const store = new Vuex.Store({
 	state: {
-		isLogin: false,
 		userInfo:{}
 	},
+	getters:{
+		isLogin(state){
+			return Boolean(state.userInfo._id);
+		}
+	},
 	mutations: {	//所有同步状态更改都提交mutation
-		login(state, userInfo) {
+		login(state) {
 			state.isLogin = true;
-			state.userInfo = userInfo;
 		},
-		updateUserInfoSuccess(state,userInfo){
-			console.log(userInfo)
-			state.userInfo = userInfo;
-		},
-		updateAvatar(state,url){
-			state.userInfo.avatarUrl = url;
-		},
-		updateNickName(state,nickName){
-			state.userInfo.nickName = nickName;
-		},
-		updateSignature(state,signature){
-			state.userInfo = {...state.userInfo,signature}
-		},
-		updateGender(state,gender){
-			state.userInfo.gender = gender;
+		/**
+		 * 更新用户信息
+		 * @param {Object} state
+		 * @param {Object} userInfoFielld	要更新的字段，传值如{signature:'走自己的路，让别人说去吧'}
+		 */
+		updateUserInfoField(state,userInfoFielld){
+			state.userInfo = {...state.userInfo,...userInfoFielld}
 		}
 	},
 	actions:{	//所有异步状态更改都分发action
@@ -36,7 +31,7 @@ const store = new Vuex.Store({
 			wx.cloud.callFunction({
 				name: 'getOwnerUserInfo',
 			}).then(res => {
-				commit("updateUserInfoSuccess",res.result);
+				commit("updateUserInfoField",res.result);
 			})
 		}
 	}

@@ -60,7 +60,7 @@
 	import nxPlayer from '../../components/nx-player.vue';
 	import nxLogin from '../../components/nx-login.vue';
 	import {
-		mapState
+		mapState,mapGetters
 	} from 'vuex';
 	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	const db = wx.cloud.database();
@@ -94,7 +94,8 @@
 			this.getNextPage();
 		},
 		computed: {
-			...mapState(['isLogin', 'userInfo']),
+			...mapState(['userInfo']),
+			...mapGetters(['isLogin'])
 		},
 		methods: {
 			/**

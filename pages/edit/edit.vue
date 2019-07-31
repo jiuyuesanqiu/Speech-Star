@@ -46,7 +46,7 @@
 							},
 							success: function(res) {
 								console.log('更新用户名成功')
-								self.updateNickName(self.value);
+								self.updateUserInfoField({nickName:self.value});
 								uni.navigateBack();
 							}
 						});
@@ -59,7 +59,7 @@
 							},
 							success: function(res) {
 								console.log('更新签名成功')
-								self.updateUserInfo();
+								self.updateUserInfoField({signature:self.value});
 								uni.navigateBack();
 							}
 						})
@@ -68,8 +68,7 @@
 						break;
 				}
 			},
-			...mapMutations(['updateNickName','updateSignature']),
-			...mapActions(['updateUserInfo'])
+			...mapMutations(['updateUserInfoField'])
 		}
 	}
 </script>

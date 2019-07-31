@@ -1,6 +1,6 @@
 <script>
 	import {
-		mapMutations
+		mapMutations,mapGetters
 	} from 'vuex';
 	wx.cloud.init({
 		env: 'product-yjcc'
@@ -13,26 +13,11 @@
 				name: 'getOwnerUserInfo',
 			}).then(res => {
 				console.log('启动时请求用户信息',res)
-				if (res.result !=null) {
-					self.login(res.result);
-				} else {
-					//没有则调用微信接口获取
-					wx.getUserInfo({
-						success: function(res) {
-							self.login(res.userInfo);
-							//上传用户信息到云数据库
-							db.collection('user').add({
-								data: res.userInfo
-							}).then(res => {
-								console.log('保存用户数据到云数据库')
-							})
-						}
-					})
-				}
+				self.updateUserInfoField(res.result);
 			})
 		},
 		methods: {
-			...mapMutations(['login'])
+			...mapMutations(['updateUserInfoField'])
 		}
 	}
 </script>

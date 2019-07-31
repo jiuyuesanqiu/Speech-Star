@@ -90,7 +90,7 @@
 					count: 1,
 					success(res) {
 						const tempFilePath = res.tempFilePaths[0];
-						self.updateAvatar(tempFilePath);
+						self.updateUserInfoField({avatarUrl:tempFilePath});
 						//获取文件后缀
 						let suffix = tempFilePath.substring(tempFilePath.lastIndexOf('.'));
 						//生成文件名
@@ -133,6 +133,7 @@
 			editGender(e) {
 				if (e.type == 'change') {
 					const self = this;
+					self.updateUserInfoField({gender:(Number(e.detail.value) + 1)});
 					//更新性别
 					db.collection('user').doc(self.userInfo._id).update({
 						data: {
@@ -140,7 +141,6 @@
 						},
 						success: function(res) {
 							console.log('更新性别成功');
-							self.updateGender(Number(e.detail.value) + 1);
 						}
 					});
 				}
@@ -150,7 +150,7 @@
 					this.editorCtx = res.context
 				}).exec()
 			},
-			...mapMutations(['updateUserInfo', 'updateAvatar', 'updateGender'])
+			...mapMutations(['updateUserInfoField'])
 		}
 	};
 </script>

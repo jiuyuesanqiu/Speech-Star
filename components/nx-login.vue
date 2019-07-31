@@ -35,7 +35,6 @@
 		methods: {
 			getInfo(e) {
 				if (e.detail.errMsg == "getUserInfo:ok") {
-					this.login(e.detail.userInfo);
 					//上传用户信息到云数据库
 					db.collection('user').add({
 						data: e.detail.userInfo
@@ -44,7 +43,9 @@
 						uni.showToast({
 							title:'登录成功'
 						})
-						console.log('登录成功')
+						e.detail.userInfo._id = res._id;
+						this.updateUserInfoField(e.detail.userInfo);
+						console.log('登录成功',res)
 					})
 				}else{
 					uni.showToast({
@@ -55,7 +56,7 @@
 					this.$emit('fail');
 				}
 			},
-			...mapMutations(['login'])
+			...mapMutations(['updateUserInfoField'])
 		},
 		props:{
 			show:{

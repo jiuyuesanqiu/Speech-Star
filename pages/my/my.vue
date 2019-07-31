@@ -55,7 +55,7 @@
 <script>
 	import nxLogin from '../../components/nx-login.vue';
 	import {
-		mapState
+		mapState,mapGetters
 	} from 'vuex';
 	import nxCell from '../../components/nx-cell.vue';
 	export default {
@@ -65,7 +65,8 @@
 			}
 		},
 		computed: {
-			...mapState(['isLogin', 'userInfo'])
+			...mapState(['userInfo']),
+			...mapGetters(['isLogin'])
 		},
 		methods: {
 			toInformation() {
