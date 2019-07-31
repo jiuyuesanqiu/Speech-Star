@@ -1,6 +1,7 @@
 <template>
 	<view>
-		<button :loading="loading" :type="type" :plain="plain" :open-type="openType" :class="[round?'round':'']">
+		<button @getuserinfo="$emit('getuserinfo',$event)" :loading="loading" :type="type" :plain="plain" :open-type="openType"
+		 :class="[round?'round':'']">
 			<slot></slot>
 		</button>
 	</view>
@@ -31,9 +32,9 @@
 				type: Boolean,
 				default: false
 			},
-			type:{
-				type:String,
-				default:"primary"
+			type: {
+				type: String,
+				default: "primary"
 			}
 		}
 	}

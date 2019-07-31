@@ -11,12 +11,8 @@
 				<image class="logo" src="../static/star.png" mode=""></image>
 			</view>
 			<view class="d-flex justify-between">
-				<view class="btn no-login d-flex align-center justify-center" @click="$emit('cancel')">
-					暂不登录
-				</view>
-				<view class="btn login d-flex align-center justify-center">
-					<button type="primary" @getuserinfo="getInfo" open-type="getUserInfo">立即登录</button>
-				</view>
+				<nxButton @click.native="$emit('cancel')" plain>暂不登录</nxButton>
+				<nxButton @getuserinfo="getInfo" :loading="loading" open-type="getUserInfo">立即登录</nxButton>
 			</view>
 		</view>
 	</view>
@@ -26,62 +22,61 @@
 	import {
 		mapMutations
 	} from 'vuex';
+	import nxButton from './nx-button.vue';//这里只能是./开头的相对路径，否则报错
 	const db = wx.cloud.database();
 	export default {
 		data() {
 			return {
+				loading:false
 			};
 		},
 		methods: {
 			getInfo(e) {
+				if(this.loading) return;
+				this.loading = true;
 				if (e.detail.errMsg == "getUserInfo:ok") {
-					let userInfo = {...e.detail.userInfo,signature:'每天一分钟，演讲好轻松'};
+					let userInfo = { ...e.detail.userInfo,
+						signature: '每天一分钟，演讲好轻松'
+					};
 					//上传用户信息到云数据库
 					db.collection('user').add({
 						data: userInfo
 					}).then(res => {
 						this.$emit('success');
 						uni.showToast({
-							title:'登录成功'
+							title: '登录成功'
 						})
-						this.updateUserInfoField({...userInfo,_id:res._id});
-						console.log('登录成功',res)
+						this.updateUserInfoField({ ...userInfo,
+							_id: res._id
+						});
+						console.log('登录成功', res)
+						this.loading = false;
 					})
-				}else{
+				} else {
 					uni.showToast({
-						icon:'none',
-						title:'登录失败'
+						icon: 'none',
+						title: '登录失败'
 					})
 					console.log('登录失败')
 					this.$emit('fail');
+					this.loading = false;
 				}
 			},
 			...mapMutations(['updateUserInfoField'])
 		},
-		props:{
-			show:{
-				type:Boolean,
-				default:false
+		props: {
+			show: {
+				type: Boolean,
+				default: false
 			}
+		},
+		components:{
+			nxButton
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	button {
-		all: initial;
-		color: #FFFFFF;
-	}
-	
-	button:after{
-		all: initial;
-	}
-	
-	button:hover{
-		all: initial;
-		color: #FFFFFF;
-	}
-
 	.container {
 		width: 304px;
 		height: 375px;
