@@ -18,7 +18,7 @@
 					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
 				</view>
 			</view>
-			<nx-cell icon="/static/disk.png" border title="我的作品"></nx-cell>
+			<nx-cell icon="/static/disk.png" border title="我的作品" @tap="toMyVoice"></nx-cell>
 		</view>
 		
 		<!-- 未登录状态 -->
@@ -71,7 +71,7 @@
 		methods: {
 			toInformation() {
 				uni.navigateTo({
-					url: '../myInfo/myInfo'
+					url: 'myInfo'
 				})
 			},
 			loginSuccess(){
@@ -83,6 +83,11 @@
 					path: '/pages/index/index',
 					imageUrl:'../../static/shareImg.jpg'
 				}
+			},
+			toMyVoice(){
+				uni.navigateTo({
+					url: 'myVoice'
+				})
 			},
 		},
 		components: {

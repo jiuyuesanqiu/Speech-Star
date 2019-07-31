@@ -42,9 +42,14 @@
 				"navigationBarTitleText": "登录页面"
 			}
 		}, {
-			"path": "pages/myInfo/myInfo",
+			"path": "pages/my/myInfo",
 			"style": {
 				"navigationBarTitleText": "个人信息"
+			}
+		}, {
+			"path": "pages/my/myVoice",
+			"style": {
+				"navigationBarTitleText": "我的作品"
 			}
 		}, {
 			"path": "pages/edit/edit",
