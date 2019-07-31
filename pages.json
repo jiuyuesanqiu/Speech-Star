@@ -42,12 +42,12 @@
 				"navigationBarTitleText": "登录页面"
 			}
 		}, {
-			"path": "pages/my/myInfo",
+			"path": "pages/myInfo/myInfo",
 			"style": {
 				"navigationBarTitleText": "个人信息"
 			}
 		}, {
-			"path": "pages/my/myVoice",
+			"path": "pages/myVoice/myVoice",
 			"style": {
 				"navigationBarTitleText": "我的作品"
 			}

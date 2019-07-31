@@ -9,9 +9,11 @@
 					<view style="font-size: 40upx;line-height: 68upx;height: 68upx;">
 						{{userInfo.nickName}}
 					</view>
-					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray">
+					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-if="userInfo.signature!=undefined">
 						{{userInfo.signature}}
-						<!-- 走别人的路，让别人无路可走 -->
+					</view>
+					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-else>
+						走别人的路，让别人无路可走
 					</view>
 				</view>
 				<view class="d-flex align-center">
@@ -20,7 +22,7 @@
 			</view>
 			<nx-cell icon="/static/disk.png" border title="我的作品" @tap="toMyVoice"></nx-cell>
 		</view>
-		
+
 		<!-- 未登录状态 -->
 		<view v-else @click="loginShow =true">
 			<view class="d-flex bg-white" style="padding: 68upx 26upx;margin-bottom: 16upx;">
@@ -54,10 +56,11 @@
 
 <script>
 	import nxLogin from '../../components/nx-login.vue';
-	import {
-		mapState,mapGetters
-	} from 'vuex';
 	import nxCell from '../../components/nx-cell.vue';
+	import {
+		mapState,
+		mapGetters
+	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -74,17 +77,17 @@
 					url: 'myInfo'
 				})
 			},
-			loginSuccess(){
+			loginSuccess() {
 				this.loginShow = false;
 			},
 			onShareAppMessage() {
 				return {
 					title: '演讲口才2',
 					path: '/pages/index/index',
-					imageUrl:'../../static/shareImg.jpg'
+					imageUrl: '../../static/shareImg.jpg'
 				}
 			},
-			toMyVoice(){
+			toMyVoice() {
 				uni.navigateTo({
 					url: 'myVoice'
 				})

@@ -54,7 +54,8 @@
 					<view class="d-flex align-center pt-4 pb-4">个性签名</view>
 				</view>
 				<view class="d-flex align-center pr-2" style="">
-					<view class="d-flex align-center">{{userInfo.signature}}</view>
+					<view class="d-flex align-center" v-if="userInfo.signature != undefined">{{userInfo.signature}}</view>
+					<view class="d-flex align-center" v-else>走别人的路，让别人无路可走</view>
 				</view>
 				<view class="d-flex align-center">
 					<text class="cuIcon-right text-gray"></text>

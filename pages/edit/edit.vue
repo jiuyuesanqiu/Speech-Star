@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<input style="height: 112upx;font-size: 32upx;line-height: 112upx;padding-left: 20upx;" v-model="value" v- type="text" class="bg-white text-black">
 		<input style="height: 112upx;font-size: 32upx;line-height: 112upx;padding-left: 20upx;" v-model="value" type="text" class="bg-white text-black">
 		<view class="padding mt-5">
 			<button class="weui-btn" type="primary" @tap="finish">保存</button>
