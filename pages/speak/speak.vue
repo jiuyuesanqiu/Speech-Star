@@ -14,14 +14,14 @@
 	</view>
 </template>
 <script>
-	import nxLogin  from '../../components/nx-login.vue';
+	import nxLogin from '../../components/nx-login.vue';
 	import {
 		mapGetters
 	} from 'vuex';
 	export default {
 		data() {
 			return {
-				loginShow:false
+				loginShow: false
 			}
 		},
 		computed: {
@@ -29,7 +29,7 @@
 		},
 		methods: {
 			toRecording() {
-				if(!this.isLogin){
+				if (!this.isLogin) {
 					this.loginShow = true;
 					return;
 				}
@@ -37,7 +37,7 @@
 					url: '../recording/recording'
 				})
 			},
-			loginSuccess(){
+			loginSuccess() {
 				this.loginShow = false;
 				uni.navigateTo({
 					url: '../recording/recording'
@@ -89,6 +89,7 @@
 		color: #000;
 		text-align: center;
 	}
+
 	.getUserInfo {
 		color: #fff;
 		font-size: 32upx;
