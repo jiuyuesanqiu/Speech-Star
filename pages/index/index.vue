@@ -10,7 +10,7 @@
 					<view class="createTime">{{timeAgoFormat(item.createTime)}}</view>
 				</view>
 			</view>
-			<view class="intro">
+			<view class="intro" v-if="item.intro">
 				<text>
 					{{item.intro}}
 				</text>
@@ -24,8 +24,13 @@
 			</view>
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
-				<view class="operation">
+				<view v-if="isLogin" class="operation">
 					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'" @click="like"></text>
+					<text class="cuIcon-comment"></text>
+					<text class="cuIcon-share"></text>
+				</view>
+				<view v-else @click="loginShow=true" class="operation">
+					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'"></text>
 					<text class="cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
@@ -47,7 +52,10 @@
 					</view>
 				</view>
 			</view>
-			<view class="noInputComment">
+			<view v-if="isLogin" class="noInputComment">
+				<text>评论</text>
+			</view>
+			<view v-else @click="loginShow=true" class="noInputComment">
 				<text>评论</text>
 			</view>
 		</view>
@@ -121,7 +129,7 @@
 			 * 点赞
 			 */
 			like() {
-
+				
 			},
 			/**
 			 * 用户详情
@@ -154,6 +162,11 @@
 </script>
 
 <style lang="scss">
+	page {
+		background-color: #ececec;
+		height: 100Vh;
+		width: 100vw;
+	}
 	.dynamic {
 		padding: 16px 8px;
 
@@ -232,5 +245,9 @@
 			padding-top: 6px;
 			margin-top: 15px;
 		}
+	}
+	
+	.dynamic + .dynamic{
+		margin-top: 28upx;
 	}
 </style>
