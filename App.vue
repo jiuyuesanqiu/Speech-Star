@@ -10,30 +10,25 @@
 		onLaunch: function() {
 			let self = this;
 			wx.cloud.callFunction({
-				name: 'getWxContext',
-			}).then(wxContext => {
-				//查询云数据库是否有此用户数据
-				db.collection('user').where({
-					_openid:wxContext.result.openid,
-				}).get().then(res => {
-					if (res.data.length > 0) {
-						self.login(res.data[0]);
-					} else {
-						//没有则调用微信接口获取
-						wx.getUserInfo({
-							success: function(res) {
-								self.login(res.userInfo);
-								//上传用户信息到云数据库
-								db.collection('user').add({
-									data: res.userInfo
-								}).then(res => {
-									console.log('保存用户数据到云数据库')
-								})
-							}
-						})
-					}
-				})
-			}).catch(err => {
+				name: 'getOwnerUserInfo',
+			}).then(res => {
+				console.log('启动时请求用户信息',res)
+				if (res.result !=null) {
+					self.login(res.result);
+				} else {
+					//没有则调用微信接口获取
+					wx.getUserInfo({
+						success: function(res) {
+							self.login(res.userInfo);
+							//上传用户信息到云数据库
+							db.collection('user').add({
+								data: res.userInfo
+							}).then(res => {
+								console.log('保存用户数据到云数据库')
+							})
+						}
+					})
+				}
 			})
 		},
 		methods: {

@@ -10,7 +10,8 @@
 <script>
 	import {
 		mapState,
-		mapMutations
+		mapMutations,
+		mapActions
 	} from 'vuex';
 	const db = wx.cloud.database();
 	export default {
@@ -58,7 +59,7 @@
 							},
 							success: function(res) {
 								console.log('更新签名成功')
-								self.updateSignature(self.value);
+								self.updateUserInfo();
 								uni.navigateBack();
 							}
 						})
@@ -67,7 +68,8 @@
 						break;
 				}
 			},
-			...mapMutations(['updateNickName','updateSignature'])
+			...mapMutations(['updateNickName','updateSignature']),
+			...mapActions(['updateUserInfo'])
 		}
 	}
 </script>

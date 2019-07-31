@@ -9,21 +9,14 @@ const store = new Vuex.Store({
 		isLogin: false,
 		userInfo:{}
 	},
-	mutations: {
-		login(state, provider) {
+	mutations: {	//所有同步状态更改都提交mutation
+		login(state, userInfo) {
 			state.isLogin = true;
-			state.userInfo = provider;
+			state.userInfo = userInfo;
 		},
-		updateUserInfo(state){
-			wx.cloud.callFunction({
-				name: 'getWxContext',
-			}).then(wxContext => {
-				db.collection('user').where({
-					_openid:wxContext.result.openid,
-				}).get().then(res => {
-					state.userInfo = res.data[0];
-				})
-			})
+		updateUserInfoSuccess(state,userInfo){
+			console.log(userInfo)
+			state.userInfo = userInfo;
 		},
 		updateAvatar(state,url){
 			state.userInfo.avatarUrl = url;
@@ -32,11 +25,20 @@ const store = new Vuex.Store({
 			state.userInfo.nickName = nickName;
 		},
 		updateSignature(state,signature){
-			state.userInfo.signature = signature;
+			state.userInfo = {...state.userInfo,signature}
 		},
 		updateGender(state,gender){
 			state.userInfo.gender = gender;
-		},
+		}
+	},
+	actions:{	//所有异步状态更改都分发action
+		updateUserInfo({commit}){
+			wx.cloud.callFunction({
+				name: 'getOwnerUserInfo',
+			}).then(res => {
+				commit("updateUserInfoSuccess",res.result);
+			})
+		}
 	}
 })
 
