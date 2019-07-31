@@ -60,7 +60,7 @@
 			"urlCheck": false
 		},
 		"usingComponents": true,
-		"cloudfunctionRoot": "cloudfunctions/",
+		"cloudfunctionRoot": "static/cloudfunctions/",
 		"requiredBackgroundModes": ["audio"]
 	},
 	"mp-alipay": {
