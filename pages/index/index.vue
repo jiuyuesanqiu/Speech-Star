@@ -10,7 +10,7 @@
 					<view class="createTime">{{timeAgoFormat(item.createTime)}}</view>
 				</view>
 			</view>
-			<view class="intro">
+			<view class="intro" v-if="item.intro">
 				<text>
 					{{item.intro}}
 				</text>
@@ -232,5 +232,9 @@
 			padding-top: 6px;
 			margin-top: 15px;
 		}
+	}
+	
+	.dynamic + .dynamic{
+		margin-top: 28upx;
 	}
 </style>

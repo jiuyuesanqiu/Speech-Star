@@ -73,6 +73,10 @@
 			this.stopRecord();
 			innerAudioContext.stop();
 		},
+		onHide() {
+			this.stopRecord();
+			innerAudioContext.stop();
+		},
 		onLoad() {
 			recorderManager.onStop(({
 				tempFilePath,
@@ -81,6 +85,10 @@
 			}) => {
 				this.tempSrc = tempFilePath;
 				this.stopRecord();
+			})
+			recorderManager.onInterruptionBegin(()=>{
+				this.stopRecord();
+				innerAudioContext.stop();
 			})
 		},
 		methods: {
