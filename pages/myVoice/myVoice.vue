@@ -23,21 +23,7 @@
 					</view>
 				</view>
 			</view>
-
-
-
-
-
 		</view>
-
-
-
-
-
-
-
-
-
 	</view>
 </template>
 
@@ -75,11 +61,8 @@
 		margin-left: 30upx;
 	}
 
-	.voiceItem+.voiceItem {
-		border-top: 1px solid #E8E8E8;
-	}
-
 	.voiceItem {
+		border-bottom: 1px solid #E8E8E8;
 		padding-left: 28upx;
 	}
 
