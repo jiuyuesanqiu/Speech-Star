@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<input style="height: 112upx;font-size: 32upx;line-height: 112upx;padding-left: 20upx;" v-model="value" placeholder='您还未设置个性签名哦' type="text" class="bg-white text-black">
+		<input v-model="value" placeholder='您还未设置个性签名哦' type="text" class="bg-white text-black signatureInput">
 		<view class="padding mt-5">
 			<button class="weui-btn" type="primary" @tap="finish">保存</button>
 		</view>
@@ -17,8 +17,8 @@
 	export default {
 		data() {
 			return {
-				value:'',
-				editName:''
+				value: '',
+				editName: ''
 			}
 		},
 		onLoad(option) {
@@ -28,7 +28,7 @@
 			})
 			this.editName = option.opt;
 			this.value = this.userInfo[this.editName];
-			console.log(this.value);	
+			console.log(this.value);
 		},
 		computed: {
 			...mapState(['userInfo'])
@@ -36,7 +36,7 @@
 		methods: {
 			finish() {
 				const self = this;
-				switch (this.editName){
+				switch (this.editName) {
 					case 'nickName':
 						//更新用户名
 						db.collection('user').doc(self.userInfo._id).update({
@@ -45,7 +45,9 @@
 							},
 							success: function(res) {
 								console.log('更新用户名成功')
-								self.updateUserInfoField({nickName:self.value});
+								self.updateUserInfoField({
+									nickName: self.value
+								});
 								uni.navigateBack();
 							}
 						});
@@ -58,7 +60,9 @@
 							},
 							success: function(res) {
 								console.log('更新签名成功')
-								self.updateUserInfoField({signature:self.value});
+								self.updateUserInfoField({
+									signature: self.value
+								});
 								uni.navigateBack();
 							}
 						})
@@ -75,5 +79,12 @@
 <style>
 	page {
 		background-color: #ededed;
+	}
+
+	.signatureInput {
+		height: 112upx;
+		font-size: 32upx;
+		line-height: 112upx;
+		padding-left: 20upx;
 	}
 </style>

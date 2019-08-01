@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<view class="speakTop">
+		<view class="d-flex align-center justify-center flex-column speakTop">
 			<image class="topImg" src="../../static/star.png" alt="" />
 			<view class="topText">演讲星球</view>
 		</view>
@@ -8,7 +8,7 @@
 			每天10分钟，演讲好轻松
 		</view>
 		<view class="d-flex justify-center mt-5">
-			<button class="getUserInfo" @tap="toRecording">开始演讲</button>
+			<button class="getUserInfo al" @tap="toRecording">开始演讲</button>
 		</view>
 		<nxLogin :show="loginShow" @success="loginSuccess" @cancel="loginShow=false"></nxLogin>
 	</view>
@@ -64,10 +64,6 @@
 	}
 
 	.speakTop {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
 		height: 400upx;
 	}
 
@@ -91,14 +87,14 @@
 	}
 
 	.getUserInfo {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		color: #fff;
 		font-size: 32upx;
 		background-color: #09BB07;
 		height: 88upx;
 		width: 77%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		border-radius: 44upx;
 	}
 </style>

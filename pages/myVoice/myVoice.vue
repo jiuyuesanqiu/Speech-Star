@@ -72,7 +72,7 @@
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.page {
 		background-color: #FFFFFF;
 		height: 100Vh;
