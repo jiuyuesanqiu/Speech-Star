@@ -25,18 +25,18 @@
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
-					<text :class="isLike(item.likeUsers)?'cuIcon-appreciatefill':'cuIcon-appreciate'" @click="like(item._id,item.likeUsers)"></text>
-					<text class="cuIcon-comment"></text>
+					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="like(item._id,item.likeUsers)"></text>
+					<text class="space-right cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
-					<text :class="cuIcon-appreciate"></text>
-					<text class="cuIcon-comment"></text>
+					<text class="space-right cuIcon-like"></text>
+					<text class="space-right cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
 				</view>
 			</view>
 			<view v-if="item.likeUsers.length!=0" class="likenum border-top">
-				<text class="cuIcon-appreciatefill"></text>
+				<text class="cuIcon-like"></text>
 				<text v-for="(likeUser,index) in item.likeUsers" :key="index" @click="userDetail(likeUser._openid)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
 			</view>
 			<view>
@@ -238,13 +238,12 @@
 				font-size: 24px;
 			}
 
-			.cuIcon-appreciate,
-			.cuIcon-appreciatefill {
-				margin-right: 33px;
+			.space-right {
+				margin-right: 66upx;
 			}
-
-			.cuIcon-comment {
-				margin-right: 33px;
+			
+			.red{
+				color: #e64340
 			}
 		}
 
