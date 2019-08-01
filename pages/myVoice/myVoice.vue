@@ -3,19 +3,41 @@
 		<view class="pageBox">
 			<view class="d-flex voiceItem">
 				<view class="d-flex align-center itemNumber">6</view>
-				<view class="d-flex flex-column itemTop">
-					<view class="itemNameBox d-flex">
+				<view class="d-flex flex-column justify-between itemTop">
+					<view class="d-flex justify-between align-center">
 						<view class="itemName">你所谓的迷茫只不过是赚钱太少</view>
 						<view class="itemDate">2019-07-15</view>
 					</view>
-					<view class="d-flex itemBottom">
+					<view class="d-flex justify-between itemBottom">
 						<view class="d-flex itemViewBox">
 							<view class="d-flex viewNumber">
-								<image src="../../static/playNumber.png" style="width: 30upx;height: 30upx;margin-right: 6upx;" mode=""></image>
+								<image src="../../static/playNumber.png" mode=""></image>
 								<view>27</view>
 							</view>
-							<view class="d-flex">
-								<image style="width: 26upx;height: 26upx;margin-right: 6upx;" src="../../static/time.png" mode=""></image>
+							<view class="d-flex itemTime">
+								<image src="../../static/time.png" mode=""></image>
+								<view>03:55</view>
+							</view>
+						</view>
+						<view class="more">. . .</view>
+					</view>
+				</view>
+			</view>
+			<view class="d-flex voiceItem">
+				<view class="d-flex align-center itemNumber">6</view>
+				<view class="d-flex flex-column justify-between itemTop">
+					<view class="d-flex justify-between align-center">
+						<view class="itemName">你所谓的迷茫只不过是赚钱太少</view>
+						<view class="itemDate">2019-07-15</view>
+					</view>
+					<view class="d-flex justify-between itemBottom">
+						<view class="d-flex itemViewBox">
+							<view class="d-flex viewNumber">
+								<image src="../../static/playNumber.png" mode=""></image>
+								<view>27</view>
+							</view>
+							<view class="d-flex itemTime">
+								<image src="../../static/time.png" mode=""></image>
 								<view>03:55</view>
 							</view>
 						</view>
@@ -74,13 +96,7 @@
 
 	.itemTop {
 		width: 84%;
-		justify-content: center;
 		margin: 28upx 0;
-	}
-
-	.itemNameBox {
-		justify-content: space-between;
-		align-items: center;
 	}
 
 	.itemName {
@@ -95,7 +111,6 @@
 	}
 
 	.itemBottom {
-		justify-content: space-between;
 		margin-top: 22upx;
 	}
 
@@ -108,10 +123,21 @@
 		padding-right: 22upx;
 	}
 
+	.viewNumber>image {
+		width: 30upx;
+		height: 30upx;
+		margin-right: 6upx;
+	}
+
+	.itemTime>image {
+		width: 26upx;
+		height: 26upx;
+		margin-right: 6upx;
+	}
+
 	.more {
-		color: #666666;font-weight: bold;
-		/* height: 48upx; */
-		/* line-height: 48upx; */
+		color: #666666;
+		font-weight: bold;
 		width: 48upx;
 		text-align: center;
 	}
