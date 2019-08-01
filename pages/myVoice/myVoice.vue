@@ -2,7 +2,7 @@
 	<view class="page">
 		<view class="pageBox">
 			<view class="d-flex voiceItem">
-				<view class="itemNumber">6</view>
+				<view class="d-flex align-center itemNumber">6</view>
 				<view class="d-flex flex-column itemTop">
 					<view class="itemNameBox d-flex">
 						<view class="itemName">你所谓的迷茫只不过是赚钱太少</view>
@@ -10,16 +10,16 @@
 					</view>
 					<view class="d-flex itemBottom">
 						<view class="d-flex itemViewBox">
-							<view class="viewNumber">
-								<!-- <image src="" mode=""></image> -->
+							<view class="d-flex viewNumber">
+								<image src="../../static/playNumber.png" style="width: 30upx;height: 30upx;margin-right: 6upx;" mode=""></image>
 								<view>27</view>
 							</view>
-							<view>
-								<!-- <image src="" mode=""></image> -->
+							<view class="d-flex">
+								<image style="width: 26upx;height: 26upx;margin-right: 6upx;" src="../../static/time.png" mode=""></image>
 								<view>03:55</view>
 							</view>
 						</view>
-						<view class="more">...</view>
+						<view class="more">. . .</view>
 					</view>
 				</view>
 			</view>
@@ -67,17 +67,18 @@
 	}
 
 	.itemNumber {
-		padding: 58upx 58upx 58upx 0;
 		color: #999999;
 		font-size: 32upx;
+		margin-right: 42upx;
 	}
 
 	.itemTop {
 		width: 84%;
+		justify-content: center;
+		margin: 28upx 0;
 	}
 
 	.itemNameBox {
-		padding: 28upx 0;
 		justify-content: space-between;
 		align-items: center;
 	}
@@ -85,22 +86,22 @@
 	.itemName {
 		color: #101010;
 		font-size: 30upx;
-		width: 80%;
+		width: 76%;
 	}
 
 	.itemDate {
 		color: #999999;
-		font-size: 22upx;
+		font-size: 28upx;
 	}
 
 	.itemBottom {
 		justify-content: space-between;
-		padding-bottom: 30upx;
+		margin-top: 22upx;
 	}
 
 	.itemViewBox {
 		color: #B8B8B8;
-		font-size: 18upx;
+		font-size: 26upx;
 	}
 
 	.viewNumber {
@@ -108,6 +109,10 @@
 	}
 
 	.more {
-		color: #666666;
+		color: #666666;font-weight: bold;
+		/* height: 48upx; */
+		/* line-height: 48upx; */
+		width: 48upx;
+		text-align: center;
 	}
 </style>
