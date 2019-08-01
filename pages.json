@@ -66,6 +66,16 @@
 				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		}
+        ,{
+            "path" : "pages/test/test",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/comment/comment",
+            "style" : {
+				"navigationBarBackgroundColor": "#FCFCFC"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "演讲口才",

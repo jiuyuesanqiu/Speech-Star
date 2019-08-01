@@ -80,15 +80,13 @@
 			 */
 			play() {
 				this.isPlayed = true;
-				if (this.isActive && !this.isEnded) {
-					backgroundAudioManager.play();
-				} else {
-					backgroundAudioManager.title = this.title;
-					backgroundAudioManager.singer = this.singer;
-					backgroundAudioManager.startTime = this.currentTime;
-					backgroundAudioManager.src = this.src;
-					this.$emit('changeActive', this.src);
-				}
+				//这里title取时间戳是为了防止标题重复导致报错
+				backgroundAudioManager.title = new Date().getTime().toString();
+				backgroundAudioManager.play();
+				backgroundAudioManager.singer = this.singer;
+				backgroundAudioManager.startTime = this.currentTime;
+				backgroundAudioManager.src = this.src;
+				this.$emit('changeActive', this.src);
 				this.listener();
 			},
 			/**
@@ -114,6 +112,8 @@
 				})
 				backgroundAudioManager.onStop(() => {
 					console.log("背景音频被停止")
+					this.isPlay = false;
+					clearInterval(this.intervalId);
 				});
 				backgroundAudioManager.onEnded(() => {
 					this.isPlay = false;

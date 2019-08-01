@@ -5,7 +5,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	strict: process.env.NODE_ENV === 'development',//开发环境时执行严格模式
 	state: {
-		userInfo:{}
+		userInfo:{},
+		dynamics:[]	//动态列表
 	},
 	getters:{
 		/**
@@ -23,6 +24,17 @@ const store = new Vuex.Store({
 		 */
 		updateUserInfoField(state,userInfoFielld){
 			state.userInfo = {...state.userInfo,...userInfoFielld}
+		},
+		/**
+		 * 增加动态列表
+		 * @param {Object} state
+		 * @param {Object} dynamics
+		 */
+		apendDynamics(state,dynamics){
+			state.dynamics = [...state.dynamics,...dynamics];
+		},
+		clearDynamics(state){
+			state.dynamics = [];
 		}
 	},
 	actions:{//异步更新状态

@@ -26,7 +26,7 @@
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
 					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="like(item._id,item.likeUsers)"></text>
-					<text class="space-right cuIcon-comment"></text>
+					<text class="space-right cuIcon-comment" @click="toComment(item._id)"></text>
 					<text class="cuIcon-share"></text>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
@@ -42,17 +42,17 @@
 			<view>
 				<view class="my-1 d-flex" v-for="(comment,index) in item.comment" :key="index">
 					<view>
-						<text>{{comment.userInfo.nickName}}：</text>
+						<text>{{comment.user.nickName}}：</text>
 					</view>
-					<view>
-						<view class="mb-1">
-							<text>{{comment.content.text}}</text>
+					<view v-for="(content,index) in comment.content" :key="index">
+						<view v-if="content.type=='text'" class="mb-1">
+							<text>{{content.content}}</text>
 						</view>
-						<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="comment.content.voice.src" :duration="comment.content.voice.duration"></nxPlayer>
+<!-- <nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="comment.content.voice.src" :duration="comment.content.voice.duration"></nxPlayer> -->
 					</view>
 				</view>
 			</view>
-			<view v-if="isLogin" class="noInputComment">
+			<view v-if="isLogin" @click="toComment(item._id)" class="noInputComment">
 				<text>评论</text>
 			</view>
 			<view v-else @click="loginShow=true" class="noInputComment">
@@ -64,11 +64,18 @@
 </template>
 
 <script>
-	import { format, render, cancel, register } from 'timeago.js';
+	import {
+		format,
+		render,
+		cancel,
+		register
+	} from 'timeago.js';
 	import nxPlayer from '../../components/nx-player.vue';
 	import nxLogin from '../../components/nx-login.vue';
 	import {
-		mapState,mapGetters
+		mapState,
+		mapGetters,
+		mapMutations
 	} from 'vuex';
 	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	const db = wx.cloud.database();
@@ -79,7 +86,6 @@
 		data() {
 			return {
 				activeSrc: '', //当前播放的音频
-				dynamics: [], //动态列表
 				isLoading: false, //数据是否正在加载中
 				loginShow: false,
 				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png'
@@ -87,7 +93,6 @@
 		},
 		onLoad() {
 			startPage = 0;
-			this.dynamics = [];
 			this.getNextPage();
 			wx.showShareMenu();
 		},
@@ -98,19 +103,28 @@
 		onPullDownRefresh() {
 			startPage = 0;
 			this.isLoading = false;
-			this.dynamics = [];
+			backgroundAudioManager.pause();
+			this.clearDynamics();
 			this.getNextPage();
 		},
 		computed: {
-			...mapState(['userInfo']),
+			...mapState(['userInfo','dynamics']),
 			...mapGetters(['isLogin'])
 		},
 		methods: {
 			/**
+			 * 去评论页
+			 */
+			toComment(id) {
+				uni.navigateTo({
+					url: `../comment/comment?id=${id}`
+				})
+			},
+			/**
 			 * 格式化创建时间
 			 */
-			timeAgoFormat(time){
-				return format(time,'zh_CN')
+			timeAgoFormat(time) {
+				return format(time, 'zh_CN')
 			},
 			/**
 			 * 预览图片
@@ -128,11 +142,11 @@
 			/**
 			 * 点赞
 			 */
-			like(id,likeUsers) {
-				if(this.isLike(likeUsers)){
+			like(id, likeUsers) {
+				if (this.isLike(likeUsers)) {
 					uni.showToast({
-						icon:'none',
-						title:'点赞不能反悔哦'
+						icon: 'none',
+						title: '点赞不能反悔哦'
 					})
 					return;
 				}
@@ -142,13 +156,13 @@
 				})
 				console.log(id)
 				wx.cloud.callFunction({
-					name:'likeDynamic',
-					data:{
+					name: 'likeDynamic',
+					data: {
 						id,
-						nickName:this.userInfo.nickName
+						nickName: this.userInfo.nickName
 					}
-				}).then(res=>{
-					console.log('喜欢成功',res)
+				}).then(res => {
+					console.log('喜欢成功', res)
 				})
 			},
 			/**
@@ -161,18 +175,22 @@
 				this.activeSrc = src;
 			},
 			async getNextPage() {
+				if(this.isLoading) return;
+				this.isLoading = true;
 				const self = this;
 				//获取演讲数据,倒序排列
 				db.collection('dynamic').orderBy('createTime', 'desc').skip(startPage * pageSize).limit(pageSize).get().then(res => {
-					this.dynamics = res.data;
+					this.apendDynamics(res.data);
 					startPage += 20;
 					uni.stopPullDownRefresh();
 					if (res.data.length < 20) {
 						this.isLoad = true;
 						return;
 					}
+					this.isLoading = false;
 				})
 			},
+			...mapMutations(['apendDynamics','clearDynamics'])
 		},
 		components: {
 			nxPlayer,
@@ -187,6 +205,7 @@
 		height: 100Vh;
 		width: 100vw;
 	}
+
 	.dynamic {
 		padding: 16px 8px;
 
@@ -241,8 +260,8 @@
 			.space-right {
 				margin-right: 66upx;
 			}
-			
-			.red{
+
+			.red {
 				color: #e64340
 			}
 		}
@@ -265,8 +284,8 @@
 			margin-top: 15px;
 		}
 	}
-	
-	.dynamic + .dynamic{
+
+	.dynamic+.dynamic {
 		margin-top: 28upx;
 	}
 </style>

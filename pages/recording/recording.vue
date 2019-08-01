@@ -38,7 +38,8 @@
 	const options = {
 		duration: 600000,
 		sampleRate: 48000,
-		encodeBitRate: 320000
+		encodeBitRate: 320000,
+		format:'mp3'
 	}
 	recorderManager.onStart(function() {
 		console.log('开始录音')
