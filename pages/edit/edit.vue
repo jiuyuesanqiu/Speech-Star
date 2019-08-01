@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<input style="height: 112upx;font-size: 32upx;line-height: 112upx;padding-left: 20upx;" v-model="value" placeholder='走别人的路,让别人无路可走' type="text" class="bg-white text-black">
+		<input style="height: 112upx;font-size: 32upx;line-height: 112upx;padding-left: 20upx;" v-model="value" placeholder='您还未设置个性签名哦' type="text" class="bg-white text-black">
 		<view class="padding mt-5">
 			<button class="weui-btn" type="primary" @tap="finish">保存</button>
 		</view>

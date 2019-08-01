@@ -9,11 +9,11 @@
 					<view style="font-size: 40upx;line-height: 68upx;height: 68upx;">
 						{{userInfo.nickName}}
 					</view>
-					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-if="userInfo.signature!=undefined">
+					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-if="userInfo.signature!=''">
 						{{userInfo.signature}}
 					</view>
 					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-else>
-						走别人的路，让别人无路可走
+						您还未设置个性签名哦
 					</view>
 				</view>
 				<view class="d-flex align-center">
