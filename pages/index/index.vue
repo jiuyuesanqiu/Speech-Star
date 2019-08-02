@@ -26,7 +26,7 @@
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
 					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike(item._id,index)"></text>
-					<text class="space-right cuIcon-comment" @click="toComment(item._id)"></text>
+					<text class="space-right cuIcon-comment" @click="toComment(item._id,index)"></text>
 					<text class="cuIcon-share"></text>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
@@ -52,12 +52,12 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="isLogin" @click="toComment(item._id)" class="noInputComment">
+			<!-- <view v-if="isLogin" @click="toComment(item._id)" class="noInputComment">
 				<text>评论</text>
 			</view>
 			<view v-else @click="loginShow=true" class="noInputComment">
 				<text>评论</text>
-			</view>
+			</view> -->
 		</view>
 		<nxLogin :show="loginShow" @success="loginShow=false" @cancel="loginShow=false"></nxLogin>
 	</view>
@@ -112,9 +112,9 @@
 			/**
 			 * 去评论页
 			 */
-			toComment(id) {
+			toComment(id,index) {
 				uni.navigateTo({
-					url: `../comment/comment?id=${id}`
+					url: `../comment/comment?id=${id}&index=${index}`
 				})
 			},
 			/**

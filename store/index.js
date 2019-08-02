@@ -51,6 +51,12 @@ const store = new Vuex.Store({
 		 */
 		togglelikeState(state, payload) {
 			state.dynamics[payload.index].likeUsers = payload.likeUsers;
+		},
+		/**
+		 * 评论动态
+		 */
+		commentDynamic(state,payload){
+			state.dynamics[payload.index].comment.push(payload.data);
 		}
 	},
 	actions: { //异步更新状态
