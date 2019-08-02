@@ -1,50 +1,30 @@
 <template>
 	<view class="page">
 		<view class="pageBox">
-			<view class="d-flex voiceItem">
-				<view class="d-flex align-center itemNumber">6</view>
+
+			<view class="d-flex voiceItem" v-for="item in voiceList" :key="item.voiceId" @tap="toPlay(item.voiceId)">
+				<view class="d-flex align-center itemNumber"></view>
 				<view class="d-flex flex-column justify-between itemTop">
 					<view class="d-flex justify-between align-center">
-						<view class="itemName">你所谓的迷茫只不过是赚钱太少</view>
-						<view class="itemDate">2019-07-15</view>
+						<view class="itemName">{{item.voiceName}}</view>
+						<view class="itemDate">{{item.voiceDate}}</view>
 					</view>
 					<view class="d-flex justify-between itemBottom">
 						<view class="d-flex itemViewBox">
 							<view class="d-flex viewNumber">
 								<image src="../../static/playNumber.png" mode=""></image>
-								<view>27</view>
+								<view>{{item.voicePlay}}</view>
 							</view>
 							<view class="d-flex itemTime">
 								<image src="../../static/time.png" mode=""></image>
-								<view>03:55</view>
+								<view>{{item.voiceTime}}</view>
 							</view>
 						</view>
 						<view class="more">. . .</view>
 					</view>
 				</view>
 			</view>
-			<view class="d-flex voiceItem">
-				<view class="d-flex align-center itemNumber">6</view>
-				<view class="d-flex flex-column justify-between itemTop">
-					<view class="d-flex justify-between align-center">
-						<view class="itemName">你所谓的迷茫只不过是赚钱太少</view>
-						<view class="itemDate">2019-07-15</view>
-					</view>
-					<view class="d-flex justify-between itemBottom">
-						<view class="d-flex itemViewBox">
-							<view class="d-flex viewNumber">
-								<image src="../../static/playNumber.png" mode=""></image>
-								<view>27</view>
-							</view>
-							<view class="d-flex itemTime">
-								<image src="../../static/time.png" mode=""></image>
-								<view>03:55</view>
-							</view>
-						</view>
-						<view class="more">. . .</view>
-					</view>
-				</view>
-			</view>
+
 		</view>
 	</view>
 </template>
@@ -57,7 +37,21 @@
 	export default {
 		data() {
 			return {
-
+				no:0,
+				
+				voiceList: [{
+					voiceId: 1,
+					voiceName: '你所谓的迷茫只不过是赚钱太少',
+					voiceDate: '2019-07-15',
+					voicePlay: 27,
+					voiceTime: '03:56',
+				}, {
+					voiceId: 2,
+					voiceName: '赚钱太少啦啦',
+					voiceDate: '2019-12-01',
+					voicePlay: 66,
+					voiceTime: '01:03:56',
+				}]
 			}
 		},
 		onLoad() {
@@ -67,7 +61,11 @@
 
 		},
 		methods: {
-
+			toPlay() {
+				uni.navigateTo({
+					url: `../play/play?voiceId=${voiceId}`
+				})
+			}
 		}
 	}
 </script>
