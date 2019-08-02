@@ -20,7 +20,7 @@
 			</view>
 			<view class="right flex-grow-1">
 				<view class="title">{{title}}</view>
-				<slider :max="duration" @change="sliderChange" @changing="sliderChanging" block-size="8" :value="currentTime"></slider>
+				<slider :max="duration" step="0.1" @change="sliderChange" @changing="sliderChanging" block-size="8" :value="currentTime"></slider>
 				<view class="time d-flex justify-between">
 					<text>{{currentTimeText}}</text>
 					<text>{{durationText}}</text>
@@ -32,16 +32,13 @@
 
 <script>
 	let util = require('../common/util.js');
-	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	export default {
 		data() {
 			return {
 				isLoading: false,
 				isPlay: false,
-				isEnded: false,
-				intervalId: 0,
 				currentTime: 0,
-				isPlayed:false,//是否播放过至少一次
+				isUpdateTime: false
 			};
 		},
 		computed: {
@@ -50,92 +47,41 @@
 			},
 			durationText() {
 				return util.formatDuration(this.duration);
-			},
-			isActive() {
-				if (this.src == this.activeSrc) {
-					if (!backgroundAudioManager.paused && this.intervalId == 0 && !this.isPlayed) {
-						this.currentTime = backgroundAudioManager.currentTime;
-						this.isPlay = true;
-						this.listener();
-					}
-					if(backgroundAudioManager.paused && !this.isPlayed){
-						this.currentTime = backgroundAudioManager.currentTime;
-					}
-					return true;
-				} else {
-					this.init();
-					return false;
+			}
+		},
+		watch: {
+			/**
+			 * @param {Object} value
+			 * 播放完成后停止
+			 */
+			currentTime(value) {
+				if (value >= this.duration) {
+					this.stopRecordTime();
+					this.currentTime = 0;
+					this.isPlay = false;
 				}
 			}
 		},
-		watch:{
-			isPlay(){
-				if(this.isPlay&&!this.isLoading){
-					this.updateCurrentTime();
-				}else if(!this.isPlay&&!this.isLoading){
-					clearInterval(this.intervalId);
-					this.intervalId = 0;
-				}
-			}
+		/**
+		 * 销毁前停止计时
+		 */
+		beforeDestroy() {
+			this.stopRecordTime();
 		},
 		methods: {
-			init() {
-				this.isLoading = false;
-				this.isPlay = false;
-			},
 			/**
-			 * 播放背景音频
+			 * 播放音频
 			 */
 			play() {
-				this.isPlayed = true;
-				//这里title取时间戳是为了防止标题重复导致报错
-				backgroundAudioManager.title = new Date().getTime().toString();
-				backgroundAudioManager.play();
-				backgroundAudioManager.singer = this.singer;
-				backgroundAudioManager.startTime = this.currentTime;
-				backgroundAudioManager.src = this.src;
-				this.$emit('changeActive', this.src);
-				this.listener();
-			},
-			/**
-			 * 监听事件
-			 */
-			listener() {
-				//监听音频能够播放的事件
-				backgroundAudioManager.onWaiting(() => {
-					this.isLoading = true;
-				})
-				backgroundAudioManager.onCanplay(() => {
-					this.isLoading = false;
-				})
-				backgroundAudioManager.onPlay(() => {
-					this.isPlay = true;
-					this.isLoading = false;
-				})
-				backgroundAudioManager.onPause(() => {
-					this.isPlay = false;
-				})
-				backgroundAudioManager.onStop(() => {
-					console.log("背景音频被停止")
-					this.isPlay = false;
-				});
-				backgroundAudioManager.onEnded(() => {
-					this.isPlay = false;
-					this.currentTime = 0;
-					this.isEnded = true;
-				});
+				this.isPlay = true;
+				this.startRecordTime();
 			},
 			/**
 			 * 暂停音频
 			 */
 			paused() {
-				backgroundAudioManager.pause();
-			},
-			/**
-			 * 停止音频
-			 */
-			stop() {
-				backgroundAudioManager.stop();
+				this.isPlay = false;
+				this.stopRecordTime();
 			},
 			/**
 			 * 滚动后触发
@@ -144,11 +90,6 @@
 				detail
 			}) {
 				this.currentTime = detail.value;
-				if (this.isActive) {
-					backgroundAudioManager.seek(detail.value);
-				} else {
-					this.play();
-				}
 			},
 			/**
 			 * 拖动中触发
@@ -159,16 +100,22 @@
 				this.currentTime = detail.value;
 			},
 			/**
-			 * 更新时间
+			 * 开始计时
 			 */
-			updateCurrentTime() {
-				if (this.intervalId != 0) {
-					return;
+			async startRecordTime() {
+				//判断是否已经在计时
+				if (this.isUpdateTime) return;
+				this.isUpdateTime = true;
+				while (this.isUpdateTime) {
+					await this.sleep(100);
+					this.currentTime = this.currentTime + 0.1;
 				}
-				let intervalId = setInterval(() => {
-					this.currentTime = backgroundAudioManager.currentTime;
-				}, 1000)
-				this.intervalId = intervalId;
+			},
+			/**
+			 * 结束计时
+			 */
+			stopRecordTime() {
+				this.isUpdateTime = false;
 			},
 			playAudio() {
 				if (!this.isPlay && !this.isLoading) {
@@ -176,6 +123,14 @@
 				} else if (this.isPlay && !this.isLoading) {
 					this.paused();
 				}
+			},
+			/**
+			 * @param {Object} interval	间隔秒数
+			 */
+			sleep(interval) {
+				return new Promise(resolve => {
+					setTimeout(resolve, interval);
+				})
 			}
 		},
 		props: {
