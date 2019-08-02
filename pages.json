@@ -70,7 +70,8 @@
             "path" : "pages/dynamicDetail/dynamicDetail",
             "style" : {
 				"navigationBarTitleText": "动态详情",
-				"enablePullDownRefresh": true //下拉刷新
+				"enablePullDownRefresh": true, //下拉刷新
+				"navigationStyle":"custom"
 			}
         }
     ],

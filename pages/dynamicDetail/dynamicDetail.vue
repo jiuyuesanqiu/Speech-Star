@@ -1,6 +1,9 @@
 <template>
 	<view>
-		<view class="dynamic bg-white">
+		<cu-custom bgColor="bg-white" @tapHome="goHome" :isBack="showBack" :showHome="showHome">
+			<block slot="content">动态详情</block>
+		</cu-custom>
+		<view class="dynamic bg-white mt-2">
 			<view class="user d-flex align-center">
 				<view>
 					<image :src="dynamic.userInfo.avatarUrl" class="avatar"></image>
@@ -67,6 +70,7 @@
 	const db = wx.cloud.database();
 	import nxPlayer from '../../components/nx-player.vue';
 	import nxLogin from '../../components/nx-login.vue';
+	import cuCustom from '../../components/cu-custom.vue';
 	import {
 		format
 	} from 'timeago.js';
@@ -79,19 +83,27 @@
 		data() {
 			return {
 				dynamic: {
-					likeUsers:[]
+					likeUsers: []
 				},
-				loginShow:false,
+				loginShow: false,
 				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
-				id:''
+				id: '',
+				showHome: false, //主页按钮是否显示
+				showBack: true
 			};
 		},
-		computed:{
+		computed: {
 			...mapState(['userInfo']),
 			...mapGetters(['isLogin'])
 		},
 		onLoad(option) {
 			this.id = option.id;
+			//判断是不是从分享进来的，如果是那么展示主页按钮
+			let pages = getCurrentPages();
+			if (pages.length == 1) {
+				this.showHome = true;
+				this.showBack = false;
+			}
 		},
 		onShow() {
 			this.loadData();
@@ -101,6 +113,11 @@
 			this.loadData();
 		},
 		methods: {
+			goHome(){
+				uni.switchTab({
+					url:'../index/index'
+				})
+			},
 			togglelike() {
 				let likeUsers = this.dynamic.likeUsers;
 				if (this.isLike(likeUsers)) {
@@ -117,15 +134,15 @@
 				wx.cloud.callFunction({
 					name: 'likeDynamic',
 					data: {
-						id:this.dynamic._id,
+						id: this.dynamic._id,
 						likeUsers
 					}
 				}).then(res => {
-					console.log('togglelike',res)
+					console.log('togglelike', res)
 				})
 			},
 			//获取动态详情
-			loadData(){
+			loadData() {
 				db.collection('dynamic').doc(this.id).get().then(res => {
 					this.dynamic = res.data;
 					wx.stopPullDownRefresh();
@@ -137,7 +154,7 @@
 			/**
 			 * 去评论页
 			 */
-			toComment(id,index) {
+			toComment(id, index) {
 				uni.navigateTo({
 					url: `../comment/comment?id=${id}`
 				})
@@ -156,7 +173,8 @@
 		},
 		components: {
 			nxPlayer,
-			nxLogin
+			nxLogin,
+			cuCustom
 		}
 	}
 </script>
