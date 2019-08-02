@@ -15,7 +15,7 @@
 				<text v-show="!isPlay&&!isLoading" class="cuIcon-video play-icon" @click="play"></text>
 				<text v-show="isPlay&&!isLoading" class="cuIcon-stop stop-icon" @click="paused"></text>
 				<div class="loading-icon">
-					<text v-show="isLoading" class="cuIcon-loading1" @click="paused"></text>
+					<text v-show="isLoading" class="cuIcon-loading1"></text>
 				</div>
 			</view>
 			<view class="right flex-grow-1">
@@ -56,7 +56,6 @@
 					if (!backgroundAudioManager.paused && this.intervalId == 0 && !this.isPlayed) {
 						this.currentTime = backgroundAudioManager.currentTime;
 						this.isPlay = true;
-						this.updateCurrentTime();
 						this.listener();
 					}
 					if(backgroundAudioManager.paused && !this.isPlayed){
@@ -69,11 +68,20 @@
 				}
 			}
 		},
+		watch:{
+			isPlay(){
+				if(this.isPlay&&!this.isLoading){
+					this.updateCurrentTime();
+				}else if(!this.isPlay&&!this.isLoading){
+					clearInterval(this.intervalId);
+					this.intervalId = 0;
+				}
+			}
+		},
 		methods: {
 			init() {
 				this.isLoading = false;
 				this.isPlay = false;
-				clearInterval(this.intervalId);
 			},
 			/**
 			 * 播放背景音频
@@ -103,23 +111,17 @@
 				backgroundAudioManager.onPlay(() => {
 					this.isPlay = true;
 					this.isLoading = false;
-					this.updateCurrentTime();
 				})
 				backgroundAudioManager.onPause(() => {
 					this.isPlay = false;
-					clearInterval(this.intervalId);
-					this.intervalId = 0;
 				})
 				backgroundAudioManager.onStop(() => {
 					console.log("背景音频被停止")
 					this.isPlay = false;
-					clearInterval(this.intervalId);
 				});
 				backgroundAudioManager.onEnded(() => {
 					this.isPlay = false;
 					this.currentTime = 0;
-					clearInterval(this.intervalId);
-					this.intervalId = 0;
 					this.isEnded = true;
 				});
 			},
