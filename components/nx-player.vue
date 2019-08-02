@@ -38,7 +38,8 @@
 				isLoading: false,
 				isPlay: false,
 				currentTime: 0,
-				isUpdateTime: false
+				isUpdateTime: false,
+				isActive:false
 			};
 		},
 		computed: {
@@ -70,11 +71,21 @@
 		},
 		methods: {
 			/**
+			 * 使当前组件不在活动中,此方法由父级组件回调
+			 */
+			inActiveCallback(){
+				this.isActive = false;
+				this.isPlay = false;
+				this.stopRecordTime();
+			},
+			/**
 			 * 播放音频
 			 */
 			play() {
 				this.isPlay = true;
+				this.isActive = true;
 				this.startRecordTime();
+				this.$emit('play',this.inActiveCallback);
 			},
 			/**
 			 * 暂停音频
@@ -134,21 +145,14 @@
 			}
 		},
 		props: {
-			src: String, //音频播放地址
 			title: {
 				type: String,
 				default: new Date().toString()
 			}, //音频标题
 			duration: String, //音频时长
-			coverImgUrl: String, //封面图
-			singer: String, //歌手名
 			isBackgroundAudio: {
 				type: Boolean,
 				default: false
-			},
-			//当前音频播放的音频src
-			activeSrc: {
-				type: String,
 			}
 		}
 	}

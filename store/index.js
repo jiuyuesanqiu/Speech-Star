@@ -6,7 +6,8 @@ const store = new Vuex.Store({
 	strict: process.env.NODE_ENV === 'development',//开发环境时执行严格模式
 	state: {
 		userInfo:{},
-		dynamics:[]	//动态列表
+		dynamics:[],	//动态列表
+		inActiveCallback:()=>{}	//当前活动中的播放器的失效方法
 	},
 	getters:{
 		/**
@@ -35,6 +36,9 @@ const store = new Vuex.Store({
 		},
 		clearDynamics(state){
 			state.dynamics = [];
+		},
+		replaceInInActiveCallback(state,inActiveCallback){
+			state.inActiveCallback = inActiveCallback;
 		}
 	},
 	actions:{//异步更新状态

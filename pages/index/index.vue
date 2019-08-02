@@ -19,7 +19,7 @@
 				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title"
+				<nxPlayer @play="onPlay" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title"
 				 :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
@@ -48,7 +48,7 @@
 						<view v-if="content.type=='text'" class="mb-1">
 							<text>{{content.content}}</text>
 						</view>
-<!-- <nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="comment.content.voice.src" :duration="comment.content.voice.duration"></nxPlayer> -->
+						<!-- <nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="comment.content.voice.src" :duration="comment.content.voice.duration"></nxPlayer> -->
 					</view>
 				</view>
 			</view>
@@ -88,7 +88,7 @@
 				activeSrc: '', //当前播放的音频
 				isLoading: false, //数据是否正在加载中
 				loginShow: false,
-				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png'
+				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
 			}
 		},
 		onLoad() {
@@ -108,10 +108,19 @@
 			this.getNextPage();
 		},
 		computed: {
-			...mapState(['userInfo','dynamics']),
+			...mapState(['userInfo', 'dynamics','inActiveCallback']),
 			...mapGetters(['isLogin'])
 		},
 		methods: {
+			/**
+			 * 播放器播放时，使其它播放器失效
+			 */
+			onPlay(inActiveCallback) {
+				if (inActiveCallback != this.inActiveCallback) {
+					this.inActiveCallback();
+					this.replaceInInActiveCallback(inActiveCallback);
+				}
+			},
 			/**
 			 * 去评论页
 			 */
@@ -175,7 +184,7 @@
 				this.activeSrc = src;
 			},
 			async getNextPage() {
-				if(this.isLoading) return;
+				if (this.isLoading) return;
 				this.isLoading = true;
 				const self = this;
 				//获取演讲数据,倒序排列
@@ -190,7 +199,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics','clearDynamics'])
+			...mapMutations(['apendDynamics', 'clearDynamics','replaceInInActiveCallback'])
 		},
 		components: {
 			nxPlayer,
