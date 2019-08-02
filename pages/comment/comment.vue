@@ -18,7 +18,7 @@
 			return {
 				id:'',
 				content:'',
-				index:0//当前评论所在动态列表位置
+				index:-1//当前评论所在动态列表位置
 			};
 		},
 		computed:{
@@ -50,10 +50,13 @@
 				}).then(res=>{
 					console.log('评论成功',res)
 					uni.navigateBack()
-					this.commentDynamic({
-						index:this.index,
-						data
-					})
+					if(this.index!=undefined){
+						console.log(134)
+						this.commentDynamic({
+							index:this.index,
+							data
+						})
+					}
 				})
 			},
 			...mapMutations(['commentDynamic'])

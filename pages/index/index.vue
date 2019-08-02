@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id">
-			<view class="user d-flex align-center">
+			<view class="user d-flex align-center" @tap="toDynamicDetail(item._id)">
 				<view>
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
@@ -109,6 +109,14 @@
 			...mapGetters(['isLogin'])
 		},
 		methods: {
+			/**
+			 * 动态详情
+			 */
+			toDynamicDetail(id){
+				uni.navigateTo({
+					url:`../dynamicDetail/dynamicDetail?id=${id}`
+				})
+			},
 			/**
 			 * 去评论页
 			 */
