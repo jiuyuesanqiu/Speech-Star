@@ -64,6 +64,7 @@
 </template>
 
 <script>
+	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	import {
 		format,
 		render,
@@ -77,7 +78,6 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex';
-	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	const db = wx.cloud.database();
 	const _ = db.command
 	let startPage = 0; //起始页数
@@ -96,14 +96,11 @@
 			this.getNextPage();
 			wx.showShareMenu();
 		},
-		onShow() {
-			this.activeSrc = backgroundAudioManager.src;
-		},
 		//下拉刷新
 		onPullDownRefresh() {
 			startPage = 0;
 			this.isLoading = false;
-			backgroundAudioManager.pause();
+			backgroundAudioManager.stop();
 			this.clearDynamics();
 			this.getNextPage();
 		},

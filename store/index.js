@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-
 const store = new Vuex.Store({
 	strict: process.env.NODE_ENV === 'development',//开发环境时执行严格模式
 	state: {
@@ -37,6 +36,11 @@ const store = new Vuex.Store({
 		clearDynamics(state){
 			state.dynamics = [];
 		},
+		/**
+		 * 更新活动播放器UUID
+		 * @param {Object} state
+		 * @param {Object} uuid
+		 */
 		updateActivePlayerUUID(state,uuid){
 			state.activePlayerUUID = uuid;
 		}

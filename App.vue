@@ -9,8 +9,10 @@
 		onLaunch: function() {
 			wx.cloud.callFunction({
 				name: 'getOwnerUserInfo',
-			}).then(({result}) => {
-				console.log('启动时请求用户信息',result)
+			}).then(({
+				result
+			}) => {
+				console.log('启动时请求用户信息', result)
 				this.updateUserInfoField(result);
 			})
 		},

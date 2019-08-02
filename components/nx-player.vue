@@ -31,6 +31,7 @@
 </template>
 
 <script>
+	const backgroundAudioManager = wx.getBackgroundAudioManager();
 	import {
 		mapState,
 		mapMutations
@@ -40,7 +41,7 @@
 	export default {
 		data() {
 			return {
-				uuid:uuidv4(),//组件唯一标识码
+				uuid: uuidv4(), //组件唯一标识码
 				isLoading: false,
 				isPlay: false,
 				currentTime: 0,
@@ -55,12 +56,14 @@
 				return util.formatDuration(this.duration);
 			},
 			...mapState({
-				isActive(state){		//当前播放器是否活动
-					if(state.activePlayerUUID != this.uuid){
-						this.paused();
-						return false;
-					}else{
+				isActive(state) { //当前播放器是否活动
+					if (state.activePlayerUUID == this.uuid) {
+						this.listener();
 						return true;
+					} else {
+						this.isPlay = false;
+						this.stopRecordTime();
+						return false;
 					}
 				}
 			})
@@ -85,21 +88,54 @@
 			this.stopRecordTime();
 		},
 		methods: {
+			listener() {
+				//监听音频能够播放的事件
+				backgroundAudioManager.onWaiting(() => {
+					this.isLoading = true;
+				})
+				backgroundAudioManager.onCanplay(() => {
+					this.isLoading = false;
+				})
+				backgroundAudioManager.onPlay(() => {
+					this.isPlay = true;
+					this.isLoading = false;
+					this.startRecordTime();
+				})
+				backgroundAudioManager.onPause(() => {
+					this.isPlay = false;
+					this.stopRecordTime();
+				})
+				backgroundAudioManager.onStop(() => {
+					this.isPlay = false;
+					this.currentTime = 0;
+					this.stopRecordTime();
+				});
+				backgroundAudioManager.onEnded(() => {
+					this.isPlay = false;
+					this.currentTime = 0;
+					this.stopRecordTime();
+				});
+			},
 			/**
 			 * 播放音频
 			 */
 			play() {
-				if(!this.isActive){
+				if (!this.isActive) {
 					this.updateActivePlayerUUID(this.uuid);
 				}
+				backgroundAudioManager.play();
+				backgroundAudioManager.title = new Date().getTime().toString();
+				backgroundAudioManager.startTime = this.currentTime;
+				backgroundAudioManager.src = this.src;
+
 				this.isPlay = true;
-				this.startRecordTime();
 			},
 			/**
 			 * 暂停音频
 			 */
 			paused() {
 				this.isPlay = false;
+				backgroundAudioManager.pause();
 				this.stopRecordTime();
 			},
 			/**
@@ -109,6 +145,9 @@
 				detail
 			}) {
 				this.currentTime = detail.value;
+				if (this.isActive) {
+					backgroundAudioManager.seek(detail.value);
+				}
 			},
 			/**
 			 * 拖动中触发
@@ -162,7 +201,8 @@
 			isBackgroundAudio: {
 				type: Boolean,
 				default: false
-			}
+			},
+			src: String
 		}
 	}
 </script>
