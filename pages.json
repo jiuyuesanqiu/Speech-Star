@@ -38,11 +38,6 @@
 				"navigationBarTitleText": "开始演讲"
 			}
 		}, {
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "登录页面"
-			}
-		}, {
 			"path": "pages/myInfo/myInfo",
 			"style": {
 				"navigationBarTitleText": "个人信息"
