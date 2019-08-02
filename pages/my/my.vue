@@ -1,23 +1,17 @@
 <template>
 	<view>
 		<view v-if="isLogin">
-			<view class="d-flex bg-white" @tap="toInformation" style="padding: 68upx 26upx;margin-bottom: 16upx;">
-				<view style="padding: 20upx;">
-					<image style="width: 128upx; height: 128upx;" class="radius" :src="userInfo.avatarUrl"></image>
+			<view class="d-flex bg-white topBox" @tap="toInformation">
+				<view class="topContent">
+					<image class="radius" :src="userInfo.avatarUrl"></image>
 				</view>
-				<view style="padding: 20upx 0 20upx 6upx;" class="flex-grow-1">
-					<view style="font-size: 40upx;line-height: 68upx;height: 68upx;">
-						{{userInfo.nickName}}
-					</view>
-					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-if="userInfo.signature!=''">
-						{{userInfo.signature}}
-					</view>
-					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray" v-else>
-						您还未设置个性签名哦
-					</view>
+				<view class="flex-grow-1 topNameBox">
+					<view class="nickName">{{userInfo.nickName}}</view>
+					<view class="text-gray signature" v-if="userInfo.signature!=''">{{userInfo.signature}}</view>
+					<view class="text-gray signature" v-else>您还未设置个性签名哦</view>
 				</view>
 				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					<text class="cuIcon-right text-gray fontSize36"></text>
 				</view>
 			</view>
 			<nx-cell icon="/static/disk.png" border title="我的作品" @tap="toMyVoice"></nx-cell>
@@ -25,20 +19,16 @@
 
 		<!-- 未登录状态 -->
 		<view v-else @click="loginShow =true">
-			<view class="d-flex bg-white" style="padding: 68upx 26upx;margin-bottom: 16upx;">
-				<view style="padding: 20upx;">
-					<image style="width: 128upx; height: 128upx;" class="radius" src="../../static/star.png"></image>
+			<view class="d-flex bg-white topBox">
+				<view class="topContent">
+					<image class="radius" src="../../static/star.png"></image>
 				</view>
-				<view style="padding: 20upx 0 20upx 6upx;" class="flex-grow-1">
-					<view style="font-size: 40upx;line-height: 68upx;height: 68upx;">
-						点击登录账户
-					</view>
-					<view style="font-size: 32upx;line-height: 60upx;height: 60upx;" class="text-gray">
-						每天1分钟，演讲好轻松
-					</view>
+				<view class="flex-grow-1 topNameBox">
+					<view class="nickName">点击登录账户</view>
+					<view class="text-gray signature">每天1分钟，演讲好轻松</view>
 				</view>
 				<view class="d-flex align-center">
-					<text class="cuIcon-right text-gray" style="font-size: 36upx;"></text>
+					<text class="cuIcon-right text-gray"></text>
 				</view>
 			</view>
 			<nx-cell icon="/static/disk.png" border title="我的作品"></nx-cell>
@@ -108,5 +98,39 @@
 
 	button:after {
 		all: inherit
+	}
+
+	.topBox {
+		padding: 68upx 26upx;
+		margin-bottom: 16upx;
+	}
+
+	.topContent {
+		padding: 20upx;
+	}
+
+	.topContent>image {
+		width: 128upx;
+		height: 128upx;
+	}
+
+	.topNameBox {
+		padding: 20upx 0 20upx 6upx;
+	}
+
+	.nickName {
+		font-size: 40upx;
+		line-height: 68upx;
+		height: 68upx;
+	}
+
+	.signature {
+		font-size: 32upx;
+		line-height: 60upx;
+		height: 60upx;
+	}
+
+	.fontSize36 {
+		font-size: 36upx;
 	}
 </style>

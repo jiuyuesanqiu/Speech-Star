@@ -4,14 +4,14 @@
 			<text>{{displayDuration}}</text>
 		</view>
 
-		<view class="footer">
+		<view class="d-flex justify-between footer">
 			<view class="footerL">
 				<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/headset.png"></image>
 				<view class="playText" v-show="state==2&&!isPlay">试听</view>
 				<image class="playImg" @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png"></image>
 				<view class="playText" v-show="state==2&&isPlay">试听中</view>
 			</view>
-			<view class="footerM">
+			<view class="d-flex flex-column align-center footerM">
 				<!-- <view class="record"> -->
 				<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
 				<image class="stopImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
@@ -216,8 +216,6 @@
 	}
 
 	.footer {
-		display: flex;
-		justify-content: space-between;
 		height: 23%;
 		margin-top: 66%;
 	}
@@ -233,10 +231,7 @@
 	}
 
 	.footerM {
-		display: flex;
 		width: 40%;
-		flex-direction: column;
-		align-items: center;
 	}
 
 	.playImg {

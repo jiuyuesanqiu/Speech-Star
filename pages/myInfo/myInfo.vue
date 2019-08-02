@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<view class="bg-white" style="width: 100%;">
+		<view class="bg-white widthAll">
 			<view class="d-flex border-bottom marginPadding headBox" @tap="changeAvatar">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center">头像</view>
@@ -13,7 +13,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="bg-white" style="width: 100%;">
+		<view class="bg-white widthAll">
 			<view class="d-flex border-bottom marginPadding" @tap="toEdit('设置名字','nickName')">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center pt-4 pb-4">昵称</view>
@@ -26,7 +26,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="bg-white" style="width: 100%;">
+		<view class="bg-white widthAll">
 			<view v-if="userInfo.gender==0" class="d-flex border-bottom marginPadding" @tap="editGender">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center pt-4 pb-4">性别</view>
@@ -48,7 +48,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="bg-white" style="width: 100%;">
+		<view class="bg-white widthAll">
 			<view class="d-flex marginPadding" @tap="toEdit('个性签名','signature')">
 				<view class="d-flex flex-grow-1 align-center">
 					<view class="d-flex align-center pt-4 pb-4">个性签名</view>
@@ -174,5 +174,8 @@
 	.headBox image {
 		width: 128upx;
 		height: 128upx;
+	}
+	.widthAll{
+		width: 100%;
 	}
 </style>
