@@ -78,41 +78,41 @@
 
 <style lang="scss" scoped>
 	.container {
-		width: 304px;
-		height: 375px;
-		line-height: 20px;
-		border-radius: 10px;
+		width: 608upx;
+		height: 750upx;
+		line-height: 40upx;
+		border-radius: 20upx;
 		background: #FFFFFF;
-		padding: 35px 30px;
+		padding: 70upx 60upx;
 
 		.title {
-			font-size: 20px;
+			font-size: 40upx;
 			text-align: center;
 		}
 
 		.sub-title {
 			color: rgba(127, 127, 127, 1);
-			font-size: 14px;
+			font-size: 28upx;
 			text-align: center;
-			margin-top: 10px;
+			margin-top: 20upx;
 		}
 
 		.logo {
-			width: 150px;
-			height: 150px;
-			margin-top: 15px;
-			margin-bottom: 37px;
+			width: 300upx;
+			height: 300upx;
+			margin-top: 30upx;
+			margin-bottom: 74upx;
 		}
 
 		.btn {
-			width: 100px;
-			height: 45px;
-			border-radius: 25px;
-			font-size: 16px;
+			width: 200upx;
+			height: 90upx;
+			border-radius: 50upx;
+			font-size: 32upx;
 		}
 
 		.no-login {
-			border: 1px solid rgba(9, 187, 7, 1);
+			border: 2upx solid rgba(9, 187, 7, 1);
 			color: #09bb07;
 		}
 

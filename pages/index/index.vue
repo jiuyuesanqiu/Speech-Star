@@ -204,54 +204,54 @@
 	}
 
 	.dynamic {
-		padding: 16px 8px;
+		padding: 32upx 16upx;
 
 		.user {
-			padding-bottom: 5px;
+			padding-bottom: 20upx;
 
 			.avatar {
-				width: 37px;
-				height: 37px;
-				border-radius: 4px;
+				width: 74upx;
+				height: 74upx;
+				border-radius: 8upx;
 			}
 
 			.nickName {
-				margin-bottom: 5px;
+				margin-bottom: 10upx;
 				color: rgba(16, 16, 16, 1);
-				font-size: 15px;
-				line-height: 17px;
+				font-size: 30upx;
+				line-height: 34upx;
 			}
 
 			.createTime {
 				color: rgba(136, 136, 136, 1);
-				font-size: 11px;
+				font-size: 22upx;
 			}
 		}
 
 		.intro {
 			color: rgba(16, 16, 16, 1);
-			font-size: 14px;
-			padding: 11px 0;
+			font-size: 28upx;
+			padding: 22upx 0;
 		}
 
 		.cover {
-			width: 130px;
+			width: 260upx;
 		}
 
 		.player {
-			padding: 11px 0;
+			padding: 22upx 0;
 		}
 
 		.comment {
-			padding-right: 7px;
+			padding-right: 14upx;
 
 			.viewCounts {
 				color: rgba(119, 119, 119, 1);
-				font-size: 14px;
+				font-size: 28upx;
 			}
 
 			.operation {
-				font-size: 24px;
+				font-size: 48upx;
 			}
 
 			.space-right {
@@ -264,21 +264,21 @@
 		}
 
 		.likenum {
-			padding: 15px 2px 0 2px;
-			margin-top: 15px;
-			margin-bottom: 15px;
+			padding: 30upx 4upx 0 4upx;
+			margin-top: 30upx;
+			margin-bottom: 30upx;
 		}
 
 		.noInputComment {
-			width: 361px;
-			height: 27px;
-			border-radius: 2px;
+			width: 722upx;
+			height: 54upx;
+			border-radius: 4upx;
 			background-color: rgba(248, 248, 248, 1);
 			color: rgba(176, 176, 176, 1);
-			font-size: 13px;
-			padding-left: 10px;
-			padding-top: 6px;
-			margin-top: 15px;
+			font-size: 26upx;
+			padding-left: 20upx;
+			padding-top: 12upx;
+			margin-top: 30upx;
 		}
 	}
 

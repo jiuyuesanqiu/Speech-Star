@@ -237,48 +237,48 @@
 	}
 
 	.container {
-		width: 358px;
-		height: 98px;
-		border-radius: 2px;
+		width: 716upx;
+		height: 196upx;
+		border-radius: 4upx;
 		color: rgba(16, 16, 16, 1);
-		border: 1px solid rgba(230, 230, 230, 1);
-		padding: 15px 20px;
+		border: 2upx solid rgba(230, 230, 230, 1);
+		padding: 30upx 40upx;
 
 		.left {
-			padding-right: 15px;
-			font-size: 50px;
+			padding-right: 30upx;
+			font-size: 100upx;
 			color: #51AA37;
 
 			.loading-icon {
 				animation: loading .5s linear infinite;
-				font-size: 50px;
+				font-size: 100upx;
 			}
 		}
 
 		.right {
 			.title {
 				color: rgba(16, 16, 16, 1);
-				font-size: 16px;
-				padding-bottom: 10px;
+				font-size: 32upx;
+				padding-bottom: 20upx;
 			}
 
 			.time {
 				color: rgba(178, 178, 178, 1);
-				font-size: 14px;
+				font-size: 28upx;
 			}
 		}
 	}
 
 	.noControl {
-		width: 205px;
-		height: 40px;
-		border-radius: 5px;
+		width: 410upx;
+		height: 80upx;
+		border-radius: 10upx;
 		background-color: rgba(248, 248, 248, 1);
-		padding-left: 25px;
-		font-size: 14px;
+		padding-left: 50upx;
+		font-size: 28upx;
 
 		.play-cion {
-			font-size: 20px;
+			font-size: 40upx;
 		}
 	}
 </style>
