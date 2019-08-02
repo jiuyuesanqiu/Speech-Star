@@ -27,7 +27,9 @@
 				<view v-if="isLogin" class="operation">
 					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike(item._id,index)"></text>
 					<text class="space-right cuIcon-comment" @click="toComment(item._id,index)"></text>
-					<text class="cuIcon-share"></text>
+					<button class="share-btn" open-type="share" :data-id="item._id" :data-share-title="getShareTitle(item.userInfo.nickName,item.title)">
+						<text class="cuIcon-share"></text>
+					</button>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
 					<text class="space-right cuIcon-like"></text>
@@ -108,19 +110,33 @@
 			...mapState(['userInfo', 'dynamics', 'inActiveCallback']),
 			...mapGetters(['isLogin'])
 		},
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				return {
+					title: res.target.dataset.shareTitle,
+					path: `/pages/dynamicDetail/dynamicDetail?id=${res.target.dataset.id}`
+				}
+			}
+		},
 		methods: {
+			/**
+			 * 获取分享标题
+			 */
+			getShareTitle(nickName, title) {
+				return `【${nickName}】${title}`;
+			},
 			/**
 			 * 动态详情
 			 */
-			toDynamicDetail(id){
+			toDynamicDetail(id) {
 				uni.navigateTo({
-					url:`../dynamicDetail/dynamicDetail?id=${id}`
+					url: `../dynamicDetail/dynamicDetail?id=${id}`
 				})
 			},
 			/**
 			 * 去评论页
 			 */
-			toComment(id,index) {
+			toComment(id, index) {
 				uni.navigateTo({
 					url: `../comment/comment?id=${id}&index=${index}`
 				})
@@ -171,7 +187,7 @@
 						likeUsers
 					}
 				}).then(res => {
-					console.log('togglelike',res)
+					console.log('togglelike', res)
 				})
 			},
 			/**
@@ -199,7 +215,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics', 'clearDynamics','togglelikeState'])
+			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState'])
 		},
 		components: {
 			nxPlayer,
@@ -296,5 +312,16 @@
 
 	.dynamic+.dynamic {
 		margin-top: 28upx;
+	}
+
+	button.share-btn {
+		all: initial;
+
+		&:after {
+			all: initial;
+		}
+
+		font-size: 48upx;
+		color: #3A3A3A;
 	}
 </style>
