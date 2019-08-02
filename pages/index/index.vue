@@ -19,7 +19,7 @@
 				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @play="onPlay" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title"
+				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title"
 				 :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
@@ -113,15 +113,6 @@
 		},
 		methods: {
 			/**
-			 * 播放器播放时，使其它播放器失效
-			 */
-			onPlay(inActiveCallback) {
-				if (inActiveCallback != this.inActiveCallback) {
-					this.inActiveCallback();
-					this.replaceInInActiveCallback(inActiveCallback);
-				}
-			},
-			/**
 			 * 去评论页
 			 */
 			toComment(id) {
@@ -199,7 +190,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics', 'clearDynamics','replaceInInActiveCallback'])
+			...mapMutations(['apendDynamics', 'clearDynamics'])
 		},
 		components: {
 			nxPlayer,

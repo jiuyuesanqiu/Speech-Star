@@ -31,15 +31,20 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
+	const uuidv4 = require('uuid/v4');
 	let util = require('../common/util.js');
 	export default {
 		data() {
 			return {
+				uuid:uuidv4(),//组件唯一标识码
 				isLoading: false,
 				isPlay: false,
 				currentTime: 0,
 				isUpdateTime: false,
-				isActive:false
 			};
 		},
 		computed: {
@@ -48,7 +53,17 @@
 			},
 			durationText() {
 				return util.formatDuration(this.duration);
-			}
+			},
+			...mapState({
+				isActive(state){		//当前播放器是否活动
+					if(state.activePlayerUUID != this.uuid){
+						this.paused();
+						return false;
+					}else{
+						return true;
+					}
+				}
+			})
 		},
 		watch: {
 			/**
@@ -71,21 +86,14 @@
 		},
 		methods: {
 			/**
-			 * 使当前组件不在活动中,此方法由父级组件回调
-			 */
-			inActiveCallback(){
-				this.isActive = false;
-				this.isPlay = false;
-				this.stopRecordTime();
-			},
-			/**
 			 * 播放音频
 			 */
 			play() {
+				if(!this.isActive){
+					this.updateActivePlayerUUID(this.uuid);
+				}
 				this.isPlay = true;
-				this.isActive = true;
 				this.startRecordTime();
-				this.$emit('play',this.inActiveCallback);
 			},
 			/**
 			 * 暂停音频
@@ -142,12 +150,13 @@
 				return new Promise(resolve => {
 					setTimeout(resolve, interval);
 				})
-			}
+			},
+			...mapMutations(['updateActivePlayerUUID'])
 		},
 		props: {
 			title: {
 				type: String,
-				default: new Date().toString()
+				default: '音频'
 			}, //音频标题
 			duration: String, //音频时长
 			isBackgroundAudio: {

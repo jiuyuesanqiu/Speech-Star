@@ -7,7 +7,7 @@ const store = new Vuex.Store({
 	state: {
 		userInfo:{},
 		dynamics:[],	//动态列表
-		inActiveCallback:()=>{}	//当前活动中的播放器的失效方法
+		activePlayerUUID:''	//当前活动中的播放器组件唯一标识码
 	},
 	getters:{
 		/**
@@ -37,8 +37,8 @@ const store = new Vuex.Store({
 		clearDynamics(state){
 			state.dynamics = [];
 		},
-		replaceInInActiveCallback(state,inActiveCallback){
-			state.inActiveCallback = inActiveCallback;
+		updateActivePlayerUUID(state,uuid){
+			state.activePlayerUUID = uuid;
 		}
 	},
 	actions:{//异步更新状态
