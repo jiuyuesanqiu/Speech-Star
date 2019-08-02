@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="dynamic bg-white" v-for="item in dynamics" :key="item._id">
+		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id">
 			<view class="user d-flex align-center">
 				<view>
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
@@ -25,7 +25,7 @@
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
-					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="like(item._id,item.likeUsers)"></text>
+					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike(item._id,index)"></text>
 					<text class="space-right cuIcon-comment" @click="toComment(item._id)"></text>
 					<text class="cuIcon-share"></text>
 				</view>
@@ -105,7 +105,7 @@
 			this.getNextPage();
 		},
 		computed: {
-			...mapState(['userInfo', 'dynamics','inActiveCallback']),
+			...mapState(['userInfo', 'dynamics', 'inActiveCallback']),
 			...mapGetters(['isLogin'])
 		},
 		methods: {
@@ -137,29 +137,33 @@
 				});
 			},
 			/**
-			 * 点赞
+			 * 点赞或取消点赞
 			 */
-			like(id, likeUsers) {
-				if (this.isLike(likeUsers)) {
-					uni.showToast({
-						icon: 'none',
-						title: '点赞不能反悔哦'
+			togglelike(id, index) {
+				let likeUsers = [];
+				let likeUsersOriginal = this.dynamics[index].likeUsers;
+				if (this.isLike(likeUsersOriginal)) {
+					likeUsers = likeUsersOriginal.filter((value) => {
+						return value._openid != this.userInfo._openid;
 					})
-					return;
+				} else {
+					likeUsers = [...likeUsersOriginal, {
+						_openid: this.userInfo._openid,
+						nickName: this.userInfo.nickName
+					}]
 				}
-				likeUsers.push({
-					_openid: this.userInfo._openid,
-					nickName: this.userInfo.nickName
+				this.togglelikeState({
+					index,
+					likeUsers
 				})
-				console.log(id)
 				wx.cloud.callFunction({
 					name: 'likeDynamic',
 					data: {
 						id,
-						nickName: this.userInfo.nickName
+						likeUsers
 					}
 				}).then(res => {
-					console.log('喜欢成功', res)
+					console.log('togglelike',res)
 				})
 			},
 			/**
@@ -187,7 +191,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics', 'clearDynamics'])
+			...mapMutations(['apendDynamics', 'clearDynamics','togglelikeState'])
 		},
 		components: {
 			nxPlayer,
