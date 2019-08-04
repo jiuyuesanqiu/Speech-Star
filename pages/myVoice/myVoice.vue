@@ -61,7 +61,7 @@
 		methods: {
 			toPlay(voiceId) {
 				uni.navigateTo({
-					url: `../play/play?voiceId=${voiceId}`
+					url: `../dynamicDetail/dynamicDetail?voiceId=${voiceId}`
 				})
 			}
 		}
