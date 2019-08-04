@@ -34,6 +34,8 @@
 		mapState,
 		mapGetters
 	} from 'vuex';
+	const db = wx.cloud.database();
+	const _ = db.command
 	export default {
 		data() {
 			return {
@@ -53,15 +55,22 @@
 			}
 		},
 		onLoad() {
-			
-		},
-		computed: {
 
 		},
+		computed: {
+			...mapState(['userInfo'])
+		},
 		methods: {
+			getMyVioce() {
+				db.collection('dynamic').where({
+					_openid: this.userInfo._openid
+				}).get().then((res) => {
+					console.log(res);
+				})
+			},
 			toPlay(voiceId) {
 				uni.navigateTo({
-					url: `../dynamicDetail/dynamicDetail?voiceId=${voiceId}`
+					url: `../play/play?voiceId=${voiceId}`
 				})
 			}
 		}
