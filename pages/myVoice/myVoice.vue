@@ -103,7 +103,7 @@
 
 	.itemDate {
 		color: #999999;
-		font-size: 28upx;
+		font-size: 26upx;
 	}
 
 	.itemBottom {
@@ -112,7 +112,7 @@
 
 	.itemViewBox {
 		color: #B8B8B8;
-		font-size: 26upx;
+		font-size: 24upx;
 	}
 
 	.viewNumber {
