@@ -9,7 +9,7 @@
 
 <script>
 	import {
-		mapState,mapGetters
+		mapState,mapGetters,mapMutations
 	} from 'vuex';
 	const db = wx.cloud.database();
 	const _ = db.command
@@ -17,7 +17,8 @@
 		data() {
 			return {
 				id:'',
-				content:''
+				content:'',
+				index:-1//当前评论所在动态列表位置
 			};
 		},
 		computed:{
@@ -25,6 +26,7 @@
 		},
 		onLoad(option) {
 			this.id = option.id;
+			this.index = option.index;
 		},
 		methods:{
 			addComment(){
@@ -32,24 +34,33 @@
 					uni.navigateBack();
 					return;
 				}
-				
+				let data = {
+					user:this.userInfo,
+					content:[{
+						type:'text',
+						content:this.content
+					}]
+				}
 				wx.cloud.callFunction({
 					name:'addComment',
 					data:{
 						id:this.id,
-						user:this.userInfo,
-						content:[{
-							type:'text',
-							content:this.content
-						}]
+						...data
 					}
 				}).then(res=>{
 					console.log('评论成功',res)
 					uni.navigateBack()
+					if(this.index!=undefined){
+						console.log(134)
+						this.commentDynamic({
+							index:this.index,
+							data
+						})
+					}
 				})
-			}
-		},
-		
+			},
+			...mapMutations(['commentDynamic'])
+		}
 	}
 </script>
 

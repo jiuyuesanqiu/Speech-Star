@@ -13,11 +13,6 @@
 				"navigationBarTitleText": "上传演讲"
 			}
 		}, {
-			"path": "pages/play/play",
-			"style": {
-				"navigationBarTitleText": "演讲详情"
-			}
-		}, {
 			"path": "pages/recording/recording",
 			"style": {
 				"navigationBarTitleText": "开始演讲"
@@ -69,6 +64,14 @@
             "path" : "pages/comment/comment",
             "style" : {
 				"navigationBarBackgroundColor": "#FCFCFC"
+			}
+        }
+        ,{
+            "path" : "pages/dynamicDetail/dynamicDetail",
+            "style" : {
+				"navigationBarTitleText": "动态详情",
+				"enablePullDownRefresh": true, //下拉刷新
+				"navigationStyle":"custom"
 			}
         }
     ],

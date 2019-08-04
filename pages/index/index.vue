@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="dynamic bg-white" v-for="item in dynamics" :key="item._id">
-			<view class="user d-flex align-center">
+		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id">
+			<view class="user d-flex align-center" @tap="toDynamicDetail(item._id)">
 				<view>
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
@@ -25,9 +25,11 @@
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
-					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="like(item._id,item.likeUsers)"></text>
-					<text class="space-right cuIcon-comment" @click="toComment(item._id)"></text>
-					<text class="cuIcon-share"></text>
+					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike(item._id,index)"></text>
+					<text class="space-right cuIcon-comment" @click="toComment(item._id,index)"></text>
+					<button class="share-btn" open-type="share" :data-id="item._id" :data-share-title="getShareTitle(item.userInfo.nickName,item.title)">
+						<text class="cuIcon-share"></text>
+					</button>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
 					<text class="space-right cuIcon-like"></text>
@@ -52,12 +54,12 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="isLogin" @click="toComment(item._id)" class="noInputComment">
+			<!-- <view v-if="isLogin" @click="toComment(item._id)" class="noInputComment">
 				<text>评论</text>
 			</view>
 			<view v-else @click="loginShow=true" class="noInputComment">
 				<text>评论</text>
-			</view>
+			</view> -->
 		</view>
 		<nxLogin :show="loginShow" @success="loginShow=false" @cancel="loginShow=false"></nxLogin>
 	</view>
@@ -105,16 +107,38 @@
 			this.getNextPage();
 		},
 		computed: {
-			...mapState(['userInfo', 'dynamics','inActiveCallback']),
+			...mapState(['userInfo', 'dynamics', 'inActiveCallback']),
 			...mapGetters(['isLogin'])
+		},
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				return {
+					title: res.target.dataset.shareTitle,
+					path: `/pages/dynamicDetail/dynamicDetail?id=${res.target.dataset.id}`
+				}
+			}
 		},
 		methods: {
 			/**
+			 * 获取分享标题
+			 */
+			getShareTitle(nickName, title) {
+				return `【${nickName}】${title}`;
+			},
+			/**
+			 * 动态详情
+			 */
+			toDynamicDetail(id) {
+				uni.navigateTo({
+					url: `../dynamicDetail/dynamicDetail?id=${id}`
+				})
+			},
+			/**
 			 * 去评论页
 			 */
-			toComment(id) {
+			toComment(id, index) {
 				uni.navigateTo({
-					url: `../comment/comment?id=${id}`
+					url: `../comment/comment?id=${id}&index=${index}`
 				})
 			},
 			/**
@@ -137,29 +161,33 @@
 				});
 			},
 			/**
-			 * 点赞
+			 * 点赞或取消点赞
 			 */
-			like(id, likeUsers) {
-				if (this.isLike(likeUsers)) {
-					uni.showToast({
-						icon: 'none',
-						title: '点赞不能反悔哦'
+			togglelike(id, index) {
+				let likeUsers = [];
+				let likeUsersOriginal = this.dynamics[index].likeUsers;
+				if (this.isLike(likeUsersOriginal)) {
+					likeUsers = likeUsersOriginal.filter((value) => {
+						return value._openid != this.userInfo._openid;
 					})
-					return;
+				} else {
+					likeUsers = [...likeUsersOriginal, {
+						_openid: this.userInfo._openid,
+						nickName: this.userInfo.nickName
+					}]
 				}
-				likeUsers.push({
-					_openid: this.userInfo._openid,
-					nickName: this.userInfo.nickName
+				this.togglelikeState({
+					index,
+					likeUsers
 				})
-				console.log(id)
 				wx.cloud.callFunction({
 					name: 'likeDynamic',
 					data: {
 						id,
-						nickName: this.userInfo.nickName
+						likeUsers
 					}
 				}).then(res => {
-					console.log('喜欢成功', res)
+					console.log('togglelike', res)
 				})
 			},
 			/**
@@ -187,7 +215,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics', 'clearDynamics'])
+			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState'])
 		},
 		components: {
 			nxPlayer,
@@ -284,5 +312,16 @@
 
 	.dynamic+.dynamic {
 		margin-top: 28upx;
+	}
+
+	button.share-btn {
+		all: initial;
+
+		&:after {
+			all: initial;
+		}
+
+		font-size: 48upx;
+		color: #3A3A3A;
 	}
 </style>
