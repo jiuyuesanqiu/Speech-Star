@@ -7,7 +7,7 @@
 			<view class="flex-grow-1">
 				<text>{{title}}</text>
 			</view>
-			<text class="cuIcon-right text-gray"></text>
+			<text v-if="arrow" class="cuIcon-right text-gray"></text>
 		</view>
 	</view>
 </template>
@@ -25,6 +25,10 @@
 			border: {
 				type: Boolean,
 				value: true
+			},
+			arrow:{
+				type:Boolean,
+				value:true
 			}
 		}
 	}

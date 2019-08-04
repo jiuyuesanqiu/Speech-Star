@@ -2,20 +2,20 @@
 	<view>
 		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id">
 			<view class="user d-flex align-center" @tap="toDynamicDetail(item._id)">
-				<view>
+				<view @click="userDetail(item.userInfo._id)">
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
-				<view class="pl-2">
+				<view class="pl-2" @click="userDetail(item.userInfo._id)">
 					<view class="nickName">{{item.userInfo.nickName}}</view>
 					<view class="createTime">{{timeAgoFormat(item.createTime)}}</view>
 				</view>
 			</view>
-			<view class="intro" v-if="item.intro">
+			<view class="intro" v-if="item.intro" @tap="toDynamicDetail(item._id)">
 				<text>
 					{{item.intro}}
 				</text>
 			</view>
-			<view v-if="item.cover != defaultCover">
+			<view v-if="item.cover != defaultCover" @tap="toDynamicDetail(item._id)">
 				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
@@ -193,8 +193,10 @@
 			/**
 			 * 用户详情
 			 */
-			userDetail() {
-
+			userDetail(id) {
+				uni.navigateTo({
+					url: `../userDetail/userDetail?id=${id}`
+				});
 			},
 			onChangeActive(src) {
 				this.activeSrc = src;

@@ -74,6 +74,10 @@
 				"navigationStyle":"custom"
 			}
         }
+        ,{
+            "path" : "pages/userDetail/userDetail",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "演讲口才",
