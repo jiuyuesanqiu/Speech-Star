@@ -2,8 +2,8 @@
 	<view class="page">
 		<view class="pageBox">
 
-			<view class="d-flex voiceItem" v-for="item in voiceList" :key="item.voiceId" @tap="toPlay(item.voiceId)">
-				<view class="d-flex align-center itemNumber"></view>
+			<view class="d-flex voiceItem" v-for="(item,key,index) in voiceList" :key="item.voiceId" @tap="toPlay(item.voiceId)">
+				<view class="d-flex align-center itemNumber">{{key+1}}</view>
 				<view class="d-flex flex-column justify-between itemTop">
 					<view class="d-flex justify-between align-center">
 						<view class="itemName">{{item.voiceName}}</view>
@@ -37,8 +37,6 @@
 	export default {
 		data() {
 			return {
-				no:0,
-				
 				voiceList: [{
 					voiceId: 1,
 					voiceName: '你所谓的迷茫只不过是赚钱太少',
@@ -55,13 +53,13 @@
 			}
 		},
 		onLoad() {
-
+			
 		},
 		computed: {
 
 		},
 		methods: {
-			toPlay() {
+			toPlay(voiceId) {
 				uni.navigateTo({
 					url: `../play/play?voiceId=${voiceId}`
 				})
