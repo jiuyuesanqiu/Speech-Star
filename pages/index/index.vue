@@ -19,8 +19,8 @@
 				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID" :title="item.title"
-				 :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
+				<nxPlayer @click.native="addPlayTime(item._id,index)" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID"
+				 :title="item.title" :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
@@ -80,7 +80,9 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex';
-	const db = wx.cloud.database();
+	const db = wx.cloud.database({
+		env: 'product-yjcc'
+	});
 	const _ = db.command
 	let startPage = 0; //起始页数
 	let pageSize = 20;
@@ -91,6 +93,7 @@
 				isLoading: false, //数据是否正在加载中
 				loginShow: false,
 				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
+				playContainer:[]
 			}
 		},
 		onLoad() {
@@ -119,6 +122,29 @@
 			}
 		},
 		methods: {
+			/**
+			 * 增加播放次数
+			 */
+			addPlayTime(id,index) {
+				if(this.isPlayed(id)) return
+				this.playContainer.push(id);
+				wx.cloud.callFunction({
+					name: 'addPlayAmount',
+					data: {
+						id
+					}
+				}).then(res => {
+					console.log('增加播放次数成功');
+				})
+				
+				this.addPlayAmount(index);
+			},
+			/**
+			 * 是否播放过
+			 */
+			isPlayed(value){
+				return this.playContainer.includes(value);
+			},
 			/**
 			 * 获取分享标题
 			 */
@@ -217,7 +243,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState'])
+			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState','addPlayAmount'])
 		},
 		components: {
 			nxPlayer,

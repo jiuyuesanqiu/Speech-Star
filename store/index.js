@@ -57,6 +57,14 @@ const store = new Vuex.Store({
 		 */
 		commentDynamic(state,payload){
 			state.dynamics[payload.index].comment.push(payload.data);
+		},
+		/**
+		 * 增加播放次数
+		 */
+		addPlayAmount(state,index){
+			console.log(index)
+			console.log(state.dynamics[index])
+			state.dynamics[index].playAmount++;
 		}
 	},
 	actions: { //异步更新状态
