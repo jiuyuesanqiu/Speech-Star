@@ -76,11 +76,7 @@
 			},
 			// 格式化时间为yyyy-mm-dd
 			formatTime(timeStamp) {
-				let year = new Date(timeStamp).getFullYear();
-				let month = new Date(timeStamp).getMonth() + 1 < 10 ? "0" + (new Date(timeStamp).getMonth() + 1) : new Date(
-					timeStamp).getMonth() + 1;
-				let date = new Date(timeStamp).getDate() < 10 ? "0" + new Date(timeStamp).getDate() : new Date(timeStamp).getDate();
-				return `${year}-${month}-${date}`;
+				return util.formatDate(timeStamp);
 			},
 			// 格式化秒数
 			formatSeconds(seconds) {
