@@ -1,8 +1,7 @@
 <template>
 	<view class="page">
 		<view class="pageBox">
-			<!-- <view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id" @tap="toPlay(item._Id)"> -->
-			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id">
+			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id" @tap="toPlay(item._Id)">
 				<view class="d-flex align-center itemNumber">{{key+1}}</view>
 				<view class="d-flex flex-column justify-between itemContent">
 					<view class="d-flex justify-between align-center">
@@ -20,7 +19,7 @@
 								<view>{{formatSeconds(item.duration)}}</view>
 							</view>
 						</view>
-						<view class="more" @tap="showMore">. . .</view>
+						<view class="more" @tap.stop="showMore">. . .</view>
 					</view>
 				</view>
 			</view>
