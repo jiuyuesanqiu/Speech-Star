@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<view class="pageBox">
-			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id" @tap="toPlay(item._Id)">
+			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._id" @tap="toPlay(item._id)">
 				<view class="d-flex align-center itemNumber">{{key+1}}</view>
 				<view class="d-flex flex-column justify-between itemContent">
 					<view class="d-flex justify-between align-center">
@@ -19,7 +19,7 @@
 								<view>{{formatSeconds(item.duration)}}</view>
 							</view>
 						</view>
-						<view class="more" @tap.stop="showMore">. . .</view>
+						<text class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore"></text>
 					</view>
 				</view>
 			</view>
@@ -27,7 +27,7 @@
 		<view v-show='editShow' class="moreCover">
 			<view class="moreBox">
 				<view class="moreOperate">
-					<view class="d-flex align-center editBox">
+					<view class="d-flex align-center editBox" @tap="toPublish">
 						<text class="editIcon"></text>
 						<text>编辑</text>
 					</view>
@@ -87,7 +87,13 @@
 			// 去播放页
 			toPlay(voiceId) {
 				uni.navigateTo({
-					url: `../dynamicDetail/dynamicDetail?voiceId=${voiceId}`
+					url: `../dynamicDetail/dynamicDetail?id=${voiceId}`
+				})
+			},
+			// 去编辑发布页
+			toPublish(voiceId) {
+				uni.navigateTo({
+					url: `../publish/publish?id=${voiceId}`
 				})
 			},
 			// 显示更多操作
@@ -131,7 +137,7 @@
 
 				.itemContent {
 					width: 84%;
-					margin: 28upx 0;
+					margin: 28upx 0 0;
 
 					.itemName {
 						color: #101010;
@@ -145,11 +151,10 @@
 					}
 
 					.itemBottom {
-						margin-top: 22upx;
-
 						.itemViewBox {
 							color: #B8B8B8;
 							font-size: 24upx;
+							margin: 22upx 0 28upx;
 
 							.viewNumber {
 								padding-right: 22upx;
@@ -174,9 +179,8 @@
 
 						.more {
 							color: #666666;
-							font-weight: bold;
 							width: 48upx;
-							text-align: center;
+							padding-bottom:10upx;
 						}
 					}
 				}
@@ -184,7 +188,7 @@
 		}
 
 		.moreCover {
-			background: rgba(0, 0, 0, 0.66);
+			background: rgba(0, 0, 0, 0.7);
 			width: 100vw;
 			height: 100vh;
 			position: absolute;
@@ -196,7 +200,7 @@
 				position: absolute;
 				bottom: 0;
 				border-radius: 20upx 20upx 0 0;
-				color: #414141;
+				color: #101010;
 
 				.moreOperate {
 					padding: 62upx 40upx;
@@ -224,9 +228,10 @@
 				}
 
 				.moreClose {
-					border-top: 1px solid #b4b4b4;
+					color: #333333;
+					border-top: 1px solid #A9A9A9;
 					padding: 32upx 0 96upx;
-					font-size: 30upx;
+					font-size: 32upx;
 					text-align: center;
 				}
 			}
