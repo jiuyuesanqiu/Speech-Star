@@ -1,10 +1,10 @@
 <template>
 	<view class="page">
 		<view class="pageBox">
-
+			
 			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id" @tap="toPlay(item._Id)">
 				<view class="d-flex align-center itemNumber">{{key+1}}</view>
-				<view class="d-flex flex-column justify-between itemTop">
+				<view class="d-flex flex-column justify-between itemContent">
 					<view class="d-flex justify-between align-center">
 						<view class="itemName">{{item.title}}</view>
 						<view class="itemDate">{{formatTime(item.createTime)}}</view>
@@ -12,11 +12,11 @@
 					<view class="d-flex justify-between itemBottom">
 						<view class="d-flex itemViewBox">
 							<view class="d-flex viewNumber">
-								<image src="../../static/playNumber.png" mode=""></image>
+								<text class="viewNumberIcon"></text>
 								<view>{{item.playAmount}}</view>
 							</view>
 							<view class="d-flex itemTime">
-								<image src="../../static/time.png" mode=""></image>
+								<text class="itemTimeIcon"></text>
 								<view>{{formatSeconds(item.duration)}}</view>
 							</view>
 						</view>
@@ -66,7 +66,6 @@
 							duration: 1500,
 						});
 					}
-
 				})
 			},
 			// 去播放页
@@ -87,7 +86,6 @@
 			formatSeconds(seconds) {
 				return util.formatDuration(seconds);
 			},
-
 		}
 	}
 </script>
@@ -97,68 +95,60 @@
 		background-color: #FFFFFF;
 		height: 100Vh;
 		width: 100vw;
-	}
-
-	.pageBox {
-		margin-left: 30upx;
-	}
-
-	.voiceItem {
-		border-bottom: 1px solid #E8E8E8;
-		padding-left: 28upx;
-	}
-
-	.itemNumber {
-		color: #999999;
-		font-size: 32upx;
-		margin-right: 42upx;
-	}
-
-	.itemTop {
-		width: 84%;
-		margin: 28upx 0;
-	}
-
-	.itemName {
-		color: #101010;
-		font-size: 30upx;
-		width: 76%;
-	}
-
-	.itemDate {
-		color: #999999;
-		font-size: 26upx;
-	}
-
-	.itemBottom {
-		margin-top: 22upx;
-	}
-
-	.itemViewBox {
-		color: #B8B8B8;
-		font-size: 24upx;
-	}
-
-	.viewNumber {
-		padding-right: 22upx;
-	}
-
-	.viewNumber>image {
-		width: 30upx;
-		height: 30upx;
-		margin-right: 6upx;
-	}
-
-	.itemTime>image {
-		width: 26upx;
-		height: 26upx;
-		margin-right: 6upx;
-	}
-
-	.more {
-		color: #666666;
-		font-weight: bold;
-		width: 48upx;
-		text-align: center;
+		.pageBox {
+			margin-left: 30upx;
+			.voiceItem {
+				border-bottom: 1px solid #E8E8E8;
+				padding-left: 28upx;
+				.itemNumber {
+					color: #999999;
+					font-size: 32upx;
+					margin-right: 42upx;
+				}
+				.itemContent {
+					width: 84%;
+					margin: 28upx 0;
+					.itemName {
+						color: #101010;
+						font-size: 30upx;
+						width: 76%;
+					}
+					.itemDate {
+						color: #999999;
+						font-size: 26upx;
+					}
+					.itemBottom {
+						margin-top: 22upx;
+						.itemViewBox {
+							color: #B8B8B8;
+							font-size: 24upx;
+							.viewNumber {
+								padding-right: 22upx;
+								.viewNumberIcon{
+									width: 30upx;
+									height: 30upx;
+									margin-right: 6upx;
+									background: url('../../static/playNumber.png') no-repeat top left;
+									background-size: 30upx 30upx;
+								}
+							}
+							.itemTimeIcon{
+								width: 26upx;
+								height: 26upx;
+								margin-right: 6upx;
+								background: url('../../static/time.png') no-repeat top left;
+								background-size: 26upx 26upx;
+							}
+						}
+						.more {
+							color: #666666;
+							font-weight: bold;
+							width: 48upx;
+							text-align: center;
+						}
+					}
+				}
+			}
+		}
 	}
 </style>
