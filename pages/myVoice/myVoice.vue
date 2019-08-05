@@ -1,8 +1,8 @@
 <template>
 	<view class="page">
 		<view class="pageBox">
-			
-			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id" @tap="toPlay(item._Id)">
+			<!-- <view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id" @tap="toPlay(item._Id)"> -->
+			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._Id">
 				<view class="d-flex align-center itemNumber">{{key+1}}</view>
 				<view class="d-flex flex-column justify-between itemContent">
 					<view class="d-flex justify-between align-center">
@@ -20,11 +20,27 @@
 								<view>{{formatSeconds(item.duration)}}</view>
 							</view>
 						</view>
-						<view class="more">. . .</view>
+						<view class="more" @tap="showMore">. . .</view>
 					</view>
 				</view>
 			</view>
-
+		</view>
+		<view v-show='editShow' class="moreCover">
+			<view class="moreBox">
+				<view class="moreOperate">
+					<view class="d-flex align-center editBox">
+						<text class="editIcon"></text>
+						<text>编辑</text>
+					</view>
+					<view class="d-flex align-center">
+						<text class="deleteIcon"></text>
+						<text>删除</text>
+					</view>
+				</view>
+				<view @tap="closeMore" class="moreClose">
+					<text>关闭</text>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -42,6 +58,7 @@
 		data() {
 			return {
 				voiceList: '',
+				editShow: false,
 			}
 		},
 		onLoad() {
@@ -74,6 +91,14 @@
 					url: `../dynamicDetail/dynamicDetail?voiceId=${voiceId}`
 				})
 			},
+			// 显示更多操作
+			showMore() {
+				this.editShow = true;
+			},
+			// 关闭更多操作
+			closeMore() {
+				this.editShow = false;
+			},
 			// 格式化时间为yyyy-mm-dd
 			formatDate(timeStamp) {
 				return util.formatDate(timeStamp);
@@ -91,36 +116,46 @@
 		background-color: #FFFFFF;
 		height: 100Vh;
 		width: 100vw;
+
 		.pageBox {
 			margin-left: 30upx;
+
 			.voiceItem {
 				border-bottom: 1px solid #E8E8E8;
 				padding-left: 28upx;
+
 				.itemNumber {
 					color: #999999;
 					font-size: 32upx;
 					margin-right: 42upx;
 				}
+
 				.itemContent {
 					width: 84%;
 					margin: 28upx 0;
+
 					.itemName {
 						color: #101010;
 						font-size: 30upx;
 						width: 76%;
 					}
+
 					.itemDate {
 						color: #999999;
 						font-size: 26upx;
 					}
+
 					.itemBottom {
 						margin-top: 22upx;
+
 						.itemViewBox {
 							color: #B8B8B8;
 							font-size: 24upx;
+
 							.viewNumber {
 								padding-right: 22upx;
-								.viewNumberIcon{
+
+								.viewNumberIcon {
 									width: 30upx;
 									height: 30upx;
 									margin-right: 6upx;
@@ -128,7 +163,8 @@
 									background-size: 30upx 30upx;
 								}
 							}
-							.itemTimeIcon{
+
+							.itemTimeIcon {
 								width: 26upx;
 								height: 26upx;
 								margin-right: 6upx;
@@ -136,6 +172,7 @@
 								background-size: 26upx 26upx;
 							}
 						}
+
 						.more {
 							color: #666666;
 							font-weight: bold;
@@ -143,6 +180,55 @@
 							text-align: center;
 						}
 					}
+				}
+			}
+		}
+
+		.moreCover {
+			background: rgba(0, 0, 0, 0.66);
+			width: 100vw;
+			height: 100vh;
+			position: absolute;
+			top: 0;
+
+			.moreBox {
+				background-color: #D5D5D5;
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				border-radius: 20upx 20upx 0 0;
+				color: #414141;
+
+				.moreOperate {
+					padding: 62upx 40upx;
+					font-size: 28upx;
+
+					.editBox {
+						margin-bottom: 62upx;
+
+						.editIcon {
+							width: 40upx;
+							height: 40upx;
+							background: url('../../static/edit.png') no-repeat top left;
+							background-size: 40upx 40upx;
+							margin-right: 60upx;
+						}
+					}
+
+					.deleteIcon {
+						width: 40upx;
+						height: 40upx;
+						background: url('../../static/delete.png') no-repeat top left;
+						background-size: 40upx 40upx;
+						margin-right: 60upx;
+					}
+				}
+
+				.moreClose {
+					border-top: 1px solid #b4b4b4;
+					padding: 32upx 0 96upx;
+					font-size: 30upx;
+					text-align: center;
 				}
 			}
 		}
