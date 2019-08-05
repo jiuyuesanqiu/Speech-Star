@@ -7,7 +7,7 @@
 				<view class="d-flex flex-column justify-between itemContent">
 					<view class="d-flex justify-between align-center">
 						<view class="itemName">{{item.title}}</view>
-						<view class="itemDate">{{formatTime(item.createTime)}}</view>
+						<view class="itemDate">{{formatDate(item.createTime)}}</view>
 					</view>
 					<view class="d-flex justify-between itemBottom">
 						<view class="d-flex itemViewBox">
@@ -75,7 +75,7 @@
 				})
 			},
 			// 格式化时间为yyyy-mm-dd
-			formatTime(timeStamp) {
+			formatDate(timeStamp) {
 				return util.formatDate(timeStamp);
 			},
 			// 格式化秒数
