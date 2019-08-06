@@ -61,8 +61,7 @@
 		},
 		"usingComponents": true,
 		"cloudfunctionRoot": "static/cloudfunctions/",
-		"requiredBackgroundModes": ["audio"],
-		"style": "v2"
+		"requiredBackgroundModes": ["audio"]
 	},
 	"mp-alipay": {
 		"usingComponents": true

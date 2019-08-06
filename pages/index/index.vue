@@ -39,11 +39,11 @@
 			</view>
 			<view v-if="item.likeUsers.length!=0" class="likenum border-top">
 				<text class="cuIcon-like"></text>
-				<text v-for="(likeUser,index) in item.likeUsers" :key="index" @click="userDetail(likeUser._openid)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
+				<text @click="userDetail(likeUser.userId)" v-for="(likeUser,index) in item.likeUsers" :key="index" >{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
 			</view>
 			<view>
 				<view class="my-1 d-flex" v-for="(comment,index) in item.comment" :key="index">
-					<view>
+					<view @click="userDetail(comment.user._id)">
 						<text>{{comment.user.nickName}}：</text>
 					</view>
 					<view v-for="(content,index) in comment.content" :key="index">
@@ -194,11 +194,11 @@
 				let likeUsersOriginal = this.dynamics[index].likeUsers;
 				if (this.isLike(likeUsersOriginal)) {
 					likeUsers = likeUsersOriginal.filter((value) => {
-						return value._openid != this.userInfo._openid;
+						return value.userId != this.userInfo._id;
 					})
 				} else {
 					likeUsers = [...likeUsersOriginal, {
-						_openid: this.userInfo._openid,
+						userId: this.userInfo._id,
 						nickName: this.userInfo.nickName
 					}]
 				}
@@ -220,6 +220,12 @@
 			 * 用户详情
 			 */
 			userDetail(id) {
+				if(id==this.userInfo._id){
+					uni.switchTab({
+						url:'../my/my'
+					})
+					return;
+				}
 				uni.navigateTo({
 					url: `../userDetail/userDetail?id=${id}`
 				});

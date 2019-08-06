@@ -4,7 +4,7 @@
 			<block slot="content">动态详情</block>
 		</cu-custom>
 		<view class="dynamic bg-white mt-2">
-			<view class="user d-flex align-center">
+			<view @click="userDetail(dynamic.userInfo._id)" class="user d-flex align-center">
 				<view>
 					<image :src="dynamic.userInfo.avatarUrl" class="avatar"></image>
 				</view>
@@ -113,6 +113,20 @@
 			this.loadData();
 		},
 		methods: {
+			/**
+			 * 用户详情
+			 */
+			userDetail(id) {
+				if(id==this.userInfo._id){
+					uni.switchTab({
+						url:'../my/my'
+					})
+					return;
+				}
+				uni.navigateTo({
+					url: `../userDetail/userDetail?id=${id}`
+				});
+			},
 			goHome(){
 				uni.switchTab({
 					url:'../index/index'
@@ -122,11 +136,11 @@
 				let likeUsers = this.dynamic.likeUsers;
 				if (this.isLike(likeUsers)) {
 					likeUsers = likeUsers.filter((value) => {
-						return value._openid != this.userInfo._openid;
+						return value.userId != this.userInfo._id;
 					})
 				} else {
 					likeUsers = [...likeUsers, {
-						_openid: this.userInfo._openid,
+						userId: this.userInfo._id,
 						nickName: this.userInfo.nickName
 					}]
 				}
@@ -147,9 +161,6 @@
 					this.dynamic = res.data;
 					wx.stopPullDownRefresh();
 				})
-			},
-			userDetail() {
-
 			},
 			/**
 			 * 去评论页
