@@ -4,7 +4,7 @@
 			<block slot="content">动态详情</block>
 		</cu-custom>
 		<view class="dynamic bg-white mt-2">
-			<view @click="userDetail(dynamic.userInfo._id)" class="user d-flex align-center">
+			<view class="user d-flex align-center" @click="userDetail(dynamic.userInfo._id)">
 				<view>
 					<image :src="dynamic.userInfo.avatarUrl" class="avatar"></image>
 				</view>
@@ -30,7 +30,9 @@
 				<view v-if="isLogin" class="operation">
 					<text class="space-right" :class="isLike(dynamic.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike"></text>
 					<text class="space-right cuIcon-comment" @click="toComment(dynamic._id)"></text>
-					<text class="cuIcon-share"></text>
+					<button class="share-btn" open-type="share" :data-id="item._id" :data-share-title="getShareTitle(userInfo.nickName,dynamic.title)">
+						<text class="cuIcon-share"></text>
+					</button>
 				</view>
 				<view v-else @click="loginShow=true" class="operation">
 					<text class="space-right cuIcon-like"></text>
@@ -112,7 +114,21 @@
 		onPullDownRefresh() {
 			this.loadData();
 		},
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				return {
+					title: res.target.dataset.shareTitle,
+					path: `/pages/dynamicDetail/dynamicDetail?id=${res.target.dataset.id}`
+				}
+			}
+		},
 		methods: {
+			/**
+			 * 获取分享标题
+			 */
+			getShareTitle(nickName, title) {
+				return `【${nickName}】${title}`;
+			},
 			/**
 			 * 用户详情
 			 */
@@ -172,7 +188,7 @@
 			},
 			isLike(arr) {
 				return arr.some((value) => {
-					return value._openid == this.userInfo._openid;
+					return value.userId == this.userInfo._id;
 				});
 			},
 			/**
@@ -278,5 +294,15 @@
 
 	.dynamic+.dynamic {
 		margin-top: 28upx;
+	}
+	button.share-btn {
+		all: initial;
+	
+		&:after {
+			all: initial;
+		}
+	
+		font-size: 48upx;
+		color: #3A3A3A;
 	}
 </style>

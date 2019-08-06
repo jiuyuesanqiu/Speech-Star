@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id">
-			<view class="user d-flex align-center" @tap="toDynamicDetail(item._id)">
-				<view @click="userDetail(item.userInfo._id)">
+		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id" @tap.stop="toDynamicDetail(item._id)">
+			<view class="user d-flex align-center" >
+				<view>
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
 				<view class="pl-2" @click="userDetail(item.userInfo._id)">
@@ -10,12 +10,12 @@
 					<view class="createTime">{{timeAgoFormat(item.createTime)}}</view>
 				</view>
 			</view>
-			<view class="intro" v-if="item.intro" @tap="toDynamicDetail(item._id)">
+			<view class="intro" v-if="item.intro">
 				<text>
 					{{item.intro}}
 				</text>
 			</view>
-			<view v-if="item.cover != defaultCover" @tap="toDynamicDetail(item._id)">
+			<view v-if="item.cover != defaultCover">
 				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
