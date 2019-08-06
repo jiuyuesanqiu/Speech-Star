@@ -24,7 +24,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-show='editShow' class="moreCover">
+		<view class="moreCover" :style="{top:(editShow==true?'0':'100%')}">
 			<view class="moreBox">
 				<view class="moreOperate">
 					<view class="d-flex align-center editBox" @tap="toPublish">
@@ -194,6 +194,7 @@
 			height: 100vh;
 			position: absolute;
 			top: 0;
+			transition: top 0.3s;
 
 			.moreBox {
 				background-color: #D5D5D5;
