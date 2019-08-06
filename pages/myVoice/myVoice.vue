@@ -24,8 +24,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="moreCover" :style="{top:(editShow==true?'0':'100%')}">
-			<view class="moreBox">
+		<view class="moreCover" :style="{top:(coverShow==true?'0':'100%')}">
+			<view class="moreBox" :style="{bottom:(editShow==true?'0':'-40%')}">
 				<view class="moreOperate">
 					<view class="d-flex align-center editBox" @tap="toPublish">
 						<text class="editIcon"></text>
@@ -57,7 +57,8 @@
 		data() {
 			return {
 				voiceList: '',
-				editShow: false,
+				coverShow: false,
+				editShow:false,
 			}
 		},
 		onLoad() {
@@ -99,11 +100,16 @@
 			},
 			// 显示更多操作
 			showMore() {
+				this.coverShow = true;
 				this.editShow = true;
 			},
 			// 关闭更多操作
 			closeMore() {
-				this.editShow = false;
+				let that = this;
+				that.editShow = false;
+				setTimeout(function(){
+					that.coverShow = false;
+				},250);
 			},
 			// 格式化时间为yyyy-mm-dd
 			formatDate(timeStamp) {
@@ -193,8 +199,6 @@
 			width: 100vw;
 			height: 100vh;
 			position: absolute;
-			top: 0;
-			transition: top 0.3s;
 
 			.moreBox {
 				background-color: #D5D5D5;
@@ -203,6 +207,7 @@
 				bottom: 0;
 				border-radius: 20upx 20upx 0 0;
 				color: #101010;
+				transition: bottom 0.3s;
 
 				.moreOperate {
 					padding: 62upx 40upx;
