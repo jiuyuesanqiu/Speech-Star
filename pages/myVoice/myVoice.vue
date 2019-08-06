@@ -199,7 +199,6 @@
 			width: 100vw;
 			height: 100vh;
 			position: absolute;
-			z-index: 0;
 
 			.moreBox {
 				background-color: #D5D5D5;
@@ -209,7 +208,6 @@
 				border-radius: 20upx 20upx 0 0;
 				color: #101010;
 				transition: bottom 0.3s;
-				z-index: 11;
 
 				.moreOperate {
 					padding: 62upx 40upx;
