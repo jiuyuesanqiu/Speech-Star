@@ -105,10 +105,10 @@
 			},
 			// 关闭更多操作
 			closeMore() {
-				let that = this;
-				that.editShow = false;
-				setTimeout(function(){
-					that.coverShow = false;
+				this.editShow = false;
+				// 这里用箭头函数使setTimeout指向当前对象
+				setTimeout(()=>{
+					this.coverShow = false;
 				},250);
 			},
 			// 格式化时间为yyyy-mm-dd
