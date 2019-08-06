@@ -94,7 +94,8 @@
 			toPublish(voiceId) {
 				uni.navigateTo({
 					url: `../publish/publish?id=${voiceId}`
-				})
+				}),
+				this.closeMore();
 			},
 			// 显示更多操作
 			showMore() {
@@ -108,7 +109,7 @@
 			formatDate(timeStamp) {
 				return util.formatDate(timeStamp);
 			},
-			// 格式化秒数
+			// 格式化秒数为 mm:ss
 			formatSeconds(seconds) {
 				return util.formatDuration(seconds);
 			},
