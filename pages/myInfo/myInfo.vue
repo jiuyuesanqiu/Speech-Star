@@ -75,7 +75,6 @@
 		data() {
 			return {
 				genderList: ['男', '女'],
-				genderNum: 0
 			}
 		},
 		computed: {
