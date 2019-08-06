@@ -24,10 +24,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="moreCover" :style="{top:(coverShow==true?'0':'100%')}">
-			<view class="moreBox" :style="{bottom:(editShow==true?'0':'-40%')}">
+		<view class="moreCover" @tap="closeMore" :style="{top:(coverShow==true?'0':'100%')}">
+			<view class="moreBox" @tap.stop :style="{bottom:(editShow==true?'0':'-40%')}">
 				<view class="moreOperate">
-					<view class="d-flex align-center editBox" @tap="toPublish">
+					<view class="d-flex align-center editBox" @tap.stop="toPublish">
 						<text class="editIcon"></text>
 						<text>编辑</text>
 					</view>
@@ -199,6 +199,7 @@
 			width: 100vw;
 			height: 100vh;
 			position: absolute;
+			z-index: 0;
 
 			.moreBox {
 				background-color: #D5D5D5;
@@ -208,6 +209,7 @@
 				border-radius: 20upx 20upx 0 0;
 				color: #101010;
 				transition: bottom 0.3s;
+				z-index: 11;
 
 				.moreOperate {
 					padding: 62upx 40upx;
