@@ -19,7 +19,7 @@
 								<view>{{formatSeconds(item.duration)}}</view>
 							</view>
 						</view>
-						<text class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore"></text>
+						<text class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore(item._id)"></text>
 					</view>
 				</view>
 			</view>
@@ -31,7 +31,7 @@
 						<text class="editIcon"></text>
 						<text>编辑</text>
 					</view>
-					<view class="d-flex align-center">
+					<view class="d-flex align-center" @tap.stop="deleteDynamic(item._id)">
 						<text class="deleteIcon"></text>
 						<text>删除</text>
 					</view>
@@ -58,7 +58,8 @@
 			return {
 				voiceList: '',
 				coverShow: false,
-				editShow:false,
+				editShow: false,
+				
 			}
 		},
 		onLoad() {
@@ -68,6 +69,29 @@
 			...mapState(['userInfo']),
 		},
 		methods: {
+			/**
+			 * 删除动态
+			 */
+			deleteDynamic() {
+				uni.showModal({
+					title: '提示',
+					content: '确认删除此条音频吗？',
+					success: function(res) {
+						if (res.confirm) {
+							wx.cloud.callFunction({
+								name: 'deleteDynamic',
+								data: {
+									id:this.activeId
+								}
+							}).then(res => {
+								console.log('删除成功');
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				})
+			},
 			// 根据openId获取我的作品列表
 			getMyVioce() {
 				db.collection('dynamic').where({
@@ -94,22 +118,23 @@
 			// 去编辑发布页
 			toPublish(voiceId) {
 				uni.navigateTo({
-					url: `../publish/publish?id=${voiceId}`
-				}),
-				this.closeMore();
+						url: `../publish/publish?id=${voiceId}`
+					}),
+					this.closeMore();
 			},
 			// 显示更多操作
-			showMore() {
+			showMore(activeId) {
 				this.coverShow = true;
 				this.editShow = true;
+				this.activeId = activeId;
 			},
 			// 关闭更多操作
 			closeMore() {
 				this.editShow = false;
 				// 这里用箭头函数使setTimeout指向当前对象
-				setTimeout(()=>{
+				setTimeout(() => {
 					this.coverShow = false;
-				},250);
+				}, 250);
 			},
 			// 格式化时间为yyyy-mm-dd
 			formatDate(timeStamp) {
@@ -187,7 +212,7 @@
 						.more {
 							color: #666666;
 							width: 48upx;
-							padding-bottom:10upx;
+							padding-bottom: 10upx;
 						}
 					}
 				}
