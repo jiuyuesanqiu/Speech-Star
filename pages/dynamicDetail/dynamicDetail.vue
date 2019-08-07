@@ -22,7 +22,7 @@
 				<image class="cover" :src="dynamic.cover" mode="widthFix" @click="previewImage(dynamic.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @changeActive="onChangeActive" :activeSrc="activeSrc" :src="dynamic.audioFileID" :title="dynamic.title"
+				<nxPlayer @click.native="addPlayTime(dynamic._id)" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="dynamic.audioFileID" :title="dynamic.title"
 				 :duration="dynamic.duration" :coverImgUrl="dynamic.cover" :singer="dynamic.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
@@ -91,7 +91,8 @@
 				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
 				id: '',
 				showHome: false, //主页按钮是否显示
-				showBack: true
+				showBack: true,
+				playContainer:[]
 			};
 		},
 		computed: {
@@ -123,6 +124,28 @@
 			}
 		},
 		methods: {
+			/**
+			 * 增加播放次数
+			 */
+			addPlayTime(id) {
+				if(this.isPlayed(id)) return
+				this.playContainer.push(id);
+				wx.cloud.callFunction({
+					name: 'addPlayAmount',
+					data: {
+						id
+					}
+				}).then(res => {
+					console.log('增加播放次数成功');
+				})
+				this.dynamic.playAmount++;
+			},
+			/**
+			 * 是否播放过
+			 */
+			isPlayed(value){
+				return this.playContainer.includes(value);
+			},
 			/**
 			 * 获取分享标题
 			 */

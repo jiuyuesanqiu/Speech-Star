@@ -158,8 +158,10 @@
 <style lang="scss" scoped>
 	.page {
 		background-color: #FFFFFF;
-		height: 100Vh;
-		width: 100vw;
+		height: 100%;
+		width: 100%;
+		position: relative;
+		overflow: hidden;
 
 		.pageBox {
 			margin-left: 30upx;
