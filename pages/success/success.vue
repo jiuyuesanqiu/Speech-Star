@@ -12,7 +12,7 @@
 			</view>
 			<nxButton plain round @click.native="goHome()">完成</nxButton>
 		</view>
-		<view class="d-flex justify-center mt-5">
+		<view class="d-flex justify-center mt-5" @click="toDynamicDetail">
 			<view class="content d-flex">
 				<view>
 					<image class="cover" :src="coverSrc"></image>
@@ -38,7 +38,8 @@
 			return {
 				coverSrc:'',
 				title:'',
-				duration:''
+				duration:'',
+				id:''
 			}
 		},
 		onShareAppMessage() {
@@ -57,12 +58,18 @@
 				uni.switchTab({
 					url: '../index/index'
 				})
+			},
+			toDynamicDetail(){
+				uni.redirectTo({
+					url:`../dynamicDetail/dynamicDetail?id=${this.id}`
+				})
 			}
 		},
 		onLoad(option) {
 			this.coverSrc = option.coverSrc;
 			this.title = option.title;
 			this.duration = option.duration;
+			this.id = option.id;
 		},
 		computed:{
 			durationText(){

@@ -183,12 +183,12 @@
 						userInfo: this.userInfo
 					}
 				}).then(res => {
-					console.log("发布动态成功")
+					console.log("发布动态成功",res)
 					this.progress = 100;
 					this.loading = false;
 					this.progress = 0;
 					uni.reLaunch({
-						url: `../success/success?coverSrc=${coverFileID}&title=${this.title}&duration=${this.duration}`
+						url: `../success/success?coverSrc=${coverFileID}&title=${this.title}&duration=${this.duration}&id=${res._id}`
 					})
 				})
 			}
