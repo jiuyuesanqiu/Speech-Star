@@ -56,7 +56,7 @@
 		methods: {
 			goHome() {
 				uni.switchTab({
-					url: '../index/index'
+					url: '../index/index?refresh=true'
 				})
 			},
 			toDynamicDetail(){

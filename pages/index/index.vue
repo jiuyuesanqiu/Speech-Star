@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id" @click.stop="toDynamicDetail(item._id)">
-			<view class="user d-flex align-center" >
+			<view class="user d-flex align-center">
 				<view>
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
@@ -19,8 +19,9 @@
 				<image class="cover" :src="item.cover" mode="widthFix" @click.stop="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @click.stop.native="addPlayTime(item._id,index)" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID"
-				 :title="item.title" :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
+				<nxPlayer @click.stop.native="addPlayTime(item._id,index)" @changeActive="onChangeActive" :activeSrc="activeSrc"
+				 :src="item.audioFileID" :title="item.title" :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName"
+				 isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
@@ -95,13 +96,22 @@
 				isLoading: false, //数据是否正在加载中
 				loginShow: false,
 				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
-				playContainer:[]
+				playContainer: []
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			uni.showLoading({
+				title: '加载中',
+			});
+			if (option.refresh) {
+				this.clearDynamics();
+			}
 			startPage = 0;
 			this.getNextPage();
 			wx.showShareMenu();
+		},
+		onshow() {
+
 		},
 		//下拉刷新
 		onPullDownRefresh() {
@@ -127,8 +137,8 @@
 			/**
 			 * 增加播放次数
 			 */
-			addPlayTime(id,index) {
-				if(this.isPlayed(id)) return
+			addPlayTime(id, index) {
+				if (this.isPlayed(id)) return
 				this.playContainer.push(id);
 				wx.cloud.callFunction({
 					name: 'addPlayAmount',
@@ -138,13 +148,13 @@
 				}).then(res => {
 					console.log('增加播放次数成功');
 				})
-				
+
 				this.addPlayAmount(index);
 			},
 			/**
 			 * 是否播放过
 			 */
-			isPlayed(value){
+			isPlayed(value) {
 				return this.playContainer.includes(value);
 			},
 			/**
@@ -222,9 +232,9 @@
 			 * 用户详情
 			 */
 			userDetail(id) {
-				if(id==this.userInfo._id){
+				if (id == this.userInfo._id) {
 					uni.switchTab({
-						url:'../my/my'
+						url: '../my/my'
 					})
 					return;
 				}
@@ -241,6 +251,7 @@
 				const self = this;
 				//获取演讲数据,倒序排列
 				db.collection('dynamic').orderBy('createTime', 'desc').skip(startPage * pageSize).limit(pageSize).get().then(res => {
+					uni.hideLoading();
 					this.apendDynamics(res.data);
 					startPage += 20;
 					uni.stopPullDownRefresh();
@@ -251,7 +262,7 @@
 					this.isLoading = false;
 				})
 			},
-			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState','addPlayAmount'])
+			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState', 'addPlayAmount'])
 		},
 		components: {
 			nxPlayer,
