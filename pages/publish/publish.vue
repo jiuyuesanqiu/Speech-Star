@@ -26,7 +26,7 @@
 				</view>
 			</view>
 			<view class="upload">
-				<nxButton @click.native="publish" :loading = "loading">上传声音</nxButton>
+				<nxButton @click.native="publish" :loading="loading">{{isEdit?'保存修改':'上传声音'}}</nxButton>
 			</view>
 		</view>
 
@@ -49,12 +49,27 @@
 				progress: 0, //上传进度
 				loading: false, //是否加载中
 				coverPath: '', //封面图片临时路径
+				isEdit: false,
+				dynamicId: 0
 			}
 		},
 		onLoad(option) {
 			let file = uni.getStorageSync('file');
 			this.tempSrc = file.tempSrc;
 			this.duration = file.duration;
+			if (option.id) {
+				uni.setNavigationBarTitle({
+					title: '编辑作品'
+				})
+				db.collection('dynamic').doc(option.id).get().then((res) => {
+					this.title = res.data.title;
+					this.intro = res.data.intro;
+					this.coverPath = res.data.cover;
+					this.isEdit = true;
+					this.dynamicId = option.id;
+					this.originalCover = res.data.cover;
+				})
+			}
 		},
 		computed: {
 			...mapState(['userInfo'])
@@ -81,6 +96,26 @@
 				}
 				if (this.loading) return;
 				this.loading = true;
+				if (this.isEdit) {
+					//判断封面是否更改
+					if (this.coverPath !== this.originalCover) {
+						let coverCloudPath = this.formatCloudPath(this.coverPath, 'img/cover/');
+						//上传封面图
+						this.originalCover = await this.uploadFile(coverCloudPath, this.coverPath);
+					}
+					db.collection('dynamic').doc(this.dynamicId).update({
+						data: {
+							title: this.title,
+							intro: this.intro,
+							cover: this.originalCover
+						}
+					}).then(res=>{
+						console.log("修改作品成功")
+						this.loading = false;
+						uni.navigateBack();
+					});
+					return;
+				}
 				let audioCloudPath = this.formatCloudPath(this.tempSrc, 'voice/speech/');
 				//上传音频
 				let audioFileID = await this.uploadFile(audioCloudPath, this.tempSrc, (res) => {
@@ -92,8 +127,8 @@
 					//上传封面图
 					let coverFileID = await this.uploadFile(coverCloudPath, this.coverPath);
 					//发布动态
-					this.publishDynamic(audioFileID,coverFileID);
-				}else{
+					this.publishDynamic(audioFileID, coverFileID);
+				} else {
 					this.publishDynamic(audioFileID)
 				}
 			},
@@ -132,7 +167,7 @@
 			 * @param {Object} coverFileID
 			 * @param {Object} audioFileID
 			 */
-			publishDynamic(audioFileID,coverFileID='cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png') {
+			publishDynamic(audioFileID, coverFileID = 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png') {
 				//上传成功后，保存文件id到数据库
 				db.collection('dynamic').add({
 					data: {

@@ -62,7 +62,7 @@
 				activeId: ''
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.getMyVioce();
 		},
 		computed: {
@@ -87,7 +87,7 @@
 							}).then(res => {
 								console.log('删除成功');
 								uni.showToast({
-									title:'删除成功'
+									title: '删除成功'
 								})
 								self.closeMore();
 								self.getMyVioce();
@@ -117,16 +117,17 @@
 			},
 			// 去播放页
 			toPlay(voiceId) {
+				console.log(voiceId)
 				uni.navigateTo({
 					url: `../dynamicDetail/dynamicDetail?id=${voiceId}`
 				})
 			},
 			// 去编辑发布页
-			toPublish(voiceId) {
+			toPublish() {
 				uni.navigateTo({
-						url: `../publish/publish?id=${voiceId}`
+						url: `../publish/publish?id=${this.activeId}`
 					}),
-					this.closeMore();
+				this.closeMore();
 			},
 			// 显示更多操作
 			showMore(activeId) {
