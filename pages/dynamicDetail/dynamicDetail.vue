@@ -30,7 +30,7 @@
 				<view v-if="isLogin" class="operation">
 					<text class="space-right" :class="isLike(dynamic.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike"></text>
 					<text class="space-right cuIcon-comment" @click="toComment(dynamic._id)"></text>
-					<button class="share-btn" open-type="share" :data-id="item._id" :data-share-title="getShareTitle(userInfo.nickName,dynamic.title)">
+					<button class="share-btn" open-type="share" :data-id="dynamic._id" :data-share-title="getShareTitle(userInfo.nickName,dynamic.title)">
 						<text class="cuIcon-share"></text>
 					</button>
 				</view>
