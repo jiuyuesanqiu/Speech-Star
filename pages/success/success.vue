@@ -43,14 +43,9 @@
 			}
 		},
 		onShareAppMessage() {
-			let item = uni.getStorageSync('parameter');
 			return {
-				title: item.title,
-				path: '/pages/play/play?author=' + item.author +
-					'&duration=' + item.duration +
-					'&title=' + item.title +
-					'&audioUrl=' + item.audioUrl + '&isShare=true',
-				imageUrl: '../../static/share.png'
+				title: this.title,
+				path: `/pages/dynamicDetail/dynamicDetail?id=${this.id}`
 			}
 		},
 		methods: {
