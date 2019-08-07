@@ -1,11 +1,11 @@
 <template>
 	<view>
-		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id" @tap.stop="toDynamicDetail(item._id)">
+		<view class="dynamic bg-white" v-for="(item,index) in dynamics" :key="item._id" @click.stop="toDynamicDetail(item._id)">
 			<view class="user d-flex align-center" >
 				<view>
 					<image :src="item.userInfo.avatarUrl" class="avatar"></image>
 				</view>
-				<view class="pl-2" @click="userDetail(item.userInfo._id)">
+				<view class="pl-2" @click.stop="userDetail(item.userInfo._id)">
 					<view class="nickName">{{item.userInfo.nickName}}</view>
 					<view class="createTime">{{timeAgoFormat(item.createTime)}}</view>
 				</view>
@@ -16,22 +16,22 @@
 				</text>
 			</view>
 			<view v-if="item.cover != defaultCover">
-				<image class="cover" :src="item.cover" mode="widthFix" @click="previewImage(item.cover)"></image>
+				<image class="cover" :src="item.cover" mode="widthFix" @click.stop="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
-				<nxPlayer @click.native="addPlayTime(item._id,index)" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID"
+				<nxPlayer @click.stop.native="addPlayTime(item._id,index)" @changeActive="onChangeActive" :activeSrc="activeSrc" :src="item.audioFileID"
 				 :title="item.title" :duration="item.duration" :coverImgUrl="item.cover" :singer="item.nickName" isBackgroundAudio></nxPlayer>
 			</view>
 			<view class="comment d-flex justify-between">
 				<view class="viewCounts d-flex align-center">播放{{item.playAmount}}次</view>
 				<view v-if="isLogin" class="operation">
-					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click="togglelike(item._id,index)"></text>
-					<text class="space-right cuIcon-comment" @click="toComment(item._id,index)"></text>
+					<text class="space-right" :class="isLike(item.likeUsers)?'cuIcon-likefill red':'cuIcon-like'" @click.stop="togglelike(item._id,index)"></text>
+					<text class="space-right cuIcon-comment" @click.stop="toComment(item._id,index)"></text>
 					<button class="share-btn" open-type="share" :data-id="item._id" :data-share-title="getShareTitle(item.userInfo.nickName,item.title)">
 						<text class="cuIcon-share"></text>
 					</button>
 				</view>
-				<view v-else @click="loginShow=true" class="operation">
+				<view v-else @click.stop="loginShow=true" class="operation">
 					<text class="space-right cuIcon-like"></text>
 					<text class="space-right cuIcon-comment"></text>
 					<text class="cuIcon-share"></text>
@@ -39,11 +39,13 @@
 			</view>
 			<view v-if="item.likeUsers.length!=0" class="likenum border-top">
 				<text class="cuIcon-like"></text>
-				<text @click="userDetail(likeUser.userId)" v-for="(likeUser,index) in item.likeUsers" :key="index" >{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
+				<block v-for="(likeUser,index) in item.likeUsers" :key="index">
+					<text @click.stop="userDetail(likeUser.userId)">{{likeUser.nickName}}{{(index+1)!=item.likeUsers.length?'、':''}}</text>
+				</block>
 			</view>
 			<view>
 				<view class="my-1 d-flex" v-for="(comment,index) in item.comment" :key="index">
-					<view @click="userDetail(comment.user._id)">
+					<view @click.stop="userDetail(comment.user._id)">
 						<text>{{comment.user.nickName}}：</text>
 					</view>
 					<view v-for="(content,index) in comment.content" :key="index">
@@ -54,7 +56,7 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view v-if="isLogin" @click="toComment(item._id)" class="noInputComment">
+			<!-- <view v-if="isLogin" @click.stop="toComment(item._id)" class="noInputComment">
 				<text>评论</text>
 			</view>
 			<view v-else @click="loginShow=true" class="noInputComment">
@@ -183,7 +185,7 @@
 			},
 			isLike(arr) {
 				return arr.some((value) => {
-					return value._openid == this.userInfo._openid;
+					return value.userId == this.userInfo._id;
 				});
 			},
 			/**
