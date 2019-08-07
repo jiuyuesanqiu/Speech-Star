@@ -31,7 +31,7 @@
 						<text class="editIcon"></text>
 						<text>编辑</text>
 					</view>
-					<view class="d-flex align-center" @tap.stop="deleteDynamic(item._id)">
+					<view class="d-flex align-center" @tap.stop="deleteDynamic">
 						<text class="deleteIcon"></text>
 						<text>删除</text>
 					</view>
@@ -59,7 +59,7 @@
 				voiceList: '',
 				coverShow: false,
 				editShow: false,
-				
+				activeId: ''
 			}
 		},
 		onLoad() {
@@ -73,6 +73,7 @@
 			 * 删除动态
 			 */
 			deleteDynamic() {
+				const self = this;
 				uni.showModal({
 					title: '提示',
 					content: '确认删除此条音频吗？',
@@ -81,10 +82,15 @@
 							wx.cloud.callFunction({
 								name: 'deleteDynamic',
 								data: {
-									id:this.activeId
+									id: self.activeId
 								}
 							}).then(res => {
 								console.log('删除成功');
+								uni.showToast({
+									title:'删除成功'
+								})
+								self.closeMore();
+								self.getMyVioce();
 							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
