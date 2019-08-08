@@ -3,7 +3,6 @@
 		<view class="whCenter duration">
 			<text>{{displayDuration}}</text>
 		</view>
-
 		<view class="d-flex justify-between footer">
 			<view class="footerL">
 				<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/headset.png"></image>
@@ -264,6 +263,7 @@
 		width: 200upx;
 		height: 200upx;
 		border-radius: 50%;
+		box-shadow: 0 0 10px 0 rgba(170, 170, 170, 1);
 	}
 
 	.recordText {
