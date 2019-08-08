@@ -87,11 +87,11 @@
 		env: 'product-yjcc'
 	});
 	const _ = db.command
-	let startPage = 0; //起始页数
-	let pageSize = 20;
 	export default {
 		data() {
 			return {
+				startPage: 0,
+				pageSize: 20,
 				activeSrc: '', //当前播放的音频
 				isLoading: false, //数据是否正在加载中
 				loginShow: false,
@@ -106,20 +106,21 @@
 			if (option.refresh) {
 				this.clearDynamics();
 			}
-			startPage = 0;
+			this.startPage = 0;
 			this.getNextPage();
 			wx.showShareMenu();
 		},
-		onshow() {
-
-		},
 		//下拉刷新
 		onPullDownRefresh() {
-			startPage = 0;
+			this.startPage = 0;
 			this.isLoading = false;
 			backgroundAudioManager.stop();
 			this.clearDynamics();
 			this.getNextPage();
+		},
+		onReachBottom() {
+			this.getNextPage();
+			console.log('到底了')
 		},
 		computed: {
 			...mapState(['userInfo', 'dynamics', 'inActiveCallback']),
@@ -246,21 +247,22 @@
 				this.activeSrc = src;
 			},
 			async getNextPage() {
-				if (this.isLoading) return;
+				if (this.isLoading || this.isLoad) return;
 				this.isLoading = true;
 				const self = this;
 				//获取演讲数据,倒序排列
-				db.collection('dynamic').orderBy('createTime', 'desc').skip(startPage * pageSize).limit(pageSize).get().then(res => {
-					uni.hideLoading();
-					this.apendDynamics(res.data);
-					startPage += 20;
-					uni.stopPullDownRefresh();
-					if (res.data.length < 20) {
-						this.isLoad = true;
-						return;
-					}
-					this.isLoading = false;
-				})
+				db.collection('dynamic').orderBy('createTime', 'desc').skip(this.startPage * this.pageSize).limit(this.pageSize).get()
+					.then(res => {
+						this.isLoading = false;
+						uni.hideLoading();
+						this.apendDynamics(res.data);
+						this.startPage++;
+						uni.stopPullDownRefresh();
+						if (res.data.length < 20) {
+							this.isLoad = true;
+							return;
+						}
+					})
 			},
 			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState', 'addPlayAmount'])
 		},
