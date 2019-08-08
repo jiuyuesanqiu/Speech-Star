@@ -8,7 +8,7 @@
 				<view class="flex-grow-1 topNameBox">
 					<view class="nickName">{{userInfo.nickName}}</view>
 					<view class="text-gray signature" v-if="userInfo.signature!=''">{{userInfo.signature}}</view>
-					<view class="text-gray signature" v-else>=他还未设置个性签名哦</view>
+					<view class="text-gray signature" v-else>他还未设置个性签名哦</view>
 				</view>
 			</view>
 			<nx-cell :arrow="false" icon="/static/disk.png" border title="他的作品" @tap="toMyVoice"></nx-cell>

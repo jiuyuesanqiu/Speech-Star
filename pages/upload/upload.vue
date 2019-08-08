@@ -6,15 +6,11 @@
 		</view>
 		<view v-if="!uploadShow">
 			<view class="cu-form-group">
-				<view class="title">
-					标题
-				</view>
+				<view class="title">标题</view>
 				<input placeholder="请输入演讲标题" v-model="title"></input>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">
-					作者
-				</view>
+				<view class="title">作者</view>
 				<input placeholder="请输入演讲者名字" v-model="author"></input>
 			</view>
 			<view class="padding mt-5">
@@ -22,9 +18,7 @@
 			</view>
 		</view>
 		<view class="text-center">
-			<view class="text-gray fixed-bottom py-5">
-				暂仅支持上传微信内音频文件
-			</view>
+			<view class="text-gray fixed-bottom py-5">暂仅支持上传微信内音频文件</view>
 			<view v-if="uploadShow" class="upload round d-flex justify-center align-items-center white bg-green" @tap="chooseFile">
 				<text class="cuIcon-upload"></text>
 			</view>
