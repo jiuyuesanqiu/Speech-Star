@@ -5,24 +5,30 @@
 		</view>
 		<view class="d-flex justify-between footer">
 			<view class="footerL">
-				<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/headset.png"></image>
+				<view hover-class="clickActive" hover-stay-time="100" hover-start-time="1">
+					<image class="playImg" @tap="play" v-show="state==2&&!isPlay" src="../../static/headset.png"></image>
+				</view>
 				<view class="playText" v-show="state==2&&!isPlay">试听</view>
-				<image class="playImg" @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png"></image>
+				<view hover-class="clickActive" hover-stay-time="100" hover-start-time="1">
+					<image class="playImg" @tap="pause" v-show="state==2&&isPlay" src="../../static/timeOut.png"></image>
+				</view>
 				<view class="playText" v-show="state==2&&isPlay">试听中</view>
 			</view>
 			<view class="d-flex flex-column align-center footerM">
-				<!-- <view class="record"> -->
-				<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
+				<view hover-class="clickActive" hover-stay-time="100" hover-start-time="1">
+					<image class="recordImg" @tap="startRecord" v-show="state==0" src="../../static/audioFill.png"></image>
+					<image class="recordImg publish" @tap="publish" v-show="state==2" src="../../static/issue.png"></image>
+				</view>
 				<image class="stopImg" @tap="stopRecord" v-show="state==1" src="../../static/audioEmpty.png"></image>
-				<image class="recordImg publish" @tap="publish" v-show="state==2" src="../../static/issue.png"></image>
-				<!-- </view> -->
 				<view class="recordText" v-show="state==0">录音</view>
 				<view class="recordText" v-show="state==1">停止录音</view>
 				<view class="recordText" v-show="state==2">发布</view>
 			</view>
 			<view class="footerR">
-				<image class="playImg" @tap="aginRecord" v-show="state==2" src="../../static/reload.png"></image>
-				<view class="reload" v-show="state==2">重录</view>
+				<view hover-class="clickActive" hover-stay-time="100" hover-start-time="1">
+					<image class="playImg" @tap="aginRecord" v-show="state==2" src="../../static/reload.png"></image>
+				</view>
+				<view class="playText" v-show="state==2">重录</view>
 			</view>
 		</view>
 	</view>
@@ -38,7 +44,7 @@
 		duration: 600000,
 		sampleRate: 48000,
 		encodeBitRate: 320000,
-		format:'mp3'
+		format: 'mp3'
 	}
 	recorderManager.onStart(function() {
 		console.log('开始录音')
@@ -86,7 +92,7 @@
 				this.tempSrc = tempFilePath;
 				this.stopRecord();
 			})
-			recorderManager.onInterruptionBegin(()=>{
+			recorderManager.onInterruptionBegin(() => {
 				this.stopRecord();
 				innerAudioContext.stop();
 			})
@@ -195,6 +201,11 @@
 </script>
 
 <style scoped>
+	.clickActive {
+		background-color: #e5e5e5;
+		border-radius: 50%;
+	}
+
 	.page {
 		background-color: #fff;
 		height: 100%;
@@ -238,13 +249,13 @@
 		height: 120upx;
 		border-radius: 50%;
 		padding: 30upx;
-		margin-bottom: 32upx;
 		box-shadow: 0 0 10px 0 rgba(9, 187, 7, 1);
 	}
 
 	.playText {
 		color: #b2b2b2;
 		font-size: 32upx;
+		margin-top: 32upx;
 	}
 
 	.recordImg {
@@ -270,10 +281,5 @@
 		color: #b2b2b2;
 		font-size: 32upx;
 		padding-top: 32upx;
-	}
-
-	.reload {
-		color: #b2b2b2;
-		font-size: 32upx;
 	}
 </style>

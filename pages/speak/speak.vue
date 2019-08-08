@@ -4,11 +4,9 @@
 			<image class="topImg" src="../../static/star.png" alt="" />
 			<view class="topText">演讲星球</view>
 		</view>
-		<view class="topDes">
-			每天10分钟，演讲好轻松
-		</view>
+		<view class="topDes">每天10分钟，演讲好轻松</view>
 		<view class="d-flex justify-center mt-5">
-			<button class="getUserInfo al" @tap="toRecording">开始演讲</button>
+			<button class="getUserInfo al"  hover-class="clickActive" hover-start-time="1" @tap="toRecording">开始演讲</button>
 		</view>
 		<nxLogin :show="loginShow" @success="loginSuccess" @cancel="loginShow=false"></nxLogin>
 	</view>
@@ -95,6 +93,11 @@
 		background-color: #09BB07;
 		height: 88upx;
 		width: 77%;
+		border-radius: 44upx;
+		box-shadow: 0 0 10px 0 rgba(170, 170, 170, 1);
+	}
+	.clickActive {
+		background-color: #089B08;
 		border-radius: 44upx;
 	}
 </style>
