@@ -19,7 +19,7 @@
 								<view>{{formatSeconds(item.duration)}}</view>
 							</view>
 						</view>
-						<text class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore(item._id)"></text>
+						<text v-if="moreShow == true" class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore(item._id)"></text>
 					</view>
 				</view>
 			</view>
@@ -57,6 +57,7 @@
 		data() {
 			return {
 				voiceList: '',
+				moreShow:false,
 				coverShow: false,
 				editShow: false,
 				activeId: '',
@@ -64,10 +65,13 @@
 			}
 		},
 		onLoad(option) {
-			if(this.openid != undefined){
+			if(option.id != undefined){
+				// 这是从别人的个人页进入
 				this.openid = option.id;
 			}else{
+				// 这是从自己的个人页进入
 				this.openid = this.userInfo._openid;
+				this.moreShow = true;
 			}
 		},
 		onShow() {
