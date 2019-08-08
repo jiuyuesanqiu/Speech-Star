@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="!isBackgroundAudio" class="noControl d-flex align-items-center" @click.stop="playAudio">
+		<view v-if="!isBackgroundAudio" class="noControl d-flex align-items-center" @click="playAudio">
 			<view class="play-cion">
 				<text v-show="!isPlay&&!isLoading" class="cuIcon-video"></text>
 				<text v-show="isPlay&&!isLoading" class="cuIcon-stop"></text>
@@ -12,8 +12,8 @@
 		</view>
 		<view v-else class="container d-flex">
 			<view class="left">
-				<text v-show="!isPlay&&!isLoading" class="cuIcon-video play-icon" @click.stop="play"></text>
-				<text v-show="isPlay&&!isLoading" class="cuIcon-stop stop-icon" @click.stop="paused"></text>
+				<text v-show="!isPlay&&!isLoading" class="cuIcon-video play-icon" @click="play"></text>
+				<text v-show="isPlay&&!isLoading" class="cuIcon-stop stop-icon" @click="paused"></text>
 				<div class="loading-icon">
 					<text v-show="isLoading" class="cuIcon-loading1"></text>
 				</div>
