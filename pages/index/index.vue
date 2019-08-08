@@ -11,9 +11,7 @@
 				</view>
 			</view>
 			<view class="intro" v-if="item.intro">
-				<text>
-					{{item.intro}}
-				</text>
+				<text>{{item.intro}}</text>
 			</view>
 			<view v-if="item.cover != defaultCover">
 				<image class="cover" :src="item.cover" mode="widthFix" @click.stop="previewImage(item.cover)"></image>
@@ -86,7 +84,7 @@
 	const db = wx.cloud.database({
 		env: 'product-yjcc'
 	});
-	const _ = db.command
+	const _ = db.command;
 	let startPage = 0; //起始页数
 	let pageSize = 20;
 	export default {
