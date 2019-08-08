@@ -125,6 +125,14 @@
 		},
 		methods: {
 			/**
+			 * 预览图片
+			 */
+			previewImage(url) {
+				wx.previewImage({
+					urls: [url]
+				})
+			},
+			/**
 			 * 增加播放次数
 			 */
 			addPlayTime(id) {
