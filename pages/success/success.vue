@@ -36,7 +36,6 @@
 	import util from '../../common/util.js';
 	import nxButton from '../../components/nx-button.vue';
 	import wmPoster from '../../components/wm-poster/wm-poster.vue';
-	import uploadUtil from '../../common/uploadUtil.js'
 	import {
 		mapState
 	} from 'vuex';
