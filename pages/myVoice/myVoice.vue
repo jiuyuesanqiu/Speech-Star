@@ -68,7 +68,6 @@
 			if(option.id != undefined){
 				// 这是从别人的个人页进入
 				this.openid = option.id;
-				//设置标题和编辑名称
 				uni.setNavigationBarTitle({
 					title: '他的作品'
 				})
