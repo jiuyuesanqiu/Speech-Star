@@ -35,7 +35,6 @@
 <script>
 	import util from '../../common/util.js';
 	import nxButton from '../../components/nx-button.vue';
-	import wmPoster from '../../components/wm-poster/wm-poster.vue';
 	import {
 		mapState
 	} from 'vuex';
@@ -178,8 +177,7 @@
 			...mapState(['userInfo'])
 		},
 		components: {
-			nxButton,
-			wmPoster
+			nxButton
 		}
 	}
 </script>
