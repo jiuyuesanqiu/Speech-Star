@@ -59,7 +59,15 @@
 				voiceList: '',
 				coverShow: false,
 				editShow: false,
-				activeId: ''
+				activeId: '',
+				openid:'',
+			}
+		},
+		onLoad(option) {
+			if(this.openid != undefined){
+				this.openid = option.id;
+			}else{
+				this.openid = this.userInfo._openid;
 			}
 		},
 		onShow() {
@@ -101,7 +109,7 @@
 			// 根据openId获取我的作品列表
 			getMyVioce() {
 				db.collection('dynamic').where({
-					_openid: this.userInfo._openid
+					_openid: this.openid
 				}).get().then((res) => {
 					console.log(res);
 					if (res.errMsg == 'collection.get:ok') {

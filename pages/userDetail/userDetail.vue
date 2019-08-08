@@ -30,7 +30,7 @@
 			return {
 				loginShow: false,
 				userId: '',
-				userInfo:{}
+				userInfo: {}
 			}
 		},
 		computed: {
@@ -40,14 +40,14 @@
 			this.userId = option.id;
 			db.collection('user')
 				.doc(option.id)
-				.get().then((res)=>{
+				.get().then((res) => {
 					this.userInfo = res.data;
 				})
 		},
 		methods: {
 			toMyVoice() {
 				uni.navigateTo({
-					url: '../myVoice/myVoice'
+					url: `../myVoice/myVoice?id=${this.userInfo._openid}`
 				})
 			},
 		},
