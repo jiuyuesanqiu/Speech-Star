@@ -48,6 +48,17 @@
 				isUpdateTime: false,
 			};
 		},
+		watch: {
+			isActive(newValue, oldValue) {
+				console.log(newValue,oldValue)
+				if (newValue) {
+					this.listener();
+				} else {
+					this.isPlay = false;
+					this.stopRecordTime();
+				}
+			}
+		},
 		computed: {
 			currentTimeText() {
 				return util.formatDuration(this.currentTime);
@@ -58,28 +69,12 @@
 			...mapState({
 				isActive(state) { //当前播放器是否活动
 					if (state.activePlayerUUID == this.uuid) {
-						this.listener();
 						return true;
 					} else {
-						this.isPlay = false;
-						this.stopRecordTime();
 						return false;
 					}
 				}
 			})
-		},
-		watch: {
-			/**
-			 * @param {Object} value
-			 * 播放完成后停止
-			 */
-			currentTime(value) {
-				if (value >= this.duration) {
-					this.stopRecordTime();
-					this.currentTime = 0;
-					this.isPlay = false;
-				}
-			}
 		},
 		/**
 		 * 销毁前停止计时
@@ -166,7 +161,14 @@
 				this.isUpdateTime = true;
 				while (this.isUpdateTime) {
 					await this.sleep(100);
-					this.currentTime = this.currentTime + 0.1;
+					//判断是否播放完成
+					if (this.currentTime + 0.1 >= this.duration) {
+						this.isPlay = false;
+						this.currentTime = 0;
+						this.stopRecordTime();
+					} else {
+						this.currentTime = this.currentTime + 0.1;
+					}
 				}
 			},
 			/**
