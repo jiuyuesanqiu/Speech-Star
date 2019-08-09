@@ -50,7 +50,6 @@
 		},
 		watch: {
 			isActive(newValue, oldValue) {
-				console.log(newValue,oldValue)
 				if (newValue) {
 					this.listener();
 				} else {

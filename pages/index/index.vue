@@ -83,9 +83,7 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex';
-	const db = wx.cloud.database({
-		env: 'product-yjcc'
-	});
+	const db = wx.cloud.database();
 	const _ = db.command
 	export default {
 		data() {
