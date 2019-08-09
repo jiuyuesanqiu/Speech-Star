@@ -90,6 +90,7 @@
 				pageSize: 20,
 				activeSrc: '', //当前播放的音频
 				isLoading: false, //数据是否正在加载中
+				isLoad: false,
 				loginShow: false,
 				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
 				playContainer: []
@@ -100,6 +101,7 @@
 				title: '加载中',
 			});
 			if (option.refresh) {
+				this.isLoad = false;
 				this.clearDynamics();
 			}
 			this.startPage = 0;
@@ -109,14 +111,14 @@
 		//下拉刷新
 		onPullDownRefresh() {
 			this.startPage = 0;
+			this.isLoad = false;
 			this.isLoading = false;
-			backgroundAudioManager.stop();
 			this.clearDynamics();
 			this.getNextPage();
+			backgroundAudioManager.stop();
 		},
 		onReachBottom() {
 			this.getNextPage();
-			console.log('到底了')
 		},
 		computed: {
 			...mapState(['userInfo', 'dynamics', 'inActiveCallback']),
