@@ -11,9 +11,7 @@
 				</view>
 			</view>
 			<view class="intro" v-if="item.intro">
-				<text>
-					{{item.intro}}
-				</text>
+				<text>{{item.intro}}</text>
 			</view>
 			<view v-if="item.cover != defaultCover">
 				<image class="cover" :src="item.cover" mode="widthFix" @click.stop="previewImage(item.cover)"></image>

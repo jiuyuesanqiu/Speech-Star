@@ -256,7 +256,7 @@
 				bottom: 0;
 				border-radius: 20upx 20upx 0 0;
 				color: #101010;
-				transition: bottom 0.3s;
+				transition: bottom 0.3s cubic-bezier(0.71,0.1,1,1);
 
 				.moreOperate {
 					padding: 62upx 40upx;
