@@ -4,7 +4,7 @@
 	} from 'vuex';
 	import Vue from 'vue'
 	wx.cloud.init({
-		env: 'product-yjcc'
+		env: 'test-star'
 	});
 	export default {
 		onLaunch: function() {

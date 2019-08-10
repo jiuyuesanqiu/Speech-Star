@@ -15,7 +15,7 @@
 		<view class="d-flex justify-center mt-5" @click="toDynamicDetail">
 			<view class="content d-flex">
 				<view>
-					<image class="cover" :src="coverSrc"></image>
+					<image class="cover" :src="coverSrc==''?'../../static/star.png':coverSrc"></image>
 				</view>
 				<view class="right">
 					<view class="title">
@@ -140,7 +140,7 @@
 					});
 				});
 			},
-			async dealShareImg(){
+			async dealShareImg() {
 				const self = this;
 				// 使用 wx.createContext 获取绘图上下文 context
 				var ctx = wx.createCanvasContext('firstCanvas')

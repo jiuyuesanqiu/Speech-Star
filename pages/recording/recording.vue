@@ -191,7 +191,7 @@
 			 * 发布
 			 */
 			publish() {
-				if (this.duration < 10) {
+				if (this.duration < 1) {
 					uni.showToast({
 						icon: 'none',
 						title: "时长不足10秒,请重录"

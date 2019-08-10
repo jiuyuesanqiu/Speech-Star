@@ -18,7 +18,7 @@
 					{{dynamic.intro}}
 				</text>
 			</view>
-			<view v-if="dynamic.cover != defaultCover">
+			<view v-if="dynamic.cover != ''">
 				<image class="cover" :src="dynamic.cover" mode="widthFix" @click="previewImage(dynamic.cover)"></image>
 			</view>
 			<view class="player">
@@ -87,7 +87,6 @@
 					likeUsers: []
 				},
 				loginShow: false,
-				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
 				id: '',
 				showHome: false, //主页按钮是否显示
 				showBack: true,

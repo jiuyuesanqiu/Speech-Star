@@ -13,7 +13,7 @@
 			<view class="intro" v-if="item.intro">
 				<text>{{item.intro}}</text>
 			</view>
-			<view v-if="item.cover != defaultCover">
+			<view v-if="item.cover != ''">
 				<image class="cover" :src="item.cover" mode="widthFix" @click.stop="previewImage(item.cover)"></image>
 			</view>
 			<view class="player">
@@ -91,7 +91,6 @@
 				isLoading: false, //数据是否正在加载中
 				isLoad: false,
 				loginShow: false,
-				defaultCover: 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png',
 				playContainer: []
 			}
 		},

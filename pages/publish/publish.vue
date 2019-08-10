@@ -166,7 +166,7 @@
 			 * @param {Object} coverFileID
 			 * @param {Object} audioFileID
 			 */
-			publishDynamic(audioFileID, coverFileID = 'cloud://product-yjcc.7072-product-yjcc/base/defaultCover.png') {
+			publishDynamic(audioFileID, coverFileID = '') {
 				//上传成功后，保存文件id到数据库
 				db.collection('dynamic').add({
 					data: {
