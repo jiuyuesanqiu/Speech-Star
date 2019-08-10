@@ -34,7 +34,6 @@
 
 <script>
 	import util from '../../common/util.js';
-	import nxButton from '../../components/nx-button.vue';
 	import {
 		mapState
 	} from 'vuex';
@@ -175,9 +174,6 @@
 				return util.formatDuration(this.duration);
 			},
 			...mapState(['userInfo'])
-		},
-		components: {
-			nxButton
 		}
 	}
 </script>

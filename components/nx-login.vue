@@ -22,7 +22,6 @@
 	import {
 		mapMutations
 	} from 'vuex';
-	import nxButton from './nx-button.vue';//这里只能是./开头的相对路径，否则报错
 	const db = wx.cloud.database();
 	export default {
 		data() {
@@ -69,9 +68,6 @@
 				type: Boolean,
 				default: false
 			}
-		},
-		components:{
-			nxButton
 		}
 	}
 </script>

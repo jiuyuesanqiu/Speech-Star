@@ -38,7 +38,6 @@
 	import {
 		mapState
 	} from 'vuex';
-	import nxButton from '../../components/nx-button.vue';
 	export default {
 		data() {
 			return {
@@ -192,9 +191,6 @@
 					})
 				})
 			}
-		},
-		components: {
-			nxButton
 		}
 	}
 </script>

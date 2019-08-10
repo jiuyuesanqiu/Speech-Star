@@ -4,7 +4,9 @@ import store from './store'
 
 //这里必须要用相对路径，否则不能编译
 import nxLogin from './components/nx-login.vue'
-Vue.component('nx-login',nxLogin)
+Vue.component('nxLogin',nxLogin)
+import nxButton from './components/nx-button.vue'
+Vue.component('nxButton',nxButton)
 
 Vue.config.productionTip = false
 
