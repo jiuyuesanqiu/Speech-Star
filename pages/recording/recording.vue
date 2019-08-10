@@ -194,7 +194,7 @@
 				if (this.duration < 10) {
 					uni.showToast({
 						icon: 'none',
-						title: "录音时长不足10秒,请重录"
+						title: "时长不足10秒,请重录"
 					})
 					return;
 				}
