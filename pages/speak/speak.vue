@@ -4,7 +4,7 @@
 			<image class="topImg" src="../../static/star.png" alt="" />
 			<view class="topText">演讲星球</view>
 		</view>
-		<view class="topDes">每天10分钟，演讲好轻松</view>
+		<view class="topDes">每天一分钟，演讲好轻松</view>
 		<view class="d-flex justify-center mt-5">
 			<button class="getUserInfo al"  hover-class="clickActive" hover-start-time="1" @tap="toRecording">开始演讲</button>
 		</view>

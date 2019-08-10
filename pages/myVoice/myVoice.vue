@@ -1,47 +1,49 @@
 <template>
 	<view class="page">
-		<nxNoData>您还没有发布作品哦!</nxNoData>
-		<!-- <view class="pageBox">
-			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._id" @tap="toPlay(item._id)">
-				<view class="d-flex align-center itemNumber">{{key+1}}</view>
-				<view class="d-flex flex-column justify-between itemContent">
-					<view class="d-flex justify-between align-center">
-						<view class="itemName">{{item.title}}</view>
-						<view class="itemDate">{{formatDate(item.createTime)}}</view>
-					</view>
-					<view class="d-flex justify-between itemBottom">
-						<view class="d-flex itemViewBox">
-							<view class="d-flex viewNumber">
-								<text class="viewNumberIcon"></text>
-								<view>{{item.playAmount}}</view>
-							</view>
-							<view class="d-flex itemTime">
-								<text class="itemTimeIcon"></text>
-								<view>{{formatSeconds(item.duration)}}</view>
-							</view>
+		<nxNoData v-if="voiceList.length==0">您还没有发布作品哦!</nxNoData>
+		<view v-else>
+			<view class="pageBox">
+				<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._id" @tap="toPlay(item._id)">
+					<view class="d-flex align-center itemNumber">{{key+1}}</view>
+					<view class="d-flex flex-column justify-between itemContent">
+						<view class="d-flex justify-between align-center">
+							<view class="itemName">{{item.title}}</view>
+							<view class="itemDate">{{formatDate(item.createTime)}}</view>
 						</view>
-						<text v-if="moreShow == true" class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore(item._id)"></text>
+						<view class="d-flex justify-between itemBottom">
+							<view class="d-flex itemViewBox">
+								<view class="d-flex viewNumber">
+									<text class="viewNumberIcon"></text>
+									<view>{{item.playAmount}}</view>
+								</view>
+								<view class="d-flex itemTime">
+									<text class="itemTimeIcon"></text>
+									<view>{{formatSeconds(item.duration)}}</view>
+								</view>
+							</view>
+							<text v-if="moreShow == true" class="cuIcon-more more d-flex align-end justify-center" @tap.stop="showMore(item._id)"></text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="moreCover" @tap="closeMore" :style="{top:(coverShow==true?'0':'100%')}">
+				<view class="moreBox" @tap.stop :style="{bottom:(editShow==true?'0':'-40%')}">
+					<view class="moreOperate">
+						<view class="d-flex align-center editBox" @tap.stop="toPublish">
+							<text class="editIcon"></text>
+							<text>编辑</text>
+						</view>
+						<view class="d-flex align-center" @tap.stop="deleteDynamic">
+							<text class="deleteIcon"></text>
+							<text>删除</text>
+						</view>
+					</view>
+					<view @tap="closeMore" class="moreClose">
+						<text>关闭</text>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="moreCover" @tap="closeMore" :style="{top:(coverShow==true?'0':'100%')}">
-			<view class="moreBox" @tap.stop :style="{bottom:(editShow==true?'0':'-40%')}">
-				<view class="moreOperate">
-					<view class="d-flex align-center editBox" @tap.stop="toPublish">
-						<text class="editIcon"></text>
-						<text>编辑</text>
-					</view>
-					<view class="d-flex align-center" @tap.stop="deleteDynamic">
-						<text class="deleteIcon"></text>
-						<text>删除</text>
-					</view>
-				</view>
-				<view @tap="closeMore" class="moreClose">
-					<text>关闭</text>
-				</view>
-			</view>
-		</view> -->
 	</view>
 </template>
 

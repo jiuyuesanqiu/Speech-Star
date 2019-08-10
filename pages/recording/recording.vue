@@ -80,8 +80,10 @@
 			innerAudioContext.stop();
 		},
 		onHide() {
-			this.stopRecord();
-			innerAudioContext.stop();
+			if (this.state !== 0) {
+				this.stopRecord();
+				innerAudioContext.stop();
+			}
 		},
 		onLoad() {
 			recorderManager.onStop(({
@@ -115,6 +117,7 @@
 							uni.authorize({
 								scope: 'scope.record',
 								success() {
+									console.log('我来了')
 									//开始录音
 									recorderManager.start(options);
 									self.state = 1;
@@ -188,6 +191,13 @@
 			 * 发布
 			 */
 			publish() {
+				if (this.duration < 10) {
+					uni.showToast({
+						icon: 'none',
+						title: "录音时长不足10秒,请重录"
+					})
+					return;
+				}
 				uni.setStorageSync('file', {
 					tempSrc: this.tempSrc,
 					duration: this.duration
