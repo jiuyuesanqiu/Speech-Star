@@ -117,7 +117,6 @@
 							uni.authorize({
 								scope: 'scope.record',
 								success() {
-									console.log('我来了')
 									//开始录音
 									recorderManager.start(options);
 									self.state = 1;
@@ -191,7 +190,7 @@
 			 * 发布
 			 */
 			publish() {
-				if (this.duration < 1) {
+				if (this.duration < 10) {
 					uni.showToast({
 						icon: 'none',
 						title: "时长不足10秒,请重录"
