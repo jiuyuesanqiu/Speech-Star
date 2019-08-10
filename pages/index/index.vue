@@ -75,7 +75,6 @@
 		register
 	} from 'timeago.js';
 	import nxPlayer from '../../components/nx-player.vue';
-	import nxLogin from '../../components/nx-login.vue';
 	import {
 		mapState,
 		mapGetters,
@@ -100,13 +99,17 @@
 			uni.showLoading({
 				title: '加载中',
 			});
-			if (option.refresh) {
-				this.isLoad = false;
-				this.clearDynamics();
-			}
 			this.startPage = 0;
 			this.getNextPage();
 			wx.showShareMenu();
+		},
+		onShow(){
+			this.startPage = 0;
+			this.isLoad = false;
+			this.isLoading = false;
+			this.clearDynamics();
+			this.getNextPage();
+			backgroundAudioManager.stop();
 		},
 		//下拉刷新
 		onPullDownRefresh() {
@@ -265,8 +268,7 @@
 			...mapMutations(['apendDynamics', 'clearDynamics', 'togglelikeState', 'addPlayAmount'])
 		},
 		components: {
-			nxPlayer,
-			nxLogin
+			nxPlayer
 		}
 	}
 </script>

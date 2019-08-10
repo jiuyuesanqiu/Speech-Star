@@ -12,7 +12,6 @@
 	</view>
 </template>
 <script>
-	import nxLogin from '../../components/nx-login.vue';
 	import {
 		mapGetters
 	} from 'vuex';
@@ -43,7 +42,6 @@
 			}
 		},
 		components: {
-			nxLogin
 		}
 	}
 </script>

@@ -45,7 +45,6 @@
 </template>
 
 <script>
-	import nxLogin from '../../components/nx-login.vue';
 	import nxCell from '../../components/nx-cell.vue';
 	import {
 		mapState,
@@ -84,8 +83,7 @@
 			},
 		},
 		components: {
-			nxCell,
-			nxLogin
+			nxCell
 		}
 	}
 </script>

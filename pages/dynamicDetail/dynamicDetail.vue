@@ -71,7 +71,6 @@
 <script>
 	const db = wx.cloud.database();
 	import nxPlayer from '../../components/nx-player.vue';
-	import nxLogin from '../../components/nx-login.vue';
 	import cuCustom from '../../components/cu-custom.vue';
 	import {
 		format
@@ -231,7 +230,6 @@
 		},
 		components: {
 			nxPlayer,
-			nxLogin,
 			cuCustom
 		}
 	}
