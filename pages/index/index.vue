@@ -95,23 +95,20 @@
 			}
 		},
 		onLoad(option) {
+			console.log("onload事件");
 			uni.showLoading({
 				title: '加载中',
 			});
-			this.startPage = 0;
-			this.getNextPage();
-			wx.showShareMenu();
-		},
-		onShow(){
 			this.startPage = 0;
 			this.isLoad = false;
 			this.isLoading = false;
 			this.clearDynamics();
 			this.getNextPage();
-			backgroundAudioManager.stop();
+			wx.showShareMenu();
 		},
 		//下拉刷新
 		onPullDownRefresh() {
+			console.log("下拉刷新");
 			this.startPage = 0;
 			this.isLoad = false;
 			this.isLoading = false;
@@ -120,6 +117,7 @@
 			backgroundAudioManager.stop();
 		},
 		onReachBottom() {
+			console.log("拉到底");
 			this.getNextPage();
 		},
 		computed: {
