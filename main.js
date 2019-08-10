@@ -7,6 +7,8 @@ import nxLogin from './components/nx-login.vue'
 Vue.component('nxLogin',nxLogin)
 import nxButton from './components/nx-button.vue'
 Vue.component('nxButton',nxButton)
+import nxNoData from './components/nx-noData.vue'
+Vue.component('nxNoData',nxNoData)
 
 Vue.config.productionTip = false
 

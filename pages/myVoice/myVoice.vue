@@ -1,6 +1,7 @@
 <template>
 	<view class="page">
-		<view class="pageBox">
+		<nxNoData>您还没有发布作品哦!</nxNoData>
+		<!-- <view class="pageBox">
 			<view class="d-flex voiceItem" v-for="(item,key) in voiceList" :key="item._id" @tap="toPlay(item._id)">
 				<view class="d-flex align-center itemNumber">{{key+1}}</view>
 				<view class="d-flex flex-column justify-between itemContent">
@@ -40,7 +41,7 @@
 					<text>关闭</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
