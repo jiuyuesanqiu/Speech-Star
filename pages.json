@@ -4,7 +4,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "演讲圈",
-				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarBackgroundColor": "#FFFFFF",
 				"enablePullDownRefresh": true //下拉刷新
 			}
 		}, {
@@ -55,30 +55,23 @@
 				"navigationBarTitleText": "上传成功",
 				"navigationBarBackgroundColor": "#FFFFFF"
 			}
-		}
-        ,{
-            "path" : "pages/test/test",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/comment/comment",
-            "style" : {
+		}, {
+			"path": "pages/comment/comment",
+			"style": {
 				"navigationBarBackgroundColor": "#FCFCFC"
 			}
-        }
-        ,{
-            "path" : "pages/dynamicDetail/dynamicDetail",
-            "style" : {
+		}, {
+			"path": "pages/dynamicDetail/dynamicDetail",
+			"style": {
 				"navigationBarTitleText": "动态详情",
 				"enablePullDownRefresh": true, //下拉刷新
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
-        }
-        ,{
-            "path" : "pages/userDetail/userDetail",
-            "style" : {}
-        }
-    ],
+		}, {
+			"path": "pages/userDetail/userDetail",
+			"style": {}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTitleText": "演讲口才",
 		"navigationBarTextStyle": "black",
